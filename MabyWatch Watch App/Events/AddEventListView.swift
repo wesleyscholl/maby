@@ -17,7 +17,7 @@ struct AddEventListView: View {
                 
                 Section("Hygiene") {
                     NavigationLink(destination: AddDiaperEventView()) {
-                        Text("🧷 Diaper change")
+                        Text("🚼 Diaper change")
                     }
                 }
                 

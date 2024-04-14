@@ -61,6 +61,9 @@ struct SettingsView: View {
             .frame(maxWidth: .infinity, alignment: .center)
             .clearBackground()
         }
+        .onAppear {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        }
         .sheet(isPresented: $showingEditBaby) {
             EditBabyDetailsView()
         }

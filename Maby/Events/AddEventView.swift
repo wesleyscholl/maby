@@ -110,7 +110,7 @@ struct AddEventView<Content: View, E: Event>: View {
 struct AddEventView_Previews: PreviewProvider {
     static var previews: some View {
         AddEventView(
-            "🧷 Diaper change",
+            "🚼 Diaper change",
             onAdd: { .failure(.databaseError) }
         ) {
             Text("Hello?")

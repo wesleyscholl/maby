@@ -14,26 +14,23 @@ struct AddEventListView: View {
                     icon: "🤱",
                     type: .nursing
                 )
-                
                 AddEventButton<BottleFeedEvent>(
                     "Add bottle feed",
                     icon: "🍼",
                     type: .bottle
                 )
             }
-            
             Section("Hygiene") {
                 AddEventButton<DiaperEvent>(
                     "Add diaper change",
-                    icon: "🧷",
+                    icon: "🚼",
                     type: .diaper
                 )
             }
-            
             Section("Health") {
                 AddEventButton<SleepEvent>(
                     "Add sleep",
-                    icon: "🌝",
+                    icon: "😴",
                     type: .sleep
                 )
                 
@@ -43,6 +40,8 @@ struct AddEventListView: View {
                     type: .vomit
                 )
             }
+        }.onAppear {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
     }
 }
@@ -130,18 +129,48 @@ private struct AddEventButton<E: Event>: View {
             case .bottle:
                 AddBottleFeedEventView()
                     .sheetSize(.medium)
+                .onAppear {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
+                .onDisappear {
+                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                }
             case .diaper:
                 AddDiaperEventView()
                     .sheetSize(.medium)
+                    .onAppear {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    }
+                    .onDisappear {
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    }
             case .nursing:
                 AddNursingEventView()
                     .sheetSize(.height(450))
+                    .onAppear {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    }
+                    .onDisappear {
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    }
             case .sleep:
                 AddSleepEventView()
                     .sheetSize(.medium)
+                    .onAppear {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    }
+                    .onDisappear {
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    }
             case .vomit:
                 AddVomitEventView()
                     .sheetSize(.medium)
+                    .onAppear {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    }
+                    .onDisappear {
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    }
             }
         }
         .onAppear {

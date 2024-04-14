@@ -10,7 +10,7 @@ struct AddDiaperEventView: View {
     
     var body: some View {
         AddEventView(
-            "🧷 Diaper change",
+            "🚼 Diaper change",
             onAdd: {
                 eventService.addDiaperChange(date: date, type: diaperType)
             }

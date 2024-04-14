@@ -25,9 +25,12 @@ struct JournalView: View {
                     }
                     .onDelete { indexSet in
                         eventService.delete(events: indexSet.map { section[$0] })
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
                     }
                 }
             }
+        }.onAppear {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
     }
 }

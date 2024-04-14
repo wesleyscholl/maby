@@ -20,8 +20,12 @@ struct BabyCard: View {
     var body: some View {
         VStack {
             HStack {
-                Text("👶🏻")
-                    .font(.system(size: 80))
+                Image("baby-girl-1")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 80, height: 80)
+//                Text("👶🏻")
+//                    .font(.system(size: 80))
                     .padding([.trailing], 20)
                 
                 VStack(alignment: .leading) {

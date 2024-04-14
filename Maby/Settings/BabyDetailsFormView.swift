@@ -30,10 +30,19 @@ struct BabyDetailsFormView<Confirm: View>: View {
     var body: some View {
         Form {
             VStack {
-                Text("👶🏻")
-                    .font(.system(size: 80))
-                    .frame(maxWidth: .infinity)
-                
+                if gender == .boy {
+                    Image("babyboyz")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 80)
+                    } else if gender == .girl {
+                        Image("baby-girl-1")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 80)
+                    }
                 Text(title)
                     .font(.largeTitle)
             }

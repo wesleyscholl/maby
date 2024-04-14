@@ -16,7 +16,7 @@ struct EventView: View {
             )
         } else if let _ = event as? DiaperEvent {
             EventIcon(
-                icon: "🧷",
+                icon: "🚼",
                 startColor: .orange,
                 endColor: .orange.opacity(0.5)
             )
@@ -28,9 +28,9 @@ struct EventView: View {
             )
         } else if let _ = event as? SleepEvent {
             EventIcon(
-                icon: "🌝",
+                icon: "😴",
                 startColor: .black.opacity(0.8),
-                endColor: .black.opacity(0.6)
+                endColor: .black.opacity(0.2)
             )
         } else if let _ = event as? VomitEvent {
             EventIcon(
@@ -64,7 +64,6 @@ struct EventView: View {
         HStack {
             icon
                 .font(.largeTitle)
-            
             details
             Spacer()
         }

@@ -20,12 +20,14 @@ struct ContentView: View {
                     .tabItem {
                         Label("Add event", systemImage: "plus")
                     }
-                
                 JournalView()
                     .tabItem {
                         Label("Journal", systemImage: "book")
                     }
-                
+                ChartView()
+                    .tabItem {
+                        Label("Chart", systemImage: "chart.bar.xaxis")
+                    }
                 SettingsView()
                     .tabItem {
                         Label("Settings", systemImage: "gear")

@@ -10,7 +10,7 @@ struct AddSleepEventView: View {
     
     var body: some View {
         AddEventView(
-            "🌝 Sleep",
+            "😴 Sleep",
             onAdd: { eventService.addSleep(start: startDate, end: endDate) }
         ) {
             Section("Time") {
