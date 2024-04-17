@@ -83,7 +83,25 @@ public class EventService {
     ) -> Result<DiaperEvent, AddError> {
         return addDiaperChange(date: Date.now, type: type)
     }
+//    
+    public func addBathing(
+        date: Date,
+        type: BathingEvent.BathingType
+    ) -> Result<BathingEvent, AddError> {
+        let event = BathingEvent(
+            context: database.container.viewContext,
+            date: date,
+            type: type
+        )
+        return save(event: event)
+    }
     
+    public func addBathing(
+        type: BathingEvent.BathingType
+    ) -> Result<BathingEvent, AddError> {
+        return addBathing(date: Date.now, type: type)
+    }
+//    
     /// Adds a new nursing event to the database if the provided dates are valid.
     public func addNursing(
         start: Date,
@@ -116,6 +134,42 @@ public class EventService {
         )!
         
         return addNursing(start: start, end: end, breast: breast)
+    }
+    
+    /// Adds a new breast pump event to the database if the provided dates are valid.
+    public func addBreastPump(
+        start: Date,
+        end: Date,
+        breast: BreastPumpEvent.Breast,
+        amount: Int32
+    ) -> Result<BreastPumpEvent, AddError> {
+        if start > end {
+            return .failure(.invalidData)
+        }
+        let event = BreastPumpEvent(
+            context: database.container.viewContext,
+            start: start,
+            end: end,
+            breast: breast,
+            amount: amount
+        )
+        print(start, end, breast, amount)
+        return save(event: event)
+    }
+
+    public func addBreastPump(
+        duration: Double,
+        breast: BreastPumpEvent.Breast,
+        amount: Int32
+    ) -> Result<BreastPumpEvent, AddError> {
+        let end = Date.now
+        let start = Calendar.current.date(
+            byAdding: .minute,
+            value: Int(duration.rounded(.up)) * -1,
+            to: end
+        )!
+        print(start, end, breast, amount)
+        return addBreastPump(start: start, end: end, breast: breast, amount: amount)
     }
     
     /// Adds a new sleep event to the database if the provided dates are valid.

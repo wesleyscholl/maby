@@ -38,6 +38,18 @@ struct EventView: View {
                 startColor: .brown,
                 endColor: .brown.opacity(0.6)
             )
+         } else if let _ = event as? BreastPumpEvent {
+            EventIcon(
+                icon: "🥛",
+                startColor: .brown,
+                endColor: .brown.opacity(0.6)
+            )
+         } else if let _ = event as? BathingEvent {
+            EventIcon(
+                icon: "🫧",
+                startColor: .purple,
+                endColor: .purple.opacity(0.6)
+            )
         } else {
             Text("❓")
         }
@@ -55,6 +67,10 @@ struct EventView: View {
             SleepEventDetails(event: sleepEvent)
         } else if let vomitEvent = event as? VomitEvent {
             VomitEventDetails(event: vomitEvent)
+        } else if let breastPumpEvent = event as? BreastPumpEvent {
+            BreastPumpEventDetails(event: breastPumpEvent)
+        } else if let bathingEvent = event as? BathingEvent {
+            BathingEventDetails(event: bathingEvent)
         } else {
             Text("❓")
         }
@@ -134,6 +150,27 @@ private struct DiaperEventDetails: View {
     }
 }
 
+private struct BathingEventDetails: View {
+    let event: BathingEvent
+    
+    var bathingTypeText: String {
+        switch event.type {
+        case .bath:
+            return "Bath 🛁"
+        case .sponge:
+            return "Sponge 🧽"
+        case .shower:
+            return "Shower 🚿"
+        case .mixed:
+            return "Mixed bathing"
+        }
+    }
+    
+    var body: some View {
+        Text("**\(bathingTypeText)** at \(formatDate(for: event))")
+    }
+}
+
 private struct NursingEventDetails: View {
     let event: NursingEvent
     
@@ -199,6 +236,46 @@ private struct VomitEventDetails: View {
     
     var body: some View {
         Text("\(description) at \(formatDate(for: event))")
+    }
+}
+
+private struct BreastPumpEventDetails: View {
+    let event: BreastPumpEvent
+    
+    private var breastText: String {
+        switch event.breast {
+        case .left:
+            return "left breast"
+        case .right:
+            return "right breast"
+        case .both:
+            return "both breasts"
+        }
+    }
+    
+    private var formattedDate: String {
+        event.start.formatted(.dateTime.hour().minute())
+    }
+    
+    private var duration: String {
+        (event.start..<event.end).formatted(
+            .components(
+                style: .narrow,
+                fields: [.hour, .minute]
+            )
+        )
+    }
+
+    private var formattedAmount: String {
+        let amountWithMeasure = Measurement(
+            value: Double(event.amount),
+            unit: UnitVolume.milliliters
+        )
+        return formatMl(amount: amountWithMeasure)
+    }
+    
+    var body: some View {
+        Text("Pumped **\(formattedAmount)** from \(breastText) at \(formattedDate) for **\(duration)**")
     }
 }
 

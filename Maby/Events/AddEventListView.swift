@@ -7,15 +7,19 @@ struct AddEventListView: View {
         List {
             BabyCard()
                 .clearBackground()
-            
             Section("Feeding") {
                 AddEventButton<NursingEvent>(
                     "Add nursing",
                     icon: "🤱",
                     type: .nursing
                 )
+                AddEventButton<BreastPumpEvent>(
+                    "Add breast pumping",
+                    icon: "🥛",
+                    type: .breastPump
+                )
                 AddEventButton<BottleFeedEvent>(
-                    "Add bottle feed",
+                    "Add bottle feeding",
                     icon: "🍼",
                     type: .bottle
                 )
@@ -25,6 +29,11 @@ struct AddEventListView: View {
                     "Add diaper change",
                     icon: "🚼",
                     type: .diaper
+                )
+                AddEventButton<BathingEvent>(
+                    "Add bathing",
+                    icon: "🫧",
+                    type: .bathing
                 )
             }
             Section("Health") {
@@ -171,6 +180,24 @@ private struct AddEventButton<E: Event>: View {
                     .onDisappear {
                         UINotificationFeedbackGenerator().notificationOccurred(.success)
                     }
+            case .breastPump:
+                AddBreastPumpEventView()
+                    .sheetSize(.medium)
+                .onAppear {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
+                .onDisappear {
+                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                }
+            case .bathing:
+                AddBathingEventView()
+                    .sheetSize(.medium)
+                .onAppear {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
+                .onDisappear {
+                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                }
             }
         }
         .onAppear {

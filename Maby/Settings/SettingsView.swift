@@ -50,10 +50,10 @@ struct SettingsView: View {
             }
             
             Section() {
-                Text("Maby \(version)")
+                Text("Joyful \(version)")
                 
                 Text(
-                    "Made with \(Image(systemName: "heart.fill").symbolRenderingMode(.multicolor)) by Fran González"
+                    "Made with \(Image(systemName: "heart.fill").symbolRenderingMode(.multicolor)) by Wesley Scholl"
                 )
             }
             .foregroundColor(.gray)

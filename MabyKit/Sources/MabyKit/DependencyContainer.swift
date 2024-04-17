@@ -1,6 +1,7 @@
 import Factory
 import Foundation
 import Logging
+import CoreData
 
 extension Container {
     // MARK: - Database & data related stuff
