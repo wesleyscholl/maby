@@ -32,6 +32,7 @@
 		C9ED2EDB287C995300BA3228 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = C9ED2EDA287C995300BA3228 /* Factory */; };
 		EB0CCCBE2BCDF9CE009ADE4B /* AddBreastPumpEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCBD2BCDF9CE009ADE4B /* AddBreastPumpEventView.swift */; };
 		EB0CCCC02BD07ABD009ADE4B /* AddBathingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCBF2BD07ABD009ADE4B /* AddBathingView.swift */; };
+		EB0CCCC22BD0845F009ADE4B /* AddActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCC12BD0845F009ADE4B /* AddActivityView.swift */; };
 		EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */ = {isa = PBXBuildFile; fileRef = EB33083D2BC8891F000202C0 /* baby-girl-1.png */; };
 		EB3308462BCAC7F1000202C0 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3308452BCAC7F1000202C0 /* ChartView.swift */; };
 		EB3308492BCAE04C000202C0 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = EB3308482BCAE04C000202C0 /* SwiftUICharts */; };
@@ -91,6 +92,7 @@
 		C9ED2ED2287C971600BA3228 /* MabyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MabyKit; sourceTree = "<group>"; };
 		EB0CCCBD2BCDF9CE009ADE4B /* AddBreastPumpEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBreastPumpEventView.swift; sourceTree = "<group>"; };
 		EB0CCCBF2BD07ABD009ADE4B /* AddBathingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBathingView.swift; sourceTree = "<group>"; };
+		EB0CCCC12BD0845F009ADE4B /* AddActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddActivityView.swift; sourceTree = "<group>"; };
 		EB33083D2BC8891F000202C0 /* baby-girl-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "baby-girl-1.png"; path = "../../Downloads/baby-girl-1.png"; sourceTree = "<group>"; };
 		EB3308452BCAC7F1000202C0 /* ChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChartView.swift; path = ../../../.Trash/ChartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -148,6 +150,7 @@
 				C90F725F2888B0DE005FF2AB /* AddBottleFeedEventView.swift */,
 				EB0CCCBD2BCDF9CE009ADE4B /* AddBreastPumpEventView.swift */,
 				EB0CCCBF2BD07ABD009ADE4B /* AddBathingView.swift */,
+				EB0CCCC12BD0845F009ADE4B /* AddActivityView.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				C969734D2881EF4400156287 /* AddVomitEventView.swift in Sources */,
 				C9B95D14287DAD9C00ADC43F /* ButtonStyles.swift in Sources */,
 				EB3308462BCAC7F1000202C0 /* ChartView.swift in Sources */,
+				EB0CCCC22BD0845F009ADE4B /* AddActivityView.swift in Sources */,
 				C953DD45287F253800F1E1B7 /* AddSleepEventView.swift in Sources */,
 				C9B95D0D287DA6C800ADC43F /* JournalView.swift in Sources */,
 				C9ED2EA9287C745100BA3228 /* ContentView.swift in Sources */,

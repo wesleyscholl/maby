@@ -102,6 +102,40 @@ public class EventService {
         return addBathing(date: Date.now, type: type)
     }
 //    
+    //
+        public func addActivity(
+            start: Date,
+            end: Date,
+            type: ActivityEvent.ActivityType
+        ) -> Result<ActivityEvent, AddError> {
+            if start > end {
+                return .failure(.invalidData)
+            }
+            let event = ActivityEvent(
+                context: database.container.viewContext,
+                start: start,
+                end: end,
+                type: type
+            )
+            return save(event: event)
+        }
+        
+        public func addActivity(
+            duration: Double,
+            type: ActivityEvent.ActivityType
+        ) -> Result<ActivityEvent, AddError> {
+            let end = Date.now
+            let start = Calendar.current.date(
+                byAdding: .minute,
+                value: Int(duration.rounded(.up)) * -1,
+                to: end
+            )!
+            return addActivity(
+                start: start,
+                end: end,
+                type: type)
+        }
+    //
     /// Adds a new nursing event to the database if the provided dates are valid.
     public func addNursing(
         start: Date,

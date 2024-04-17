@@ -42,7 +42,11 @@ struct AddEventListView: View {
                     icon: "😴",
                     type: .sleep
                 )
-                
+                AddEventButton<VomitEvent>(
+                    "Activity",
+                    icon: "🪇",
+                    type: .activity
+                )
                 AddEventButton<VomitEvent>(
                     "Add vomit",
                     icon: "🤢",
@@ -191,6 +195,15 @@ private struct AddEventButton<E: Event>: View {
                 }
             case .bathing:
                 AddBathingEventView()
+                    .sheetSize(.medium)
+                .onAppear {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
+                .onDisappear {
+                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                }
+            case .activity:
+                AddActivityEventView()
                     .sheetSize(.medium)
                 .onAppear {
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()

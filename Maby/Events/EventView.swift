@@ -50,6 +50,12 @@ struct EventView: View {
                 startColor: .purple,
                 endColor: .purple.opacity(0.6)
             )
+         } else if let _ = event as? ActivityEvent {
+            EventIcon(
+                icon: "🪇",
+                startColor: .green,
+                endColor: .green.opacity(0.6)
+            )
         } else {
             Text("❓")
         }
@@ -71,6 +77,8 @@ struct EventView: View {
             BreastPumpEventDetails(event: breastPumpEvent)
         } else if let bathingEvent = event as? BathingEvent {
             BathingEventDetails(event: bathingEvent)
+        } else if let activityEvent = event as? ActivityEvent {
+            ActivityEventDetails(event: activityEvent)
         } else {
             Text("❓")
         }
@@ -168,6 +176,25 @@ private struct BathingEventDetails: View {
     
     var body: some View {
         Text("**\(bathingTypeText)** at \(formatDate(for: event))")
+    }
+}
+
+private struct ActivityEventDetails: View {
+    let event: ActivityEvent
+    
+    var activityTypeText: String {
+        switch event.type {
+        case .tummy:
+            return "Tummy time 🙇🏻‍♀️"
+        case .indoor:
+            return "Indoor play 🧸"
+        case .outdoor:
+            return "Outdoor play 🛝"
+        }
+    }
+    
+    var body: some View {
+        Text("**\(activityTypeText)** at \(formatDate(for: event))")
     }
 }
 
