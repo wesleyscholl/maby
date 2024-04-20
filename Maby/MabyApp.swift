@@ -8,8 +8,9 @@ struct MabyApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistentContainer.viewContext)
+            SplashView()
+//            ContentView()
+//                .environment(\.managedObjectContext, persistentContainer.viewContext)
         }
     }
 }

@@ -14,40 +14,42 @@ struct ContentView: View {
     )
     
     var body: some View {
-        TabView {
-            if !babies.isEmpty {
-                AddEventListView()
-                    .tabItem {
-                        Label("Add event", systemImage: "plus")
-                    }
-                JournalView()
-                    .tabItem {
-                        Label("Journal", systemImage: "book")
-                    }
-                ChartView()
-                    .tabItem {
-                        Label("Chart", systemImage: "chart.bar.xaxis")
-                    }
-                SettingsView()
-                    .tabItem {
-                        Label("Settings", systemImage: "gear")
-                    }
+        NavigationView {
+            TabView {
+                if !babies.isEmpty {
+                    AddEventListView()
+                        .tabItem {
+                            Label("Add event", systemImage: "plus")
+                        }
+                    JournalView()
+                        .tabItem {
+                            Label("Journal", systemImage: "book")
+                        }
+                    ChartView()
+                        .tabItem {
+                            Label("Chart", systemImage: "chart.bar.xaxis")
+                        }
+                    SettingsView()
+                        .tabItem {
+                            Label("Settings", systemImage: "gear")
+                        }
+                }
             }
-        }
-        .sheet(isPresented: $showingAddBaby) {
-            AddBabyView()
-                .interactiveDismissDisabled(true)
-        }
-        .onAppear {
-            showingAddBaby = babies.isEmpty
-        }
-        .onReceive(databaseUpdates) { _ in
-            // Delay showing the sheet to give time for the rest of the sheets to hide.
-            // Removing this results in the sheet not being shown due to the delete one being shown still.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            .sheet(isPresented: $showingAddBaby) {
+                AddBabyView()
+                    .interactiveDismissDisabled(true)
+            }
+            .onAppear {
                 showingAddBaby = babies.isEmpty
             }
-        }
+            .onReceive(databaseUpdates) { _ in
+                // Delay showing the sheet to give time for the rest of the sheets to hide.
+                // Removing this results in the sheet not being shown due to the delete one being shown still.
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    showingAddBaby = babies.isEmpty
+                }
+            }
+        }.navigationBarBackButtonHidden(true)
     }
 }
 
