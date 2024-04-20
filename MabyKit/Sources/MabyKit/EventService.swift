@@ -238,20 +238,20 @@ public class EventService {
     /// Adds a new diaper change event to the database.
     public func addVomit(
         date: Date,
-        quantity: VomitEvent.Quantity
+        type: VomitEvent.VType
     ) -> Result<VomitEvent, AddError> {
         let event = VomitEvent(
             context: database.container.viewContext,
             date: date,
-            quantity: quantity
+            type: type
         )
         
         return save(event: event)
     }
     
     public func addVomit(
-        quantity: VomitEvent.Quantity
+        type: VomitEvent.VType
     ) -> Result<VomitEvent, AddError> {
-        return addVomit(date: Date.now, quantity: quantity)
+        return addVomit(date: Date.now, type: type)
     }
 }

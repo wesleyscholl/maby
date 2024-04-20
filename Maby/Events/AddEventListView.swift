@@ -9,46 +9,46 @@ struct AddEventListView: View {
                 .clearBackground()
             Section("Feeding") {
                 AddEventButton<NursingEvent>(
-                    "Add nursing",
-                    icon: "🤱",
+                    "Add Breast Feeding",
+                    icon: "🤱🏻",
                     type: .nursing
                 )
                 AddEventButton<BreastPumpEvent>(
-                    "Add breast pumping",
+                    "Add Breast Pumping",
                     icon: "🥛",
                     type: .breastPump
                 )
                 AddEventButton<BottleFeedEvent>(
-                    "Add bottle feeding",
+                    "Add Bottle Feeding",
                     icon: "🍼",
                     type: .bottle
                 )
             }
             Section("Hygiene") {
                 AddEventButton<DiaperEvent>(
-                    "Add diaper change",
+                    "Add Diaper Change",
                     icon: "🚼",
                     type: .diaper
                 )
                 AddEventButton<BathingEvent>(
-                    "Add bathing",
-                    icon: "🫧",
+                    "Add a Bath or Shower",
+                    icon: "🛁",
                     type: .bathing
                 )
             }
             Section("Health") {
                 AddEventButton<SleepEvent>(
-                    "Add sleep",
+                    "Add Sleep or a Nap",
                     icon: "😴",
                     type: .sleep
                 )
                 AddEventButton<VomitEvent>(
-                    "Activity",
+                    "Add Activity",
                     icon: "🪇",
                     type: .activity
                 )
                 AddEventButton<VomitEvent>(
-                    "Add vomit",
+                    "Add Vomit, Burping or Spit Up",
                     icon: "🤢",
                     type: .vomit
                 )

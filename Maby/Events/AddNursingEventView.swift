@@ -11,7 +11,7 @@ struct AddNursingEventView: View {
     
     var body: some View {
         AddEventView(
-            "🤱 Nursing",
+            "🤱🏻 Breast Feeding",
             onAdd: {
                 eventService.addNursing(
                     start: startDate,

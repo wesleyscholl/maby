@@ -22,7 +22,7 @@ struct EventView: View {
             )
         } else if let _ = event as? NursingEvent {
             EventIcon(
-                icon: "🤱",
+                icon: "🤱🏻",
                 startColor: .blue,
                 endColor: .blue.opacity(0.5)
             )
@@ -46,7 +46,7 @@ struct EventView: View {
             )
          } else if let _ = event as? BathingEvent {
             EventIcon(
-                icon: "🫧",
+                icon: "🛁",
                 startColor: .purple,
                 endColor: .purple.opacity(0.6)
             )
@@ -154,7 +154,7 @@ private struct DiaperEventDetails: View {
     }
     
     var body: some View {
-        Text("**\(diaperTypeText)** at \(formatDate(for: event))")
+        Text("Changed a **\(diaperTypeText)** at \(formatDate(for: event))")
     }
 }
 
@@ -164,13 +164,13 @@ private struct BathingEventDetails: View {
     var bathingTypeText: String {
         switch event.type {
         case .bath:
-            return "Bath 🛁"
+            return "Took a Bath 🛁"
         case .sponge:
-            return "Sponge 🧽"
+            return "Sponge bath 🧽"
         case .shower:
-            return "Shower 🚿"
-        case .mixed:
-            return "Mixed bathing"
+            return "Showered 🚿"
+        case .sink:
+            return "Bathed in the Sink 💧"
         }
     }
     
@@ -193,8 +193,21 @@ private struct ActivityEventDetails: View {
         }
     }
     
+    private var formattedDate: String {
+        event.start.formatted(.dateTime.hour().minute())
+    }
+    
+    private var duration: String {
+        (event.start..<event.end).formatted(
+            .components(
+                style: .narrow,
+                fields: [.hour, .minute]
+            )
+        )
+    }
+    
     var body: some View {
-        Text("**\(activityTypeText)** at \(formatDate(for: event))")
+        Text("**\(activityTypeText)** at \(formatDate(for: event))  for **\(duration)**")
     }
 }
 
@@ -249,18 +262,16 @@ private struct SleepEventDetails: View {
 
 private struct VomitEventDetails: View {
     let event: VomitEvent
-    
     private var description: AttributedString {
-        switch event.quantity {
-        case .little:
-            return try! AttributedString(markdown: "A **bit** of vomit")
-        case .medium:
-            return try! AttributedString(markdown: "**Vomit**")
-        case .big:
-            return try! AttributedString(markdown: "A **lot** of vomit")
+        switch event.type {
+        case .vomit:
+            return try! AttributedString(markdown: "Cleaned **vomit** 🤮")
+        case .burping:
+            return try! AttributedString(markdown: "**Burping** 🫧")
+        case .spitup:
+            return try! AttributedString(markdown: "Cleaned **spit up** 💦")
         }
     }
-    
     var body: some View {
         Text("\(description) at \(formatDate(for: event))")
     }
@@ -341,7 +352,7 @@ struct EventView_Previews: PreviewProvider {
         EventView(event: VomitEvent(
             context: Container.previewContainer().viewContext,
             date: Date.now,
-            quantity: .medium
+            type: .spitup
         ))
         .previewDisplayName("Vomit event")
     }

@@ -10,20 +10,20 @@ struct AddBathingEventView: View {
     
     var body: some View {
         AddEventView(
-            "🫧 Bathing",
+            "🛁 Bath or Shower",
             onAdd: {
                 eventService.addBathing(date: date, type: bathingType)
             }
         ) {
-            Section() {
+            Section("Time") {
                 DatePicker("Date", selection: $date)
             }
-            Section {
+            Section("Type") {
                 Picker("Bathing type", selection: $bathingType) {
                     Text("Bath").tag(BathingEvent.BathingType.bath)
                     Text("Sponge").tag(BathingEvent.BathingType.sponge)
                     Text("Shower").tag(BathingEvent.BathingType.shower)
-                    Text("Mixed").tag(BathingEvent.BathingType.mixed)
+                    Text("Sink").tag(BathingEvent.BathingType.sink)
                 }
                 .pickerStyle(.segmented)
             }

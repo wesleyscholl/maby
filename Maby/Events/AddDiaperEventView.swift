@@ -10,14 +10,15 @@ struct AddDiaperEventView: View {
     
     var body: some View {
         AddEventView(
-            "🚼 Diaper change",
+            "🚼 Diaper Change",
             onAdd: {
                 eventService.addDiaperChange(date: date, type: diaperType)
             }
         ) {
-            Section() {
+            Section("Time") {
                 DatePicker("Date", selection: $date)
-                
+            }
+            Section("Type") {
                 Picker("Diaper type", selection: $diaperType) {
                     Text("Wet").tag(DiaperEvent.DiaperType.wet)
                     Text("Dirty").tag(DiaperEvent.DiaperType.dirty)

@@ -29,7 +29,7 @@ struct AddActivityEventView: View {
                     in: startDate...Date.distantFuture
                 )
             }
-            Section {
+            Section("Type") {
                 Picker("Activity type", selection: $activityType) {
                     Text("Tummy Time").tag(ActivityEvent.ActivityType.tummy)
                     Text("Indoor Play").tag(ActivityEvent.ActivityType.indoor)

@@ -3,7 +3,7 @@ import Foundation
 
 public final class BathingEvent: Event {
     @objc public enum BathingType: Int32, CaseIterable {
-        case bath, sponge, shower, mixed
+        case bath, sponge, shower, sink
     }
     
     @NSManaged public var type: BathingType

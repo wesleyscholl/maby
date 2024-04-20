@@ -10,7 +10,7 @@ struct AddBottleFeedEventView: View {
     
     var body: some View {
         AddEventView(
-            "🍼 Bottle feed",
+            "🍼 Bottle Feeding",
             onAdd: {
                 eventService.addBottle(date: date, amount: quantity)
             }
