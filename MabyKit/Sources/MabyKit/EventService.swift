@@ -187,7 +187,6 @@ public class EventService {
             breast: breast,
             amount: amount
         )
-        print(start, end, breast, amount)
         return save(event: event)
     }
 
@@ -202,7 +201,6 @@ public class EventService {
             value: Int(duration.rounded(.up)) * -1,
             to: end
         )!
-        print(start, end, breast, amount)
         return addBreastPump(start: start, end: end, breast: breast, amount: amount)
     }
     

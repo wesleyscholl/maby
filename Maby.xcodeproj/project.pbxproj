@@ -33,8 +33,8 @@
 		EB0CCCBE2BCDF9CE009ADE4B /* AddBreastPumpEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCBD2BCDF9CE009ADE4B /* AddBreastPumpEventView.swift */; };
 		EB0CCCC02BD07ABD009ADE4B /* AddBathingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCBF2BD07ABD009ADE4B /* AddBathingView.swift */; };
 		EB0CCCC22BD0845F009ADE4B /* AddActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCC12BD0845F009ADE4B /* AddActivityView.swift */; };
+		EB0CCCC52BD3720E009ADE4B /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCC42BD3720E009ADE4B /* ChartView.swift */; };
 		EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */ = {isa = PBXBuildFile; fileRef = EB33083D2BC8891F000202C0 /* baby-girl-1.png */; };
-		EB3308462BCAC7F1000202C0 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3308452BCAC7F1000202C0 /* ChartView.swift */; };
 		EB3308492BCAE04C000202C0 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = EB3308482BCAE04C000202C0 /* SwiftUICharts */; };
 /* End PBXBuildFile section */
 
@@ -93,8 +93,8 @@
 		EB0CCCBD2BCDF9CE009ADE4B /* AddBreastPumpEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBreastPumpEventView.swift; sourceTree = "<group>"; };
 		EB0CCCBF2BD07ABD009ADE4B /* AddBathingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBathingView.swift; sourceTree = "<group>"; };
 		EB0CCCC12BD0845F009ADE4B /* AddActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddActivityView.swift; sourceTree = "<group>"; };
+		EB0CCCC42BD3720E009ADE4B /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		EB33083D2BC8891F000202C0 /* baby-girl-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "baby-girl-1.png"; path = "../../Downloads/baby-girl-1.png"; sourceTree = "<group>"; };
-		EB3308452BCAC7F1000202C0 /* ChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChartView.swift; path = ../../../.Trash/ChartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +216,7 @@
 		C9ED2EA0287C745100BA3228 /* Maby */ = {
 			isa = PBXGroup;
 			children = (
+				EB0CCCC32BD371F9009ADE4B /* Chart */,
 				EB33083D2BC8891F000202C0 /* baby-girl-1.png */,
 				C91DF4B02884D6110014F602 /* Info.plist */,
 				C90F725628883B10005FF2AB /* Settings */,
@@ -225,7 +226,6 @@
 				C9B95D15287DF50D00ADC43F /* BabyCard.swift */,
 				C9ED2EA1287C745100BA3228 /* MabyApp.swift */,
 				C9ED2EA8287C745100BA3228 /* ContentView.swift */,
-				EB3308402BCAC763000202C0 /* Chart */,
 				C9ED2EAA287C745300BA3228 /* Assets.xcassets */,
 				C9ED2EAC287C745300BA3228 /* Maby.entitlements */,
 				C9ED2EAD287C745300BA3228 /* Preview Content */,
@@ -248,10 +248,10 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		EB3308402BCAC763000202C0 /* Chart */ = {
+		EB0CCCC32BD371F9009ADE4B /* Chart */ = {
 			isa = PBXGroup;
 			children = (
-				EB3308452BCAC7F1000202C0 /* ChartView.swift */,
+				EB0CCCC42BD3720E009ADE4B /* ChartView.swift */,
 			);
 			path = Chart;
 			sourceTree = "<group>";
@@ -343,6 +343,7 @@
 				C9B95D16287DF50D00ADC43F /* BabyCard.swift in Sources */,
 				C9D2C0832880D1DC00F85D8F /* EventView.swift in Sources */,
 				C9ED2EA2287C745100BA3228 /* MabyApp.swift in Sources */,
+				EB0CCCC52BD3720E009ADE4B /* ChartView.swift in Sources */,
 				C969734B2881B0FA00156287 /* AddEventView.swift in Sources */,
 				C90F725C28884379005FF2AB /* BabyDetailsFormView.swift in Sources */,
 				C953DD41287F011B00F1E1B7 /* AddDiaperEventView.swift in Sources */,
@@ -355,7 +356,6 @@
 				C90F72602888B0DE005FF2AB /* AddBottleFeedEventView.swift in Sources */,
 				C969734D2881EF4400156287 /* AddVomitEventView.swift in Sources */,
 				C9B95D14287DAD9C00ADC43F /* ButtonStyles.swift in Sources */,
-				EB3308462BCAC7F1000202C0 /* ChartView.swift in Sources */,
 				EB0CCCC22BD0845F009ADE4B /* AddActivityView.swift in Sources */,
 				C953DD45287F253800F1E1B7 /* AddSleepEventView.swift in Sources */,
 				C9B95D0D287DA6C800ADC43F /* JournalView.swift in Sources */,
