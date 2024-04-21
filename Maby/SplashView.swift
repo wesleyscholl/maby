@@ -23,7 +23,7 @@ struct SplashView: View {
     var body: some View {
         NavigationStack {
         ZStack {
-            LinearGradient(gradient: Gradient(colors: [lightpink, Color("white")]), startPoint: gradientStart, endPoint: gradientEnd)
+            LinearGradient(gradient: Gradient(colors: [lightpink, .white]), startPoint: gradientStart, endPoint: gradientEnd)
                 .edgesIgnoringSafeArea(.all)
                 .onAppear {
                     withAnimation(Animation.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
@@ -35,6 +35,7 @@ struct SplashView: View {
              Image("lilyan")
             .resizable()
             .scaledToFit()
+            .cornerRadius(15)
             .frame(width: 200, height: 200)
             .scaleEffect(imageScale)
             .rotation3DEffect(.degrees(imageRotation), axis: (x: 0, y: 1, z: 0))
@@ -60,6 +61,8 @@ struct SplashView: View {
         HStack {
     Text("Joy")
         .font(.largeTitle)
+        .foregroundColor(.black)
+        .opacity(75)
         .padding(0)
         .fontWeight(.medium)
         .offset(x: textOffset)
@@ -70,6 +73,8 @@ struct SplashView: View {
         }
                 Text("ful")
                     .font(.largeTitle)
+                    .foregroundColor(.black)
+                    .opacity(75)
                     .padding(0)
                     .fontWeight(.medium)
                     .offset(x: textOffset2)

@@ -33,6 +33,10 @@ struct ContentView: View {
                         .tabItem {
                             Label("Settings", systemImage: "gear")
                         }
+                    TestView()
+                        .tabItem {
+                            Label("Test", systemImage: "figure.child.circle.fill")
+                        }
                 }
             }
             .sheet(isPresented: $showingAddBaby) {

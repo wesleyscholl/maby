@@ -36,6 +36,10 @@
 		EB0CCCC52BD3720E009ADE4B /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCC42BD3720E009ADE4B /* ChartView.swift */; };
 		EB0CCCC72BD41976009ADE4B /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCC62BD41976009ADE4B /* SplashView.swift */; };
 		EB0CCCC92BD41B95009ADE4B /* lilyan.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EB0CCCC82BD41B95009ADE4B /* lilyan.jpg */; };
+		EB0CCCCC2BD41F2C009ADE4B /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCCB2BD41F2C009ADE4B /* TestView.swift */; };
+		EB0CCCCF2BD46498009ADE4B /* ScalingHeaderScrollView in Frameworks */ = {isa = PBXBuildFile; productRef = EB0CCCCE2BD46498009ADE4B /* ScalingHeaderScrollView */; };
+		EB0CCCD12BD522C9009ADE4B /* ProfileScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCD02BD522C9009ADE4B /* ProfileScreenViewModel.swift */; };
+		EB0CCCD32BD52783009ADE4B /* BankingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCD22BD52783009ADE4B /* BankingService.swift */; };
 		EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */ = {isa = PBXBuildFile; fileRef = EB33083D2BC8891F000202C0 /* baby-girl-1.png */; };
 		EB3308492BCAE04C000202C0 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = EB3308482BCAE04C000202C0 /* SwiftUICharts */; };
 /* End PBXBuildFile section */
@@ -98,6 +102,9 @@
 		EB0CCCC42BD3720E009ADE4B /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		EB0CCCC62BD41976009ADE4B /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EB0CCCC82BD41B95009ADE4B /* lilyan.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = lilyan.jpg; path = ../../Documents/lilyan.jpg; sourceTree = "<group>"; };
+		EB0CCCCB2BD41F2C009ADE4B /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		EB0CCCD02BD522C9009ADE4B /* ProfileScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenViewModel.swift; sourceTree = "<group>"; };
+		EB0CCCD22BD52783009ADE4B /* BankingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankingService.swift; sourceTree = "<group>"; };
 		EB33083D2BC8891F000202C0 /* baby-girl-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "baby-girl-1.png"; path = "../../Downloads/baby-girl-1.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -109,6 +116,7 @@
 				EB3308492BCAE04C000202C0 /* SwiftUICharts in Frameworks */,
 				C9ED2ED5287C98C000BA3228 /* MabyKit in Frameworks */,
 				C9ED2EDB287C995300BA3228 /* Factory in Frameworks */,
+				EB0CCCCF2BD46498009ADE4B /* ScalingHeaderScrollView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +238,7 @@
 				C953DD39287E0B3E00F1E1B7 /* Events */,
 				C9B95D0B287DA6BF00ADC43F /* Journal */,
 				C9ED2EAD287C745300BA3228 /* Preview Content */,
+				EB0CCCCA2BD41F09009ADE4B /* Test */,
 				C9B95D07287CA01800ADC43F /* Common */,
 				C9B95D15287DF50D00ADC43F /* BabyCard.swift */,
 				C9ED2EA1287C745100BA3228 /* MabyApp.swift */,
@@ -262,6 +271,16 @@
 			path = Chart;
 			sourceTree = "<group>";
 		};
+		EB0CCCCA2BD41F09009ADE4B /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				EB0CCCCB2BD41F2C009ADE4B /* TestView.swift */,
+				EB0CCCD02BD522C9009ADE4B /* ProfileScreenViewModel.swift */,
+				EB0CCCD22BD52783009ADE4B /* BankingService.swift */,
+			);
+			path = Test;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -283,6 +302,7 @@
 				C9ED2ED4287C98C000BA3228 /* MabyKit */,
 				C9ED2EDA287C995300BA3228 /* Factory */,
 				EB3308482BCAE04C000202C0 /* SwiftUICharts */,
+				EB0CCCCE2BD46498009ADE4B /* ScalingHeaderScrollView */,
 			);
 			productName = Maby;
 			productReference = C9ED2E9E287C745100BA3228 /* Joyful.app */;
@@ -315,6 +335,7 @@
 			packageReferences = (
 				C9ED2ED9287C995300BA3228 /* XCRemoteSwiftPackageReference "Factory" */,
 				EB3308472BCAE04C000202C0 /* XCRemoteSwiftPackageReference "ChartView" */,
+				EB0CCCCD2BD46498009ADE4B /* XCRemoteSwiftPackageReference "ScalingHeaderScrollView" */,
 			);
 			productRefGroup = C9ED2E9F287C745100BA3228 /* Products */;
 			projectDirPath = "";
@@ -351,6 +372,7 @@
 				C9D2C0832880D1DC00F85D8F /* EventView.swift in Sources */,
 				C9ED2EA2287C745100BA3228 /* MabyApp.swift in Sources */,
 				EB0CCCC52BD3720E009ADE4B /* ChartView.swift in Sources */,
+				EB0CCCD32BD52783009ADE4B /* BankingService.swift in Sources */,
 				C969734B2881B0FA00156287 /* AddEventView.swift in Sources */,
 				C90F725C28884379005FF2AB /* BabyDetailsFormView.swift in Sources */,
 				C953DD41287F011B00F1E1B7 /* AddDiaperEventView.swift in Sources */,
@@ -360,12 +382,14 @@
 				C90F725E28884DD6005FF2AB /* RemoveBabyView.swift in Sources */,
 				EB0CCCC02BD07ABD009ADE4B /* AddBathingView.swift in Sources */,
 				C90F725A2888432A005FF2AB /* EditBabyDetailsView.swift in Sources */,
+				EB0CCCD12BD522C9009ADE4B /* ProfileScreenViewModel.swift in Sources */,
 				C9B95D09287CA02400ADC43F /* View+Extensions.swift in Sources */,
 				C90F72602888B0DE005FF2AB /* AddBottleFeedEventView.swift in Sources */,
 				C969734D2881EF4400156287 /* AddVomitEventView.swift in Sources */,
 				C9B95D14287DAD9C00ADC43F /* ButtonStyles.swift in Sources */,
 				EB0CCCC22BD0845F009ADE4B /* AddActivityView.swift in Sources */,
 				C953DD45287F253800F1E1B7 /* AddSleepEventView.swift in Sources */,
+				EB0CCCCC2BD41F2C009ADE4B /* TestView.swift in Sources */,
 				C9B95D0D287DA6C800ADC43F /* JournalView.swift in Sources */,
 				C9ED2EA9287C745100BA3228 /* ContentView.swift in Sources */,
 			);
@@ -587,6 +611,14 @@
 				minimumVersion = 1.2.4;
 			};
 		};
+		EB0CCCCD2BD46498009ADE4B /* XCRemoteSwiftPackageReference "ScalingHeaderScrollView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/ScalingHeaderScrollView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.2;
+			};
+		};
 		EB3308472BCAE04C000202C0 /* XCRemoteSwiftPackageReference "ChartView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AppPear/ChartView";
@@ -606,6 +638,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C9ED2ED9287C995300BA3228 /* XCRemoteSwiftPackageReference "Factory" */;
 			productName = Factory;
+		};
+		EB0CCCCE2BD46498009ADE4B /* ScalingHeaderScrollView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB0CCCCD2BD46498009ADE4B /* XCRemoteSwiftPackageReference "ScalingHeaderScrollView" */;
+			productName = ScalingHeaderScrollView;
 		};
 		EB3308482BCAE04C000202C0 /* SwiftUICharts */ = {
 			isa = XCSwiftPackageProductDependency;
