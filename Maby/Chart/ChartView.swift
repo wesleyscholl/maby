@@ -140,7 +140,24 @@ struct CustomBarChartView: View {
                 .onDisappear {
                     self.animate = false
                 }
-            Text(data[index].0.replacingOccurrences(of: "Event", with: "").replacingOccurrences(of: "BottleFeed", with: "Bottle Feeding").replacingOccurrences(of: "Diaper", with: "Diaper Changes").replacingOccurrences(of: "Nursing", with: "Breast Feeding").replacingOccurrences(of: "Sleep", with: "Sleep / Naps").replacingOccurrences(of: "Vomit", with: "Vomit / Burping").replacingOccurrences(of: "BreastPump", with: "Breast Pumping").replacingOccurrences(of: "Bathing", with: "Bath / Shower").replacingOccurrences(of: "Activity", with: "Activities / Play")).font(.caption).multilineTextAlignment(.center)
+            let words = data[index].0.replacingOccurrences(of: "Event", with: "")
+                .replacingOccurrences(of: "BottleFeed", with: "Bottle Feedings")
+                .replacingOccurrences(of: "Diaper", with: "Diaper Changes")
+                .replacingOccurrences(of: "Nursing", with: "Breast Feedings")
+                .replacingOccurrences(of: "Sleep", with: "Sleep &Naps")
+                .replacingOccurrences(of: "Vomit", with: "Vomit &Burping")
+                .replacingOccurrences(of: "BreastPump", with: "Breast Pumping")
+                .replacingOccurrences(of: "Bathing", with: "Bath &Showers")
+                .replacingOccurrences(of: "Activity", with: "Activities &Play")
+                .split(separator: " ")
+
+            VStack {
+                ForEach(words, id: \.self) { word in
+                    Text(String(word).replacingOccurrences(of: "&Naps", with: "& Naps").replacingOccurrences(of: "&Burping", with: "& Burping").replacingOccurrences(of: "&Showers", with: "& Showers").replacingOccurrences(of: "&Play", with: "& Play"))
+                        .font(.caption)
+                        .multilineTextAlignment(.center)
+                }
+            }
         }
     }
 }
