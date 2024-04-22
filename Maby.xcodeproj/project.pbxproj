@@ -40,6 +40,7 @@
 		EB0CCCCF2BD46498009ADE4B /* ScalingHeaderScrollView in Frameworks */ = {isa = PBXBuildFile; productRef = EB0CCCCE2BD46498009ADE4B /* ScalingHeaderScrollView */; };
 		EB0CCCD12BD522C9009ADE4B /* ProfileScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCD02BD522C9009ADE4B /* ProfileScreenViewModel.swift */; };
 		EB0CCCD32BD52783009ADE4B /* BankingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCD22BD52783009ADE4B /* BankingService.swift */; };
+		EB0CCCD62BD5E1CE009ADE4B /* ScrollKit in Frameworks */ = {isa = PBXBuildFile; productRef = EB0CCCD52BD5E1CE009ADE4B /* ScrollKit */; };
 		EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */ = {isa = PBXBuildFile; fileRef = EB33083D2BC8891F000202C0 /* baby-girl-1.png */; };
 		EB3308492BCAE04C000202C0 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = EB3308482BCAE04C000202C0 /* SwiftUICharts */; };
 /* End PBXBuildFile section */
@@ -117,6 +118,7 @@
 				C9ED2ED5287C98C000BA3228 /* MabyKit in Frameworks */,
 				C9ED2EDB287C995300BA3228 /* Factory in Frameworks */,
 				EB0CCCCF2BD46498009ADE4B /* ScalingHeaderScrollView in Frameworks */,
+				EB0CCCD62BD5E1CE009ADE4B /* ScrollKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +305,7 @@
 				C9ED2EDA287C995300BA3228 /* Factory */,
 				EB3308482BCAE04C000202C0 /* SwiftUICharts */,
 				EB0CCCCE2BD46498009ADE4B /* ScalingHeaderScrollView */,
+				EB0CCCD52BD5E1CE009ADE4B /* ScrollKit */,
 			);
 			productName = Maby;
 			productReference = C9ED2E9E287C745100BA3228 /* Joyful.app */;
@@ -336,6 +339,7 @@
 				C9ED2ED9287C995300BA3228 /* XCRemoteSwiftPackageReference "Factory" */,
 				EB3308472BCAE04C000202C0 /* XCRemoteSwiftPackageReference "ChartView" */,
 				EB0CCCCD2BD46498009ADE4B /* XCRemoteSwiftPackageReference "ScalingHeaderScrollView" */,
+				EB0CCCD42BD5E1CE009ADE4B /* XCRemoteSwiftPackageReference "ScrollKit" */,
 			);
 			productRefGroup = C9ED2E9F287C745100BA3228 /* Products */;
 			projectDirPath = "";
@@ -619,6 +623,14 @@
 				minimumVersion = 1.1.2;
 			};
 		};
+		EB0CCCD42BD5E1CE009ADE4B /* XCRemoteSwiftPackageReference "ScrollKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielsaidi/ScrollKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.0;
+			};
+		};
 		EB3308472BCAE04C000202C0 /* XCRemoteSwiftPackageReference "ChartView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AppPear/ChartView";
@@ -643,6 +655,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EB0CCCCD2BD46498009ADE4B /* XCRemoteSwiftPackageReference "ScalingHeaderScrollView" */;
 			productName = ScalingHeaderScrollView;
+		};
+		EB0CCCD52BD5E1CE009ADE4B /* ScrollKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB0CCCD42BD5E1CE009ADE4B /* XCRemoteSwiftPackageReference "ScrollKit" */;
+			productName = ScrollKit;
 		};
 		EB3308482BCAE04C000202C0 /* SwiftUICharts */ = {
 			isa = XCSwiftPackageProductDependency;
