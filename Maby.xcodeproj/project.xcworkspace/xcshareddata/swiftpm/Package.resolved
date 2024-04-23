@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "aespa",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/enebin/Aespa.git",
+      "state" : {
+        "revision" : "e50a92db8a070995db7000500b045dab1a5e8f3f",
+        "version" : "0.5.1"
+      }
+    },
+    {
       "identity" : "chartview",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/AppPear/ChartView",
@@ -19,21 +28,21 @@
       }
     },
     {
+      "identity" : "floatingbutton",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/exyte/FloatingButton.git",
+      "state" : {
+        "revision" : "cf77c2f124df1423d90a9a1985e9b9ccfa4b9b3e",
+        "version" : "1.3.0"
+      }
+    },
+    {
       "identity" : "scalingheaderscrollview",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/exyte/ScalingHeaderScrollView.git",
       "state" : {
         "revision" : "d54abfec69d88ecdb6e2142612dd5780f6c47e37",
         "version" : "1.1.2"
-      }
-    },
-    {
-      "identity" : "scrollkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/danielsaidi/ScrollKit.git",
-      "state" : {
-        "revision" : "7c9530ceda4c9717679d7a483d77753eeb5acccf",
-        "version" : "0.5.0"
       }
     },
     {

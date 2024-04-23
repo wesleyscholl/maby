@@ -5,6 +5,7 @@ import SwiftUI
 struct AddBabyView: View {
     @Injected(Container.babyService) private var babyService
     
+    @Environment(\.colorScheme) var colorScheme
     @State private var name = ""
     @State private var gender = Baby.Gender.boy
     @State private var birthday = Date.now
@@ -26,7 +27,7 @@ struct AddBabyView: View {
         ) {
             Button(action: onAdd) {
                 Text("Add baby")
-            }
+            }.shadow(color: .gray.opacity(0.5), radius: 0.5, x: 0.5, y: 0.5)
         }
     }
 }

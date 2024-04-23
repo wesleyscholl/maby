@@ -42,6 +42,12 @@ struct BabyDetailsFormView<Confirm: View>: View {
                             .scaledToFit()
                             .frame(maxWidth: .infinity)
                             .frame(height: 80)
+                    } else if gender == .other {
+                        Image("baby-g")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 80)
                     }
                 Text(title)
                     .font(.largeTitle)

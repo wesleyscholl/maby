@@ -41,6 +41,20 @@
 		EB0CCCD12BD522C9009ADE4B /* ProfileScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCD02BD522C9009ADE4B /* ProfileScreenViewModel.swift */; };
 		EB0CCCD32BD52783009ADE4B /* BankingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCD22BD52783009ADE4B /* BankingService.swift */; };
 		EB0CCCD62BD5E1CE009ADE4B /* ScrollKit in Frameworks */ = {isa = PBXBuildFile; productRef = EB0CCCD52BD5E1CE009ADE4B /* ScrollKit */; };
+		EB0CCCF62BD67525009ADE4B /* ScrollKit in Resources */ = {isa = PBXBuildFile; fileRef = EB0CCCF52BD67525009ADE4B /* ScrollKit */; };
+		EB0CCCFB2BD69822009ADE4B /* FloatingButton in Frameworks */ = {isa = PBXBuildFile; productRef = EB0CCCFA2BD69822009ADE4B /* FloatingButton */; };
+		EB0CCCFD2BD73391009ADE4B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCFC2BD73390009ADE4B /* HomeView.swift */; };
+		EB0CCD002BD733EA009ADE4B /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCFF2BD733EA009ADE4B /* PhotoView.swift */; };
+		EB0CCD022BD7345E009ADE4B /* VideoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD012BD7345E009ADE4B /* VideoContentView.swift */; };
+		EB0CCD052BD73488009ADE4B /* Aespa in Frameworks */ = {isa = PBXBuildFile; productRef = EB0CCD042BD73488009ADE4B /* Aespa */; };
+		EB0CCD072BD734BA009ADE4B /* VideoContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD062BD734BA009ADE4B /* VideoContentViewModel.swift */; };
+		EB0CCD092BD734F5009ADE4B /* PhotoPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD082BD734F5009ADE4B /* PhotoPickerView.swift */; };
+		EB0CCD0B2BD7352F009ADE4B /* ParentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD0A2BD7352F009ADE4B /* ParentView.swift */; };
+		EB0CCD0D2BD735E3009ADE4B /* MyVal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD0C2BD735E3009ADE4B /* MyVal.swift */; };
+		EB0CCD0F2BD73639009ADE4B /* WheelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD0E2BD73639009ADE4B /* WheelView.swift */; };
+		EB0CCD112BD737EF009ADE4B /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD102BD737EF009ADE4B /* Direction.swift */; };
+		EB0CCD132BD73856009ADE4B /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD122BD73856009ADE4B /* SettingView.swift */; };
+		EB0CCD152BD73877009ADE4B /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD142BD73877009ADE4B /* GalleryView.swift */; };
 		EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */ = {isa = PBXBuildFile; fileRef = EB33083D2BC8891F000202C0 /* baby-girl-1.png */; };
 		EB3308492BCAE04C000202C0 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = EB3308482BCAE04C000202C0 /* SwiftUICharts */; };
 /* End PBXBuildFile section */
@@ -106,6 +120,18 @@
 		EB0CCCCB2BD41F2C009ADE4B /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		EB0CCCD02BD522C9009ADE4B /* ProfileScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenViewModel.swift; sourceTree = "<group>"; };
 		EB0CCCD22BD52783009ADE4B /* BankingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankingService.swift; sourceTree = "<group>"; };
+		EB0CCCF52BD67525009ADE4B /* ScrollKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ScrollKit; path = ../../ScrollKit; sourceTree = "<group>"; };
+		EB0CCCFC2BD73390009ADE4B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		EB0CCCFF2BD733EA009ADE4B /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
+		EB0CCD012BD7345E009ADE4B /* VideoContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoContentView.swift; sourceTree = "<group>"; };
+		EB0CCD062BD734BA009ADE4B /* VideoContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoContentViewModel.swift; sourceTree = "<group>"; };
+		EB0CCD082BD734F5009ADE4B /* PhotoPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPickerView.swift; sourceTree = "<group>"; };
+		EB0CCD0A2BD7352F009ADE4B /* ParentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentView.swift; sourceTree = "<group>"; };
+		EB0CCD0C2BD735E3009ADE4B /* MyVal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVal.swift; sourceTree = "<group>"; };
+		EB0CCD0E2BD73639009ADE4B /* WheelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WheelView.swift; sourceTree = "<group>"; };
+		EB0CCD102BD737EF009ADE4B /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
+		EB0CCD122BD73856009ADE4B /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		EB0CCD142BD73877009ADE4B /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
 		EB33083D2BC8891F000202C0 /* baby-girl-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "baby-girl-1.png"; path = "../../Downloads/baby-girl-1.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,11 +140,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB0CCCFB2BD69822009ADE4B /* FloatingButton in Frameworks */,
 				EB3308492BCAE04C000202C0 /* SwiftUICharts in Frameworks */,
 				C9ED2ED5287C98C000BA3228 /* MabyKit in Frameworks */,
 				C9ED2EDB287C995300BA3228 /* Factory in Frameworks */,
 				EB0CCCCF2BD46498009ADE4B /* ScalingHeaderScrollView in Frameworks */,
 				EB0CCCD62BD5E1CE009ADE4B /* ScrollKit in Frameworks */,
+				EB0CCD052BD73488009ADE4B /* Aespa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +258,7 @@
 		C9ED2EA0287C745100BA3228 /* Maby */ = {
 			isa = PBXGroup;
 			children = (
+				EB0CCCF52BD67525009ADE4B /* ScrollKit */,
 				EB0CCCC82BD41B95009ADE4B /* lilyan.jpg */,
 				EB33083D2BC8891F000202C0 /* baby-girl-1.png */,
 				C91DF4B02884D6110014F602 /* Info.plist */,
@@ -246,6 +275,7 @@
 				C9ED2EA1287C745100BA3228 /* MabyApp.swift */,
 				C9ED2EA8287C745100BA3228 /* ContentView.swift */,
 				EB0CCCC62BD41976009ADE4B /* SplashView.swift */,
+				EB0CCCFE2BD733C3009ADE4B /* Moments */,
 			);
 			path = Maby;
 			sourceTree = "<group>";
@@ -283,6 +313,24 @@
 			path = Test;
 			sourceTree = "<group>";
 		};
+		EB0CCCFE2BD733C3009ADE4B /* Moments */ = {
+			isa = PBXGroup;
+			children = (
+				EB0CCCFC2BD73390009ADE4B /* HomeView.swift */,
+				EB0CCCFF2BD733EA009ADE4B /* PhotoView.swift */,
+				EB0CCD012BD7345E009ADE4B /* VideoContentView.swift */,
+				EB0CCD062BD734BA009ADE4B /* VideoContentViewModel.swift */,
+				EB0CCD082BD734F5009ADE4B /* PhotoPickerView.swift */,
+				EB0CCD0A2BD7352F009ADE4B /* ParentView.swift */,
+				EB0CCD0C2BD735E3009ADE4B /* MyVal.swift */,
+				EB0CCD0E2BD73639009ADE4B /* WheelView.swift */,
+				EB0CCD102BD737EF009ADE4B /* Direction.swift */,
+				EB0CCD122BD73856009ADE4B /* SettingView.swift */,
+				EB0CCD142BD73877009ADE4B /* GalleryView.swift */,
+			);
+			path = Moments;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -306,6 +354,8 @@
 				EB3308482BCAE04C000202C0 /* SwiftUICharts */,
 				EB0CCCCE2BD46498009ADE4B /* ScalingHeaderScrollView */,
 				EB0CCCD52BD5E1CE009ADE4B /* ScrollKit */,
+				EB0CCCFA2BD69822009ADE4B /* FloatingButton */,
+				EB0CCD042BD73488009ADE4B /* Aespa */,
 			);
 			productName = Maby;
 			productReference = C9ED2E9E287C745100BA3228 /* Joyful.app */;
@@ -340,6 +390,8 @@
 				EB3308472BCAE04C000202C0 /* XCRemoteSwiftPackageReference "ChartView" */,
 				EB0CCCCD2BD46498009ADE4B /* XCRemoteSwiftPackageReference "ScalingHeaderScrollView" */,
 				EB0CCCD42BD5E1CE009ADE4B /* XCRemoteSwiftPackageReference "ScrollKit" */,
+				EB0CCCF92BD69822009ADE4B /* XCRemoteSwiftPackageReference "FloatingButton" */,
+				EB0CCD032BD73488009ADE4B /* XCRemoteSwiftPackageReference "Aespa" */,
 			);
 			productRefGroup = C9ED2E9F287C745100BA3228 /* Products */;
 			projectDirPath = "";
@@ -359,6 +411,7 @@
 				C9ED2EAF287C745300BA3228 /* Preview Assets.xcassets in Resources */,
 				EB0CCCC92BD41B95009ADE4B /* lilyan.jpg in Resources */,
 				C9ED2EAB287C745300BA3228 /* Assets.xcassets in Resources */,
+				EB0CCCF62BD67525009ADE4B /* ScrollKit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,18 +426,26 @@
 				C953DD43287F206400F1E1B7 /* AddNursingEventView.swift in Sources */,
 				C9B95D12287DA9D000ADC43F /* AddBabyView.swift in Sources */,
 				C9B95D16287DF50D00ADC43F /* BabyCard.swift in Sources */,
+				EB0CCD132BD73856009ADE4B /* SettingView.swift in Sources */,
+				EB0CCD072BD734BA009ADE4B /* VideoContentViewModel.swift in Sources */,
+				EB0CCD022BD7345E009ADE4B /* VideoContentView.swift in Sources */,
 				C9D2C0832880D1DC00F85D8F /* EventView.swift in Sources */,
+				EB0CCD0F2BD73639009ADE4B /* WheelView.swift in Sources */,
 				C9ED2EA2287C745100BA3228 /* MabyApp.swift in Sources */,
 				EB0CCCC52BD3720E009ADE4B /* ChartView.swift in Sources */,
+				EB0CCCFD2BD73391009ADE4B /* HomeView.swift in Sources */,
 				EB0CCCD32BD52783009ADE4B /* BankingService.swift in Sources */,
 				C969734B2881B0FA00156287 /* AddEventView.swift in Sources */,
 				C90F725C28884379005FF2AB /* BabyDetailsFormView.swift in Sources */,
 				C953DD41287F011B00F1E1B7 /* AddDiaperEventView.swift in Sources */,
 				EB0CCCC72BD41976009ADE4B /* SplashView.swift in Sources */,
+				EB0CCD0D2BD735E3009ADE4B /* MyVal.swift in Sources */,
 				C953DD3D287E0C0700F1E1B7 /* AddEventListView.swift in Sources */,
 				EB0CCCBE2BCDF9CE009ADE4B /* AddBreastPumpEventView.swift in Sources */,
 				C90F725E28884DD6005FF2AB /* RemoveBabyView.swift in Sources */,
 				EB0CCCC02BD07ABD009ADE4B /* AddBathingView.swift in Sources */,
+				EB0CCD0B2BD7352F009ADE4B /* ParentView.swift in Sources */,
+				EB0CCD092BD734F5009ADE4B /* PhotoPickerView.swift in Sources */,
 				C90F725A2888432A005FF2AB /* EditBabyDetailsView.swift in Sources */,
 				EB0CCCD12BD522C9009ADE4B /* ProfileScreenViewModel.swift in Sources */,
 				C9B95D09287CA02400ADC43F /* View+Extensions.swift in Sources */,
@@ -394,8 +455,11 @@
 				EB0CCCC22BD0845F009ADE4B /* AddActivityView.swift in Sources */,
 				C953DD45287F253800F1E1B7 /* AddSleepEventView.swift in Sources */,
 				EB0CCCCC2BD41F2C009ADE4B /* TestView.swift in Sources */,
+				EB0CCD002BD733EA009ADE4B /* PhotoView.swift in Sources */,
 				C9B95D0D287DA6C800ADC43F /* JournalView.swift in Sources */,
+				EB0CCD152BD73877009ADE4B /* GalleryView.swift in Sources */,
 				C9ED2EA9287C745100BA3228 /* ContentView.swift in Sources */,
+				EB0CCD112BD737EF009ADE4B /* Direction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -530,7 +594,7 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
@@ -566,7 +630,7 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
@@ -631,6 +695,22 @@
 				minimumVersion = 0.5.0;
 			};
 		};
+		EB0CCCF92BD69822009ADE4B /* XCRemoteSwiftPackageReference "FloatingButton" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/FloatingButton.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
+		EB0CCD032BD73488009ADE4B /* XCRemoteSwiftPackageReference "Aespa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/enebin/Aespa.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.1;
+			};
+		};
 		EB3308472BCAE04C000202C0 /* XCRemoteSwiftPackageReference "ChartView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AppPear/ChartView";
@@ -660,6 +740,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EB0CCCD42BD5E1CE009ADE4B /* XCRemoteSwiftPackageReference "ScrollKit" */;
 			productName = ScrollKit;
+		};
+		EB0CCCFA2BD69822009ADE4B /* FloatingButton */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB0CCCF92BD69822009ADE4B /* XCRemoteSwiftPackageReference "FloatingButton" */;
+			productName = FloatingButton;
+		};
+		EB0CCD042BD73488009ADE4B /* Aespa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB0CCD032BD73488009ADE4B /* XCRemoteSwiftPackageReference "Aespa" */;
+			productName = Aespa;
 		};
 		EB3308482BCAE04C000202C0 /* SwiftUICharts */ = {
 			isa = XCSwiftPackageProductDependency;

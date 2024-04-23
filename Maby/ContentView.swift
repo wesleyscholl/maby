@@ -4,6 +4,7 @@ import MabyKit
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.colorScheme) var colorScheme
     @FetchRequest(fetchRequest: allBabies)
     private var babies: FetchedResults<Baby>
     
@@ -37,8 +38,14 @@ struct ContentView: View {
                         .tabItem {
                             Label("Test", systemImage: "figure.child.circle.fill")
                         }
+                        
+//                    HomeView()
+//                        .tabItem {
+//                            Label("Home", systemImage: "house")
+//                        }
                 }
             }
+            .background(.black)
             .sheet(isPresented: $showingAddBaby) {
                 AddBabyView()
                     .interactiveDismissDisabled(true)

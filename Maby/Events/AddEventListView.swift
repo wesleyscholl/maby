@@ -2,12 +2,31 @@ import Combine
 import MabyKit
 import SwiftUI
 
+struct ScrollableHeader<Content: View>: View {
+  let content: Content
+  let minHeight: CGFloat
+  let maxHeight: CGFloat
+
+  var body: some View {
+    GeometryReader { geometry in
+      VStack(alignment: .leading) {
+        content
+          BabyCard()
+          .frame(minHeight: minHeight, maxHeight: maxHeight)
+          .offset(y: max(0, geometry.frame(in: .named("scrollView")).minY))
+      }
+      .frame(height: geometry.frame(in: .named("scrollView")).minY + maxHeight)
+      .background(Color.clear) // Ensures background color behind the header
+    }
+  }
+}
+
 struct AddEventListView: View {
+    @State private var isButtonTapped: Bool = false
     var body: some View {
         List {
-            BabyCard()
-                .clearBackground()
-            Section("Feeding") {
+            ScrollableHeader(content: BabyCard(), minHeight: 150, maxHeight: 300)
+            Text("Feeding").font(.headline)
                 AddEventButton<NursingEvent>(
                     "Add Breast Feeding",
                     icon: "🤱🏻",
@@ -23,8 +42,7 @@ struct AddEventListView: View {
                     icon: "🍼",
                     type: .bottle
                 )
-            }
-            Section("Hygiene") {
+            Text("Hygiene").font(.headline)
                 AddEventButton<DiaperEvent>(
                     "Add Diaper Change",
                     icon: "🚼",
@@ -35,8 +53,7 @@ struct AddEventListView: View {
                     icon: "🛁",
                     type: .bathing
                 )
-            }
-            Section("Health") {
+            Text("Health").font(.headline)
                 AddEventButton<SleepEvent>(
                     "Add Sleep or a Nap",
                     icon: "😴",
@@ -52,9 +69,33 @@ struct AddEventListView: View {
                     icon: "🤢",
                     type: .vomit
                 )
+        }.overlay(
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        // Handle button tap here
+                        isButtonTapped.toggle()
+                    }) {
+                        Image(systemName: "photo.badge.plus")
+                            .font(.system(size: 24))
+                            .frame(width: 56, height: 56)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(28)
+                            .padding()
+                            .shadow(color: Color.gray.opacity(0.5), radius: 0.2, x: 1, y: 1)
+                    }
+                }
             }
-        }.onAppear {
+        )
+        .onAppear {
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        }
+        .sheet(isPresented: $isButtonTapped) {
+                    // Present your sheet here
+            Text("Photo").font(.system(size: 30))
         }
     }
 }
