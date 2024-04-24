@@ -273,7 +273,7 @@ struct CardView: View {
             .offset(y: progress * 60)
         }
         .padding(20)
-        .shadow(color: .gray.opacity(0.6), radius: 16, y: 8)
+        .shadow(color: .gray.opacity(0.6), radius: 8, y: 4)
     }
 }
 

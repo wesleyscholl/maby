@@ -50,11 +50,11 @@ struct VideoContentView: View {
                                 flashMode = .off
                             }
                         }) {
-                            Image(systemName: flashMode == .off ? "bolt.slash.fill" : "bolt.fill")
+                            Image(systemName: flashMode == .off ? "bolt.slash.fill" : flashMode == .on ? "bolt.fill" : "bolt.badge.automatic")
                                 .resizable()
                                 .foregroundColor(colorScheme == .dark ? .white : colorPink)
                                 .scaledToFit()
-                                .frame(width: 50, height: 50)
+                                .frame(width: 30, height: 30)
                                 .padding(20)
                                 .padding(.trailing, 20)
                         }

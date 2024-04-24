@@ -66,39 +66,43 @@ struct HomeView: View {
     let lightGray = Color(red: 230/255, green: 224/255, blue: 225/255)
 
     func loadImages() {
-            self.images = []
-            let fetchOptions = PHFetchOptions()
-            fetchOptions.predicate = NSPredicate(format: "title = %@", "JOYFUL")
-            let collections = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
-            if let joyfulAlbum = collections.firstObject {
-                let assets = PHAsset.fetchAssets(in: joyfulAlbum, options: nil)
-                let manager = PHImageManager.default()
-                let option = PHImageRequestOptions()
-                option.isSynchronous = true
-                option.resizeMode = .none
-                option.deliveryMode = .highQualityFormat
-                assets.enumerateObjects({ (object, _, _) in
-                    DispatchQueue.main.async {
-                        if !self.images.contains(object) {
-                            self.images.insert(object, at: 0)
-                        }
-                        if object.mediaType == .video {
-                            manager.requestAVAsset(forVideo: object, options: nil) { (avAsset, _, _) in
-                                if let avAsset = avAsset as? AVURLAsset {
-                                    DispatchQueue.main.async {
-                                        let newMedia = Media(asset: object, videoURL: avAsset.url)
-                                        if !self.media.contains(newMedia) {
-                                            self.media.insert(Media(asset: object, videoURL: avAsset.url), at: 0)
-                                        }
-                                        self.mostRecentVideoURL = avAsset.url
+    self.images = []
+    let fetchOptions = PHFetchOptions()
+    fetchOptions.predicate = NSPredicate(format: "title = %@", "JOYFUL")
+    let collections = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
+    if let joyfulAlbum = collections.firstObject {
+        let assets = PHAsset.fetchAssets(in: joyfulAlbum, options: nil)
+        let manager = PHImageManager.default()
+        let option = PHImageRequestOptions()
+        option.isSynchronous = true
+        option.resizeMode = .none
+        option.deliveryMode = .highQualityFormat
+        let operationQueue = OperationQueue()
+        operationQueue.qualityOfService = .userInitiated
+        operationQueue.addOperation {
+            assets.enumerateObjects({ (object, _, _) in
+                DispatchQueue.main.async {
+                    if !self.images.contains(object) {
+                        self.images.insert(object, at: 0)
+                    }
+                    if object.mediaType == .video {
+                        manager.requestAVAsset(forVideo: object, options: nil) { (avAsset, _, _) in
+                            if let avAsset = avAsset as? AVURLAsset {
+                                DispatchQueue.main.async {
+                                    let newMedia = Media(asset: object, videoURL: avAsset.url)
+                                    if !self.media.contains(newMedia) {
+                                        self.media.insert(Media(asset: object, videoURL: avAsset.url), at: 0)
                                     }
+                                    self.mostRecentVideoURL = avAsset.url
                                 }
                             }
                         }
                     }
-                })
-            }
+                }
+            })
         }
+    }
+}
         
         func getImage(from asset: PHAsset) -> UIImage {
             let manager = PHImageManager.default()
