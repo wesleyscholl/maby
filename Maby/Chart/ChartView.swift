@@ -44,6 +44,19 @@ struct ChartView: View {
                 Text("Totals").font(.title3)
             }
             .headerProminence(.increased)
+            Section(header: Text("Daily Events")){
+                ForEach(events) { section in
+                    Section(header: JournalSectionHeader(date: section.id)) {
+                        ForEach(section) { event in
+                            EventView(event: event)
+                        }
+                        .onDelete { indexSet in
+                            eventService.delete(events: indexSet.map { section[$0] })
+                            UINotificationFeedbackGenerator().notificationOccurred(.success)
+                        }
+                    }
+                }
+            }.headerProminence(.increased)
         }.onAppear {
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
@@ -80,6 +93,13 @@ struct ChartView: View {
             }
         }
         return Array(zip(eventTypes, counts))
+    }
+}
+
+private struct JournalSectionHeader: View {
+    let date: Date
+    var body: some View {
+        Text(date, format: .dateTime.day().month().year())
     }
 }
 

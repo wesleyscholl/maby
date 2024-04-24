@@ -8,6 +8,7 @@ struct VideoContentView: View {
     @State var showSetting = false
     @State var showGallery = false
     @State var captureMode: AssetType = .photo
+    @State private var flashMode: AVCaptureDevice.FlashMode = .off
 
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject private var viewModel = VideoContentViewModel()
@@ -28,7 +29,6 @@ struct VideoContentView: View {
             
             VStack {
                 ZStack(alignment: .center) {
-                    
                     // Mode change
                     Picker("Capture Modes", selection: $captureMode) {
                         Text("Photo").tag(AssetType.photo)
@@ -37,9 +37,29 @@ struct VideoContentView: View {
                     .pickerStyle(.segmented)
                     .cornerRadius(8)
                     .frame(width: 200)
-                    
-                    
                     HStack {
+                        Button(action: {
+                            switch flashMode {
+                            case .off:
+                                flashMode = .on
+                            case .on:
+                                flashMode = .auto
+                            case .auto:
+                                flashMode = .off
+                            @unknown default:
+                                flashMode = .off
+                            }
+                        }) {
+                            Image(systemName: flashMode == .off ? "bolt.slash.fill" : "bolt.fill")
+                                .resizable()
+                                .foregroundColor(colorScheme == .dark ? .white : colorPink)
+                                .scaledToFit()
+                                .frame(width: 50, height: 50)
+                                .padding(20)
+                                .padding(.trailing, 20)
+                        }
+                        .shadow(color: .white, radius: 1)
+                        .contentShape(Rectangle())
                         Spacer()
                         Button(action: { showSetting = true }) {
                             Image(systemName: "gear")
@@ -47,15 +67,12 @@ struct VideoContentView: View {
                                 .foregroundColor(colorScheme == .dark ? .white : colorPink)
                                 .scaledToFit()
                                 .frame(width: 30, height: 30)
-
                         }
                         .padding(20)
                         .contentShape(Rectangle())
                     }
                 }
-                
                 Spacer()
-                
                 ZStack {
                     HStack {
                         // Album thumbnail + button
@@ -65,14 +82,11 @@ struct VideoContentView: View {
                                 ? viewModel.videoAlbumCover
                                 : viewModel.photoAlbumCover)
                             ?? Image("")
-                            
                             roundRectangleShape(with: coverImage, size: 55)
                         }
                         .shadow(radius: 5)
                         .contentShape(Rectangle())
-                        
                         Spacer()
-                        
                         // Position change + button
                         Button(action: {
                             viewModel.aespaSession.common(.position(position: isFront ? .back : .front))
@@ -114,9 +128,11 @@ struct VideoContentView: View {
         .sheet(isPresented: $showGallery) {
             GalleryView(mediaType: $captureMode, contentViewModel: viewModel)
         }
+        .onChange(of: flashMode) { newValue in
+            viewModel.aespaSession.photo(.flashMode(mode: newValue))
+        }
     }
 }
-
 
 extension VideoContentView {
     @ViewBuilder

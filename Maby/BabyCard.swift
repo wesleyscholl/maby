@@ -47,7 +47,6 @@ struct BabyCard: View {
                 VStack(alignment: .leading) {
                     Text(name)
                         .font(.title)
-                    
                     Text("\(age) old")
                         .font(.callout)
                         .foregroundColor(.gray)
@@ -55,7 +54,7 @@ struct BabyCard: View {
             }
             .padding()
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity,  alignment: .leading)
         .background(.gray.opacity(0.2))
         .cornerRadius(10)
         .shadow(radius: 8)

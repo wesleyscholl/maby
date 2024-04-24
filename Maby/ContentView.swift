@@ -22,10 +22,10 @@ struct ContentView: View {
                         .tabItem {
                             Label("Add event", systemImage: "plus")
                         }
-                    JournalView()
-                        .tabItem {
-                            Label("Journal", systemImage: "book")
-                        }
+//                    JournalView()
+//                        .tabItem {
+//                            Label("Journal", systemImage: "book")
+//                        }
                     ChartView()
                         .tabItem {
                             Label("Chart", systemImage: "chart.bar.xaxis")
@@ -38,11 +38,11 @@ struct ContentView: View {
                         .tabItem {
                             Label("Test", systemImage: "figure.child.circle.fill")
                         }
-                        
-//                    HomeView()
-//                        .tabItem {
-//                            Label("Home", systemImage: "house")
-//                        }
+                    HomeView()
+                        .tabItem {
+                            Label("Home", systemImage: "house")
+                        }
+                        .navigationBarHidden(true)
                 }
             }
             .background(.black)
