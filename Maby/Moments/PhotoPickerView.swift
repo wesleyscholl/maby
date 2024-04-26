@@ -62,25 +62,31 @@ struct PhotoPickerView: UIViewControllerRepresentable {
     }
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        parent.media.removeAll()
-        parent.mostRecentPhoto = nil
-        parent.mostRecentVideoURL = nil
+    parent.media.removeAll()
+    parent.mostRecentPhoto = nil
+    parent.mostRecentVideoURL = nil
 
-        if let url = info[.mediaURL] as? URL, let asset = info[.phAsset] as? PHAsset {
-            parent.saveVideoToAlbum(url)
-            parent.media.append(Media(asset: asset, videoURL: url))
-            if parent.mostRecentVideoURL == nil {
-                parent.mostRecentVideoURL = url
-            }
-        } else if let image = info[.originalImage] as? UIImage, let asset = info[.phAsset] as? PHAsset {
-            parent.media.append(Media(asset: asset, videoURL: nil))
-            parent.saveImageToAlbum(image)
-            parent.mostRecentPhoto = image
-            if parent.mostRecentPhoto == nil {
-                parent.mostRecentPhoto = image
-            }
+    if let url = info[.mediaURL] as? URL, let asset = info[.phAsset] as? PHAsset {
+        parent.saveVideoToAlbum(url)
+        let newMedia = Media(asset: asset, videoURL: url)
+        if !parent.media.contains(where: { $0 == newMedia }) {
+            parent.media.insert(newMedia, at: 0)
         }
-        parent.showPhotoPicker = false
+        if parent.mostRecentVideoURL == nil {
+            parent.mostRecentVideoURL = url
+        }
+    } else if let image = info[.originalImage] as? UIImage, let asset = info[.phAsset] as? PHAsset {
+        let newMedia = Media(asset: asset, videoURL: nil)
+        if !parent.media.contains(where: { $0 == newMedia }) {
+            parent.media.insert(newMedia, at: 0)
+        }
+        parent.saveImageToAlbum(image)
+        parent.mostRecentPhoto = image
+        if parent.mostRecentPhoto == nil {
+            parent.mostRecentPhoto = image
+        }
     }
+    parent.showPhotoPicker = false
+}
 }
 }

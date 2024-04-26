@@ -55,6 +55,8 @@
 		EB0CCD112BD737EF009ADE4B /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD102BD737EF009ADE4B /* Direction.swift */; };
 		EB0CCD132BD73856009ADE4B /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD122BD73856009ADE4B /* SettingView.swift */; };
 		EB0CCD152BD73877009ADE4B /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD142BD73877009ADE4B /* GalleryView.swift */; };
+		EB0CCD172BD928BC009ADE4B /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD162BD928BC009ADE4B /* Timeline.swift */; };
+		EB0CCD192BDA9239009ADE4B /* Aespa in Resources */ = {isa = PBXBuildFile; fileRef = EB0CCD182BDA9239009ADE4B /* Aespa */; };
 		EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */ = {isa = PBXBuildFile; fileRef = EB33083D2BC8891F000202C0 /* baby-girl-1.png */; };
 		EB3308492BCAE04C000202C0 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = EB3308482BCAE04C000202C0 /* SwiftUICharts */; };
 /* End PBXBuildFile section */
@@ -132,6 +134,8 @@
 		EB0CCD102BD737EF009ADE4B /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
 		EB0CCD122BD73856009ADE4B /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		EB0CCD142BD73877009ADE4B /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
+		EB0CCD162BD928BC009ADE4B /* Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
+		EB0CCD182BDA9239009ADE4B /* Aespa */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Aespa; path = ../as/Aespa; sourceTree = "<group>"; };
 		EB33083D2BC8891F000202C0 /* baby-girl-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "baby-girl-1.png"; path = "../../Downloads/baby-girl-1.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -239,6 +243,7 @@
 		C9ED2E95287C745100BA3228 = {
 			isa = PBXGroup;
 			children = (
+				EB0CCD182BDA9239009ADE4B /* Aespa */,
 				C9ED2ED2287C971600BA3228 /* MabyKit */,
 				C9ED2EA0287C745100BA3228 /* Maby */,
 				C9A78ACB2884387D00753D58 /* MabyWatch Watch App */,
@@ -270,12 +275,13 @@
 				C9B95D0B287DA6BF00ADC43F /* Journal */,
 				C9ED2EAD287C745300BA3228 /* Preview Content */,
 				EB0CCCCA2BD41F09009ADE4B /* Test */,
+				EB0CCCFE2BD733C3009ADE4B /* Moments */,
 				C9B95D07287CA01800ADC43F /* Common */,
 				C9B95D15287DF50D00ADC43F /* BabyCard.swift */,
 				C9ED2EA1287C745100BA3228 /* MabyApp.swift */,
 				C9ED2EA8287C745100BA3228 /* ContentView.swift */,
 				EB0CCCC62BD41976009ADE4B /* SplashView.swift */,
-				EB0CCCFE2BD733C3009ADE4B /* Moments */,
+				EB0CCD162BD928BC009ADE4B /* Timeline.swift */,
 			);
 			path = Maby;
 			sourceTree = "<group>";
@@ -410,6 +416,7 @@
 				EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */,
 				C9ED2EAF287C745300BA3228 /* Preview Assets.xcassets in Resources */,
 				EB0CCCC92BD41B95009ADE4B /* lilyan.jpg in Resources */,
+				EB0CCD192BDA9239009ADE4B /* Aespa in Resources */,
 				C9ED2EAB287C745300BA3228 /* Assets.xcassets in Resources */,
 				EB0CCCF62BD67525009ADE4B /* ScrollKit in Resources */,
 			);
@@ -458,6 +465,7 @@
 				EB0CCD002BD733EA009ADE4B /* PhotoView.swift in Sources */,
 				C9B95D0D287DA6C800ADC43F /* JournalView.swift in Sources */,
 				EB0CCD152BD73877009ADE4B /* GalleryView.swift in Sources */,
+				EB0CCD172BD928BC009ADE4B /* Timeline.swift in Sources */,
 				C9ED2EA9287C745100BA3228 /* ContentView.swift in Sources */,
 				EB0CCD112BD737EF009ADE4B /* Direction.swift in Sources */,
 			);

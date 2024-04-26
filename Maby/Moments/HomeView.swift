@@ -65,13 +65,14 @@ struct HomeView: View {
     let darkColor = Color(red: 78/255, green: 0/255, blue: 25/255)
     let lightGray = Color(red: 230/255, green: 224/255, blue: 225/255)
 
-    func loadImages() {
+func loadImages() {
     self.images = []
     let fetchOptions = PHFetchOptions()
     fetchOptions.predicate = NSPredicate(format: "title = %@", "JOYFUL")
     let collections = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
     if let joyfulAlbum = collections.firstObject {
         let assets = PHAsset.fetchAssets(in: joyfulAlbum, options: nil)
+        let reversedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).reversed()
         let manager = PHImageManager.default()
         let option = PHImageRequestOptions()
         option.isSynchronous = true
@@ -80,18 +81,18 @@ struct HomeView: View {
         let operationQueue = OperationQueue()
         operationQueue.qualityOfService = .userInitiated
         operationQueue.addOperation {
-            assets.enumerateObjects({ (object, _, _) in
+            for object in reversedAssets {
                 DispatchQueue.main.async {
                     if !self.images.contains(object) {
-                        self.images.insert(object, at: 0)
+                        self.images.append(object)
                     }
                     if object.mediaType == .video {
                         manager.requestAVAsset(forVideo: object, options: nil) { (avAsset, _, _) in
                             if let avAsset = avAsset as? AVURLAsset {
                                 DispatchQueue.main.async {
                                     let newMedia = Media(asset: object, videoURL: avAsset.url)
-                                    if !self.media.contains(newMedia) {
-                                        self.media.insert(Media(asset: object, videoURL: avAsset.url), at: 0)
+                                    if !self.media.contains(where: { $0.asset == newMedia.asset }) {
+                                        self.media.append(newMedia)
                                     }
                                     self.mostRecentVideoURL = avAsset.url
                                 }
@@ -99,7 +100,7 @@ struct HomeView: View {
                         }
                     }
                 }
-            })
+            }
         }
     }
 }
@@ -126,12 +127,14 @@ struct HomeView: View {
                     PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: screenWidth * 0.95, height: screenHeight * 0.35), contentMode: .aspectFill, options: nil) { image, _ in
                         if let image = image {
                             mostRecentPhoto = image
-                            images.insert(asset, at: 0)
-                        }
+                            if !images.contains(asset) {
+                                images.insert(asset, at: 0)
                     }
                 }
             }
         }
+    }
+}
     
     var body: some View {
         NavigationView {
@@ -160,13 +163,19 @@ struct HomeView: View {
                     Image(uiImage: getImage(from: asset))
                         .resizable()
                         .scaledToFill()
+                        .aspectRatio(contentMode: .fill)
                         .frame(width: screenWidth, height: screenHeight * 0.35)
                         .cornerRadius(8)
                         .shadow(color: lightGray, radius: 4)
+                } else {
+                    Text("Tap + to add a photo or video")
+                        .font(.system(size: 35))
+                        .foregroundStyle(.white)
+                        .frame(width: screenWidth, height: screenHeight * 0.25)
+                        .cornerRadius(8)
+                        .shadow(color: lightGray, radius: 4)
+                        .multilineTextAlignment(.center)
                 }
-                Text("Main Image")
-                    .font(.system(size: 9))
-                    .foregroundColor(.gray)
                 }.onAppear {
                     fetchMostRecentPhoto()
                 }
@@ -246,8 +255,8 @@ struct HomeView: View {
                                     .stroke(Color.white, lineWidth: 2)
                                     .scaleEffect(0.9)
                             )
-                        Image(systemName: "camera")
-                            .font(.system(size: 50))
+                        Image(systemName: "plus")
+                            .font(.system(size: 85).bold())
                             .frame(width: 100, height: 100)
                             .shadow(color: Color(lightGray), radius: 1, x: 0, y: 1)
                             .background(LinearGradient(mediumPink, lightPink))
@@ -272,8 +281,13 @@ struct HomeView: View {
                 .shadow(color: Color.black.opacity(0.2), radius: 10, x: 10, y: 10)
                 .shadow(color: Color.white.opacity(0.7), radius: 10, x: -5, y: -5)
             }.sheet(isPresented: $isPresented) {
-                VideoContentView()
+                VideoContentView(isPresented: $isPresented)
             }
+            .onChange(of: isPresented) { newValue in
+            if !newValue {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            }
+        }
             .sheet(isPresented: $showPhotoPicker) {
                 PhotoPickerView(media: $media, mostRecentVideoURL: $mostRecentVideoURL, mostRecentPhoto: $mostRecentPhoto, showPhotoPicker: $showPhotoPicker)
                     .onDisappear {

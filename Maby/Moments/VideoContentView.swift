@@ -3,6 +3,7 @@ import SwiftUI
 import PhotosUI
 
 struct VideoContentView: View {
+    @Binding var isPresented: Bool
     @State var isRecording = false
     @State var isFront = false
     @State var showSetting = false
@@ -37,15 +38,21 @@ struct VideoContentView: View {
                     .pickerStyle(.segmented)
                     .cornerRadius(8)
                     .frame(width: 200)
+                    .onChange(of: captureMode) { newValue in
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    }
                     HStack {
                         Button(action: {
                             switch flashMode {
                             case .off:
                                 flashMode = .on
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                             case .on:
                                 flashMode = .auto
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                             case .auto:
                                 flashMode = .off
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                             @unknown default:
                                 flashMode = .off
                             }
@@ -61,7 +68,10 @@ struct VideoContentView: View {
                         .shadow(color: .white, radius: 1)
                         .contentShape(Rectangle())
                         Spacer()
-                        Button(action: { showSetting = true }) {
+                        Button(action: {
+                            showSetting = true
+                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        }) {
                             Image(systemName: "gear")
                                 .resizable()
                                 .foregroundColor(colorScheme == .dark ? .white : colorPink)
@@ -76,19 +86,21 @@ struct VideoContentView: View {
                 ZStack {
                     HStack {
                         // Album thumbnail + button
-                        Button(action: { showGallery = true }) {
-                            let coverImage = (
-                                captureMode == .video
-                                ? viewModel.videoAlbumCover
-                                : viewModel.photoAlbumCover)
-                            ?? Image("")
-                            roundRectangleShape(with: coverImage, size: 55)
-                        }
-                        .shadow(radius: 5)
-                        .contentShape(Rectangle())
+//                        Button(action: { showGallery = true }) {
+//                            let coverImage = (
+//                                captureMode == .video
+//                                ? viewModel.videoAlbumCover
+//                                : viewModel.photoAlbumCover)
+//                            ?? Image("")
+//                            roundRectangleShape(with: coverImage, size: 55)
+//                        }
+//                        .shadow(radius: 5)
+//                        .contentShape(Rectangle())
+                        Spacer()
                         Spacer()
                         // Position change + button
                         Button(action: {
+                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
                             viewModel.aespaSession.common(.position(position: isFront ? .back : .front))
                             isFront.toggle()
                         }) {
@@ -96,34 +108,41 @@ struct VideoContentView: View {
                                 .resizable()
                                 .foregroundColor(colorScheme == .dark ? .white : colorPink)
                                 .scaledToFit()
-                                .frame(width: 50, height: 50)
+                                .frame(width: 40, height: 40)
                                 .padding(20)
                                 .padding(.trailing, 20)
                         }
-                        .shadow(color: .white, radius: 1)
                         .contentShape(Rectangle())
                     }
                     
                     // Shutter + button
-                    recordingButtonShape(width: 60).onTapGesture {
+                    recordingButtonShape(width: 75).onTapGesture {
                         switch captureMode {
                         case .video:
                             if isRecording {
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                 viewModel.aespaSession.stopRecording()
                                 isRecording = false
+                                self.isPresented = false
                             } else {
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                 viewModel.aespaSession.startRecording(autoVideoOrientationEnabled: true)
                                 isRecording = true
                             }
                         case .photo:
                             viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true)
+                            UINotificationFeedbackGenerator().notificationOccurred(.success)
+                            self.isPresented = false
                         }
                     }
                 }
             }
         }
         .sheet(isPresented: $showSetting) {
-            SettingView(contentViewModel: viewModel)
+            SettingView(contentViewModel: viewModel, showSetting: $showSetting)
+            .onDisappear {
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    }
         }
         .sheet(isPresented: $showGallery) {
             GalleryView(mediaType: $captureMode, contentViewModel: viewModel)
@@ -152,14 +171,24 @@ extension VideoContentView {
     
     @ViewBuilder
     func recordingButtonShape(width: CGFloat) -> some View {
-        ZStack {
-            Circle()
-                .strokeBorder(isRecording ? .red : colorScheme == .dark ? .white : mediumPink, lineWidth: 3)
-                .frame(width: width)
-            
-            Circle()
-                .fill(isRecording ? .red : colorScheme == .dark ? .white : colorPink)
-                .frame(width: width * 0.8)
+        ZStack(alignment: .center) {
+            if captureMode == .video {
+                Circle()
+                    .strokeBorder(colorScheme == .dark ? .white : mediumPink, lineWidth: 3)
+                    .frame(width: width)
+                RoundedRectangle(cornerRadius: isRecording ? 5 : width * 0.425)
+                            .fill(.red)
+                            .frame(width: isRecording ? width * 0.45 : width * 0.85, height: isRecording ? width * 0.45 : width * 0.85)
+                            .animation(.easeInOut)
+            } else {
+                Circle()
+                    .strokeBorder(colorScheme == .dark ? .white : mediumPink, lineWidth: 3)
+                    .frame(width: width)
+                
+                Circle()
+                    .fill(colorScheme == .dark ? .white : colorPink)
+                    .frame(width: width * 0.85)
+            }
         }
         .frame(height: width)
     }
@@ -168,10 +197,4 @@ extension VideoContentView {
 enum AssetType {
     case video
     case photo
-}
-
-struct VideoContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        VideoContentView()
-    }
 }

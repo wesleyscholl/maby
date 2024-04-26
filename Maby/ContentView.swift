@@ -26,9 +26,13 @@ struct ContentView: View {
 //                        .tabItem {
 //                            Label("Journal", systemImage: "book")
 //                        }
-                    ChartView()
+//                    ChartView()
+//                        .tabItem {
+//                            Label("Chart", systemImage: "chart.bar.xaxis")
+//                        }
+                    TimelineView()
                         .tabItem {
-                            Label("Chart", systemImage: "chart.bar.xaxis")
+                            Label("Timeline", systemImage: "bolt")
                         }
                     SettingsView()
                         .tabItem {
@@ -42,7 +46,7 @@ struct ContentView: View {
                         .tabItem {
                             Label("Home", systemImage: "house")
                         }
-                        .navigationBarHidden(true)
+//                        .navigationBarHidden(true)
                 }
             }
             .background(.black)

@@ -6,5 +6,7 @@
 	<string>$(PRODUCT_NAME) picture and video library usage.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) picture and video usage.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>$(PRODUCT_NAME) microphone usage for video recording.</string>
 </dict>
 </plist>

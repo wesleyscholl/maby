@@ -3,23 +3,19 @@ import AVFoundation
 
 struct SettingView: View {
     @ObservedObject var viewModel: VideoContentViewModel
-
+    @Binding var showSetting: Bool
     @State private var quality: AVCaptureSession.Preset
     @State private var focusMode: AVCaptureDevice.FocusMode
-    
     @State private var isMuted: Bool
-    
     @State private var flashMode: AVCaptureDevice.FlashMode
     
-    init(contentViewModel viewModel: VideoContentViewModel) {
+    init(contentViewModel viewModel: VideoContentViewModel, showSetting: Binding<Bool>) {
         self.viewModel = viewModel
-        
-        self.quality = viewModel.aespaSession.avCaptureSession.sessionPreset
-        self.focusMode = viewModel.aespaSession.currentFocusMode ?? .continuousAutoFocus
-        
-        self.isMuted = viewModel.aespaSession.isMuted
-        
-        self.flashMode = viewModel.aespaSession.currentSetting.flashMode
+        self._showSetting = showSetting
+        self._quality = State(initialValue: viewModel.aespaSession.avCaptureSession.sessionPreset)
+        self._focusMode = State(initialValue: viewModel.aespaSession.currentFocusMode ?? .continuousAutoFocus)
+        self._isMuted = State(initialValue: viewModel.aespaSession.isMuted)
+        self._flashMode = State(initialValue: viewModel.aespaSession.currentSetting.flashMode)
     }
     
     var body: some View {
@@ -33,6 +29,7 @@ struct SettingView: View {
                 .modifier(TitledPicker(title: "Asset quality"))
                 .onChange(of: quality) { newValue in
                     viewModel.aespaSession.common(.quality(preset: newValue))
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 }
                 
                 Picker("Focus", selection: $focusMode) {
@@ -43,6 +40,7 @@ struct SettingView: View {
                 .modifier(TitledPicker(title: "Focus mode"))
                 .onChange(of: focusMode) { newValue in
                     viewModel.aespaSession.common(.focus(mode: newValue))
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 }
             }
             
@@ -54,6 +52,7 @@ struct SettingView: View {
                 .modifier(TitledPicker(title: "Mute"))
                 .onChange(of: isMuted) { newValue in
                     viewModel.aespaSession.video(newValue ? .mute : .unmute)
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 }
             }
             
@@ -66,8 +65,18 @@ struct SettingView: View {
                 .modifier(TitledPicker(title: "Flash mode"))
                 .onChange(of: flashMode) { newValue in
                     viewModel.aespaSession.photo(.flashMode(mode: newValue))
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 }
             }
+            Button(action: {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    showSetting = false
+                }) {
+                    Text("Close")
+                        .foregroundColor(.red)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+                .buttonStyle(PlainButtonStyle())
         }
     }
     
