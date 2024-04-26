@@ -212,11 +212,28 @@ func loadImages() {
                                             }
                                             Button(action: {
                                                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                                                let assetToDelete = images[index]
                                                 images.remove(at: index)
-                                            }) {
+                                                PHPhotoLibrary.shared().performChanges({
+                                                    PHAssetChangeRequest.deleteAssets([assetToDelete] as NSArray)
+                                                }, completionHandler: { success, error in
+                                                    if success {
+                                                        DispatchQueue.main.async {
+                                                            if images.isEmpty {
+                                                                mostRecentPhoto = nil
+                                                                mostRecentVideoURL = nil
+                                                            } else {
+                                                                fetchMostRecentPhoto()
+                                                            }
+                                                        }
+                                                    } else if let error = error {
+                                                        print("Error deleting asset: \(error)")
+                                                    }
+                                                })
+                                                }) {
                                                 Text("Delete")
                                                 Image(systemName: "trash")
-                                            }
+                                                }
                                         }
                                 }.onTapGesture {
                                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
