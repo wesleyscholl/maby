@@ -4,6 +4,7 @@ import Photos
 import PhotosUI
 
 struct PhotoView: View {
+    let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
     public var screenWidth: CGFloat {
         return UIScreen.main.bounds.width
     }
@@ -28,18 +29,26 @@ struct PhotoView: View {
                     }) {
                         Image(uiImage: getImage(from: images[index]))
                             .resizable()
-                            .scaledToFit()
+                            .scaledToFill()
                             .cornerRadius(10)
                             .frame(width: 75, height: 75)
                             .padding(.horizontal, 0)
                             .onTapGesture {
                                 image = images[index]
+                                
                             }
                         }
                     }
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: NavigationLink(destination: ParentView()) {
+            Image(systemName: "arrow.backward")
+                .foregroundColor(colorPink)
+        }.onTapGesture {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        })
     }
 
     func getImage(from asset: PHAsset) -> UIImage {

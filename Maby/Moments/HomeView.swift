@@ -56,6 +56,7 @@ struct HomeView: View {
     @State var media: [Media] = []
     @State private var coordinator: Coordinator?
     @State private var mostRecentVideoURL: URL?
+    @State private var isFullScreen = false
 
     let imageData = Array(repeating: "lilyan", count: 20)
 
@@ -110,25 +111,29 @@ func loadImages() {
             let option = PHImageRequestOptions()
             option.isSynchronous = true
             var thumbnail = UIImage()
-            manager.requestImage(for: asset, targetSize: CGSize(width: 75, height: 75), contentMode: .aspectFill, options: option, resultHandler: {(result, info)->Void in
+            manager.requestImage(for: asset, targetSize: CGSize(width: 300, height: 300), contentMode: .aspectFill, options: option, resultHandler: {(result, info)->Void in
                 thumbnail = result!
             })
             return thumbnail
         }
         
         func fetchMostRecentPhoto() {
-            let fetchOptions = PHFetchOptions()
-            fetchOptions.predicate = NSPredicate(format: "title = %@", "JOYFUL")
-            let albums = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
-            if let album = albums.firstObject {
-                let assets = PHAsset.fetchAssets(in: album, options: nil)
-                let sortedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted { $0.creationDate ?? Date() > $1.creationDate ?? Date() }
-                if let asset = sortedAssets.first {
-                    PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: screenWidth * 0.95, height: screenHeight * 0.35), contentMode: .aspectFill, options: nil) { image, _ in
+    DispatchQueue.global(qos: .userInteractive).async {
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.predicate = NSPredicate(format: "title = %@", "JOYFUL")
+        let albums = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
+        if let album = albums.firstObject {
+            let assets = PHAsset.fetchAssets(in: album, options: nil)
+            let sortedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted { $0.creationDate ?? Date() > $1.creationDate ?? Date() }
+            if let asset = sortedAssets.first {
+                PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: screenWidth * 0.95, height: screenHeight * 0.35), contentMode: .aspectFill, options: nil) { image, _ in
+                    DispatchQueue.main.async {
                         if let image = image {
-                            mostRecentPhoto = image
-                            if !images.contains(asset) {
-                                images.insert(asset, at: 0)
+                            self.mostRecentPhoto = image
+                            if !self.images.contains(asset) {
+                                self.images.insert(asset, at: 0)
+                            }
+                        }
                     }
                 }
             }
@@ -143,39 +148,51 @@ func loadImages() {
                     if let image = mostRecentPhoto {
                     Image(uiImage: image)
                         .resizable()
-                        .scaledToFit()
-                        .frame(width: screenWidth, height: screenHeight * 0.35)
+                        .scaledToFill()
+                        .frame(width: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35, height: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35)
                         .cornerRadius(8)
                         .shadow(color: lightGray, radius: 4)
+                        .onTapGesture {
+                            withAnimation {
+                                isFullScreen.toggle()
+                            }
+                        }
                 } else if let videoURL = mostRecentVideoURL {
                     let player = AVPlayer(url: videoURL)
                     VideoPlayer(player: player)
-                        .onAppear {
+                    .scaledToFill()    
+                    .frame(width: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35, height: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35)
+                    .cornerRadius(8)
+                    .shadow(color: lightGray, radius: 4)
+                    .onTapGesture {
+                        withAnimation {
+                            isFullScreen.toggle()
+                        }
+                    }
+                    .onAppear {
                             player.play()
                         }
                         .onDisappear {
                             player.pause()
                         }
-                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.35)
-                        .cornerRadius(8)
-                        .shadow(color: lightGray, radius: 2)
                 } else if let asset = images.first {
                     Image(uiImage: getImage(from: asset))
                         .resizable()
                         .scaledToFill()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: screenWidth, height: screenHeight * 0.35)
+                        .frame(width: screenHeight * 0.35, height: screenHeight * 0.35)
                         .cornerRadius(8)
                         .shadow(color: lightGray, radius: 4)
                 } else {
                     Text("Tap + to add a photo or video")
                         .font(.system(size: 35))
                         .foregroundStyle(.white)
-                        .frame(width: screenWidth, height: screenHeight * 0.25)
+                        .frame(width: screenHeight * 0.35, height: screenHeight * 0.35)
                         .cornerRadius(8)
                         .shadow(color: lightGray, radius: 4)
                         .multilineTextAlignment(.center)
-                }
+                        .background(LinearGradient(mediumPink, lightPink))
+                    }
                 }.onAppear {
                     fetchMostRecentPhoto()
                 }
@@ -201,6 +218,11 @@ func loadImages() {
                                         .frame(width: 75, height: 75)
                                         .cornerRadius(8)
                                         .shadow(color: lightGray, radius: 2)
+                                        .onTapGesture {
+                                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                                        self.mostRecentPhoto = getImage(from: images[index])
+                                        self.mostRecentVideoURL = nil
+                                        }
                                         .contextMenu {
                                             Button(action: {
                                                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
@@ -235,11 +257,9 @@ func loadImages() {
                                                 Image(systemName: "trash")
                                                 }
                                         }
-                                }.onTapGesture {
-                                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                                }
-                            }.sheet(isPresented: $showingImage) {
-                                if let selectedImage = selectedImage {
+                                    }
+                                    }.sheet(isPresented: $showingImage) {
+                                    if let selectedImage = selectedImage {
                                     PhotoView(image: selectedImage, images: images).onDisappear {
                                         UINotificationFeedbackGenerator().notificationOccurred(.success)
                                     }
@@ -272,8 +292,8 @@ func loadImages() {
                                     .stroke(Color.white, lineWidth: 2)
                                     .scaleEffect(0.9)
                             )
-                        Image(systemName: "plus")
-                            .font(.system(size: 85).bold())
+                        Image(systemName: "camera")
+                            .font(.system(size: 50))
                             .frame(width: 100, height: 100)
                             .shadow(color: Color(lightGray), radius: 1, x: 0, y: 1)
                             .background(LinearGradient(mediumPink, lightPink))
