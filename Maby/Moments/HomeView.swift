@@ -12,6 +12,11 @@ extension LinearGradient {
     }
 }
 
+enum PhotoOrVideoMedia {
+    case photo(UIImage)
+    case video(URL)
+}
+
 struct Media: Equatable {
     var asset: PHAsset
     var videoURL: URL?
@@ -33,7 +38,7 @@ class Coordinator: NSObject, PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
         DispatchQueue.main.async {
             self.parent.loadImages()
-            self.parent.fetchMostRecentPhoto()
+            self.parent.fetchMostRecentMedia()
         }
     }
 }
@@ -57,6 +62,8 @@ struct HomeView: View {
     @State private var coordinator: Coordinator?
     @State private var mostRecentVideoURL: URL?
     @State private var isFullScreen = false
+    @State private var player: AVPlayer? = nil
+    @State private var mostRecentMedia: PhotoOrVideoMedia?
 
     let imageData = Array(repeating: "lilyan", count: 20)
 
@@ -116,8 +123,8 @@ func loadImages() {
             })
             return thumbnail
         }
-        
-        func fetchMostRecentPhoto() {
+
+func fetchMostRecentMedia() {
     DispatchQueue.global(qos: .userInteractive).async {
         let fetchOptions = PHFetchOptions()
         fetchOptions.predicate = NSPredicate(format: "title = %@", "JOYFUL")
@@ -126,12 +133,28 @@ func loadImages() {
             let assets = PHAsset.fetchAssets(in: album, options: nil)
             let sortedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted { $0.creationDate ?? Date() > $1.creationDate ?? Date() }
             if let asset = sortedAssets.first {
-                PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: screenWidth * 0.95, height: screenHeight * 0.35), contentMode: .aspectFill, options: nil) { image, _ in
-                    DispatchQueue.main.async {
-                        if let image = image {
-                            self.mostRecentPhoto = image
-                            if !self.images.contains(asset) {
-                                self.images.insert(asset, at: 0)
+                if asset.mediaType == .image {
+                    PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: screenWidth * 0.95, height: screenHeight * 0.35), contentMode: .aspectFill, options: nil) { image, _ in
+                        DispatchQueue.main.async {
+                            if let image = image {
+                                self.mostRecentPhoto = image
+                                self.mostRecentMedia = .photo(image)
+                                if !self.images.contains(asset) {
+                                    self.images.insert(asset, at: 0)
+                                }
+                            }
+                        }
+                    }
+                }
+                if asset.mediaType == .video {
+                    PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
+                        if let avAsset = avAsset as? AVURLAsset {
+                            DispatchQueue.main.async {
+                                self.mostRecentVideoURL = avAsset.url
+                                self.mostRecentMedia = .video(avAsset.url)
+                                if !self.images.contains(asset) {
+                                    self.images.insert(asset, at: 0)
+                                }
                             }
                         }
                     }
@@ -145,35 +168,40 @@ func loadImages() {
         NavigationView {
             VStack(spacing: 10) {
                 VStack {
-                    if let image = mostRecentPhoto {
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35, height: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35)
-                        .cornerRadius(8)
-                        .shadow(color: lightGray, radius: 4)
-                        .onTapGesture {
-                            withAnimation {
-                                isFullScreen.toggle()
-                            }
-                        }
-                } else if let videoURL = mostRecentVideoURL {
-                    let player = AVPlayer(url: videoURL)
-                    VideoPlayer(player: player)
-                    .scaledToFill()    
-                    .frame(width: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35, height: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35)
-                    .cornerRadius(8)
-                    .shadow(color: lightGray, radius: 4)
-                    .onTapGesture {
-                        withAnimation {
-                            isFullScreen.toggle()
-                        }
-                    }
-                    .onAppear {
-                            player.play()
-                        }
-                        .onDisappear {
-                            player.pause()
+                    if let media = mostRecentMedia {
+                        switch media {
+                        case .photo(let image):
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35, height: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35)
+                                .cornerRadius(8)
+                                .shadow(color: lightGray, radius: 4)
+                                .onTapGesture {
+                                    withAnimation {
+                                        isFullScreen.toggle()
+                                    }
+                                }
+                        case .video(let videoURL):
+                            ZStack {
+                                VideoPlayer(player: AVPlayer(url: videoURL))
+                                    .allowsHitTesting(true)
+                                    .scaledToFill()
+                                    .frame(width: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35, height: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35)
+                                    .cornerRadius(8)
+                                    .shadow(color: lightGray, radius: 4)
+                                    .onTapGesture {
+                                        player = AVPlayer(url: videoURL)
+                                        withAnimation {
+                                            isFullScreen.toggle()
+                                        }
+                                        if player?.rate == 0 {
+                                            player?.play()
+                                        } else {
+                                            player?.pause()
+                                        }
+                                    }
+                                }
                         }
                 } else if let asset = images.first {
                     Image(uiImage: getImage(from: asset))
@@ -194,7 +222,10 @@ func loadImages() {
                         .background(LinearGradient(mediumPink, lightPink))
                     }
                 }.onAppear {
-                    fetchMostRecentPhoto()
+                    fetchMostRecentMedia()
+                    if let videoURL = mostRecentVideoURL {
+                    player = AVPlayer(url: videoURL)
+                }
                 }
                 ScrollView(.horizontal) {
                     let rows = Array(repeating: GridItem(.fixed(75), spacing: 10), count: 2)
@@ -220,10 +251,21 @@ func loadImages() {
                                         .shadow(color: lightGray, radius: 2)
                                         .onTapGesture {
                                         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                                        if asset.mediaType == .video {
+                                            PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
+                                                if let avAsset = avAsset as? AVURLAsset {
+                                                    self.mostRecentMedia = .video(avAsset.url)
+                                                    self.mostRecentVideoURL = avAsset.url
+                                                    self.mostRecentPhoto = nil
+                                                }
+                                            }
+                                        } else {
+                                        self.mostRecentMedia = .photo(getImage(from: images[index]))
                                         self.mostRecentPhoto = getImage(from: images[index])
                                         self.mostRecentVideoURL = nil
                                         }
-                                        .contextMenu {
+                                        }
+                                        .contextMenu { 
                                             Button(action: {
                                                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                                                 self.selectedImage = images[index]
@@ -245,7 +287,7 @@ func loadImages() {
                                                                 mostRecentPhoto = nil
                                                                 mostRecentVideoURL = nil
                                                             } else {
-                                                                fetchMostRecentPhoto()
+                                                                fetchMostRecentMedia()
                                                             }
                                                         }
                                                     } else if let error = error {
@@ -366,11 +408,5 @@ class PhotoLibraryChangeObserver: NSObject, PHPhotoLibraryChangeObserver, Observ
         DispatchQueue.main.async {
             self.onChange?()
         }
-    }
-}
-
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
     }
 }
