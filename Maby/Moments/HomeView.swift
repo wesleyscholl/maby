@@ -64,6 +64,7 @@ struct HomeView: View {
     @State private var isFullScreen = false
     @State private var player: AVPlayer? = nil
     @State private var mostRecentMedia: PhotoOrVideoMedia?
+    @State private var selectedVideoID: String?
 
     let imageData = Array(repeating: "lilyan", count: 20)
 
@@ -183,26 +184,35 @@ func fetchMostRecentMedia() {
                                     }
                                 }
                         case .video(let videoURL):
-                            ZStack {
-                                VideoPlayer(player: AVPlayer(url: videoURL))
-                                    .allowsHitTesting(true)
+                                VideoPlayer(player: player)
+                                    .id(selectedVideoID)
                                     .scaledToFill()
                                     .frame(width: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35, height: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35)
                                     .cornerRadius(8)
                                     .shadow(color: lightGray, radius: 4)
                                     .onTapGesture {
-                                        player = AVPlayer(url: videoURL)
                                         withAnimation {
                                             isFullScreen.toggle()
                                         }
-                                        if player?.rate == 0 {
+                                    }
+                                    .onAppear {
+                                            print("Playing video")
+                                            player = AVPlayer(url: videoURL)
+                                            print(player)
                                             player?.play()
-                                        } else {
+                                    }
+                                    .onDisappear {
+                                            print("Pausing video")
+                                            print(player)
                                             player?.pause()
+                                    }
+                                    .onChange(of: selectedVideoID) { newValue in
+                                        if let videoURL = mostRecentVideoURL {
+                                            player = AVPlayer(url: videoURL)
+                                            player?.play()
                                         }
                                     }
-                                }
-                        }
+                    }
                 } else if let asset = images.first {
                     Image(uiImage: getImage(from: asset))
                         .resizable()
@@ -257,12 +267,15 @@ func fetchMostRecentMedia() {
                                                     self.mostRecentMedia = .video(avAsset.url)
                                                     self.mostRecentVideoURL = avAsset.url
                                                     self.mostRecentPhoto = nil
+                                                    self.player = AVPlayer(url: avAsset.url)
+                                                    self.selectedVideoID = asset.localIdentifier
                                                 }
                                             }
                                         } else {
                                         self.mostRecentMedia = .photo(getImage(from: images[index]))
                                         self.mostRecentPhoto = getImage(from: images[index])
                                         self.mostRecentVideoURL = nil
+                                        self.player = nil
                                         }
                                         }
                                         .contextMenu { 
