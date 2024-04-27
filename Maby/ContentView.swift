@@ -18,6 +18,10 @@ struct ContentView: View {
         NavigationView {
             TabView {
                 if !babies.isEmpty {
+                    HomeView()
+                        .tabItem {
+                            Label("Home", systemImage: "house")
+                        }
                     AddEventListView()
                         .tabItem {
                             Label("Add event", systemImage: "plus")
@@ -42,10 +46,7 @@ struct ContentView: View {
                         .tabItem {
                             Label("Test", systemImage: "figure.child.circle.fill")
                         }
-                    HomeView()
-                        .tabItem {
-                            Label("Home", systemImage: "house")
-                        }
+                    
 //                        .navigationBarHidden(true)
                 }
             }
