@@ -69,6 +69,8 @@ struct HomeView: View {
     @State private var selectedAsset: ObservablePHAsset? 
     @State private var isUpdatingFavoriteStatus = false
     @State private var hasFetchedMedia = false
+    @State private var observableAssets = [String: ObservablePHAsset]()
+    @State private var selectedImageIdentifier: String?
 
     let imageData = Array(repeating: "lilyan", count: 20)
 
@@ -98,6 +100,7 @@ func loadImages() {
                 DispatchQueue.main.async {
                     if !self.images.contains(object) {
                         self.images.append(object)
+                        self.observableAssets[object.localIdentifier] = ObservablePHAsset(asset: object)
                     }
                     if object.mediaType == .video {
                         manager.requestAVAsset(forVideo: object, options: nil) { (avAsset, _, _) in
@@ -203,21 +206,23 @@ class ObservablePHAsset: ObservableObject {
 
 private func buttonsView(for asset: ObservablePHAsset) -> some View {
     HStack(spacing: 60) {
-        Button {
-            selectedAsset?.updateFavoriteStatus()
-        } label: {
-            Image(systemName: selectedAsset?.isFavorite == true ? "heart.fill" : "heart")
-                .font(.system(size: 24))
-                .foregroundColor(selectedAsset?.isFavorite == true ? colorPink : .white)
-                .scaleEffect(isPressed ? 4.0 : 1.0)
-                .animation(.easeInOut(duration: 0.5), value: isPressed)
-        }
-        .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
-            withAnimation {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                isPressed = pressing
+     if let identifier = selectedImageIdentifier, let asset = observableAssets[identifier] {
+            Button {
+                asset.updateFavoriteStatus()
+            } label: {
+                Image(systemName: asset.isFavorite == true ? "heart.fill" : "heart")
+                    .font(.system(size: 24))
+                    .foregroundColor(asset.isFavorite == true ? colorPink : .white)
+                    .scaleEffect(isPressed ? 4.0 : 1.0)
+                    .animation(.easeInOut(duration: 0.5), value: isPressed)
             }
-        }, perform: {})
+            .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
+                withAnimation {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    isPressed = pressing
+                }
+            }, perform: {})
+        }
     }
 }
     
@@ -286,10 +291,10 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                         .cornerRadius(8)
                         .shadow(color: lightGray, radius: 4)
                         .overlay(alignment: .bottom) {
-                            if let asset = selectedAsset {
-                                    buttonsView(for: asset)
-                                        .offset(x: 0, y: -20)
-                                }
+                             if let asset = selectedAsset {
+                            buttonsView(for: asset)
+                            .offset(x: 0, y: -20)
+                             }
                         }
                 } else {
                     Text("Tap + to add a photo or video")
@@ -332,6 +337,7 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                                         .shadow(color: lightGray, radius: 2)
                                         .onTapGesture {
                                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                        self.selectedImageIdentifier = asset.localIdentifier
                                         selectedAsset = ObservablePHAsset(asset: asset)
                                         if asset.mediaType == .video {
                                             PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
