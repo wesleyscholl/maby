@@ -424,7 +424,7 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                 Divider().overlay(mediumPink).opacity(0.25)
                 
                 Button(action: {
-                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
                     self.isPresented = true
                 }) {
                     ZStack() {
@@ -487,24 +487,23 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
         }.onAppear {
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
-        .navigationBarTitle("Joyful")
-        .navigationBarBackButtonHidden(true)
-        .navigationTitle("Joyful")
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarItems(leading: 
-        NavigationLink(destination: ParentView()) {
-        Image(systemName: "arrow.backward")
-            .foregroundColor(colorPink)
-    }.onTapGesture {
-                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-            },trailing: Button(action: {
-                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                    showPhotoPicker = true
-                }) {
-                    Image(systemName: "photo.badge.plus")
-                        .foregroundColor(colorPink)
-                }
-            )
+        // .navigationBarTitle("Joyful")
+        // .navigationBarTitleDisplayMode(.inline)
+        // .navigationBarBackButtonHidden(true)
+        // .navigationBarItems(leading:
+        // Image(systemName: "video.badge.plus")
+        //     .foregroundColor(colorPink)
+        //     .onTapGesture {
+        //         UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        //         self.isPresented = true
+        //     },trailing: Button(action: {
+        //             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        //             showPhotoPicker = true
+        //         }) {
+        //             Image(systemName: "photo.badge.plus")
+        //                 .foregroundColor(colorPink)
+        //         }
+        //     )
     }
 }
 

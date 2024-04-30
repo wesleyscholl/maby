@@ -2,6 +2,11 @@ import Aespa
 import SwiftUI
 import PhotosUI
 
+enum AssetType {
+    case video
+    case photo
+}
+
 struct VideoContentView: View {
     @Binding var isPresented: Bool
     @State var isRecording = false
@@ -85,17 +90,6 @@ struct VideoContentView: View {
                 Spacer()
                 ZStack {
                     HStack {
-                        // Album thumbnail + button
-//                        Button(action: { showGallery = true }) {
-//                            let coverImage = (
-//                                captureMode == .video
-//                                ? viewModel.videoAlbumCover
-//                                : viewModel.photoAlbumCover)
-//                            ?? Image("")
-//                            roundRectangleShape(with: coverImage, size: 55)
-//                        }
-//                        .shadow(radius: 5)
-//                        .contentShape(Rectangle())
                         Spacer()
                         Spacer()
                         // Position change + button
@@ -192,9 +186,4 @@ extension VideoContentView {
         }
         .frame(height: width)
     }
-}
-
-enum AssetType {
-    case video
-    case photo
 }
