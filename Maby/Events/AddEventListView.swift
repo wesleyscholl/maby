@@ -3,7 +3,7 @@ import MabyKit
 import SwiftUI
 
 struct AddEventListView: View {
-    @State private var isButtonTapped: Bool = false
+    // @State private var isButtonTapped: Bool = false
     var body: some View {
         List {
             BabyCard()
@@ -53,34 +53,35 @@ struct AddEventListView: View {
                     type: .vomit
                 )
             }
-        }.overlay(
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        // Handle button tap here
-                        isButtonTapped.toggle()
-                    }) {
-                        Image(systemName: "photo.badge.plus")
-                            .font(.system(size: 24))
-                            .frame(width: 56, height: 56)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(28)
-                            .padding()
-                            .shadow(color: Color.gray.opacity(0.5), radius: 0.2, x: 1, y: 1)
-                    }
-                }
-            }
-        )
+        }
+        // .overlay(
+        //     VStack {
+        //         Spacer()
+        //         HStack {
+        //             Spacer()
+        //             Button(action: {
+        //                 // Handle button tap here
+        //                 isButtonTapped.toggle()
+        //             }) {
+        //                 Image(systemName: "photo.badge.plus")
+        //                     .font(.system(size: 24))
+        //                     .frame(width: 56, height: 56)
+        //                     .background(Color.blue)
+        //                     .foregroundColor(.white)
+        //                     .cornerRadius(28)
+        //                     .padding()
+        //                     .shadow(color: Color.gray.opacity(0.5), radius: 0.2, x: 1, y: 1)
+        //             }
+        //         }
+        //     }
+        // )
         .onAppear {
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
-        .sheet(isPresented: $isButtonTapped) {
-                    // Present your sheet here
-            Text("Photo").font(.system(size: 30))
-        }
+        // .sheet(isPresented: $isButtonTapped) {
+        //             // Present your sheet here
+        //     Text("Photo").font(.system(size: 30))
+        // }
     }
 }
 

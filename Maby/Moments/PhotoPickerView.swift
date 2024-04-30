@@ -18,7 +18,13 @@ struct PhotoPickerView: UIViewControllerRepresentable {
         return picker
     }
 
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
+        if showPhotoPicker {
+            uiViewController.presentedViewController?.dismiss(animated: true, completion: nil)
+            uiViewController.presentedViewController?.present(uiViewController, animated: true, completion: nil)
+        }
+
+    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)

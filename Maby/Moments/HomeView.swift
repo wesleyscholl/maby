@@ -72,8 +72,6 @@ struct HomeView: View {
     @State private var observableAssets = [String: ObservablePHAsset]()
     @State private var selectedImageIdentifier: String?
 
-    let imageData = Array(repeating: "lilyan", count: 20)
-
     let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
     let mediumPink = Color(red: 255/255, green: 193/255, blue: 206/255)
     let lightPink = Color(red: 254/255, green: 242/255, blue: 242/255)
@@ -156,8 +154,9 @@ func fetchMostRecentMedia() {
                                 if !self.images.contains(asset) {
                                     self.images.insert(asset, at: 0)
                                 }
+                                self.selectedImageIdentifier = asset.localIdentifier
+                                self.hasFetchedMedia = true
                             }
-                            self.hasFetchedMedia = true
                         }
                     }
                 }
@@ -170,6 +169,7 @@ func fetchMostRecentMedia() {
                                 if !self.images.contains(asset) {
                                     self.images.insert(asset, at: 0)
                                 }
+                                self.selectedImageIdentifier = asset.localIdentifier
                                 self.hasFetchedMedia = true
                             }
                         }
@@ -484,10 +484,15 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                 .onAppear {
                     coordinator = Coordinator(self)
                 }
-        }.navigationBarTitle("Joyful")
+        }.onAppear {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        }
+        .navigationBarTitle("Joyful")
         .navigationBarBackButtonHidden(true)
+        .navigationTitle("Joyful")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarItems(leading: NavigationLink(destination: ParentView()) {
+        .navigationBarItems(leading: 
+        NavigationLink(destination: ParentView()) {
         Image(systemName: "arrow.backward")
             .foregroundColor(colorPink)
     }.onTapGesture {
@@ -499,7 +504,7 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                     Image(systemName: "photo.badge.plus")
                         .foregroundColor(colorPink)
                 }
-                )
+            )
     }
 }
 
