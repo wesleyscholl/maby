@@ -6,7 +6,7 @@ struct AddEventListView: View {
     // @State private var isButtonTapped: Bool = false
     var body: some View {
         List {
-            BabyCard()
+            BabyCard().clearBackground()
             Section("Feeding") {
                 AddEventButton<NursingEvent>(
                     "Add Breast Feeding",

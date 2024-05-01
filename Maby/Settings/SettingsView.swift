@@ -5,7 +5,7 @@ struct SettingsView: View {
     @State private var showingRemoveBaby = false
     
     private var sourceCodeUrl: URL {
-        return URL(string: "https://github.com/sleepyfran/maby/")!
+        return URL(string: "https://github.com/wesleyscholl/maby")!
     }
     
     private var version: String {
@@ -30,28 +30,23 @@ struct SettingsView: View {
         List {
             BabyCard()
                 .clearBackground()
-            
             Section("Baby") {
                 Button(action: { showingEditBaby.toggle() }) {
                     Label("Edit baby details", systemImage: "info.square.fill")
                 }
-                
                 Button(action: { showingRemoveBaby.toggle() }) {
                     Label("Remove baby", systemImage: "trash.square.fill")
                         .symbolRenderingMode(.multicolor)
                 }
             }
-            
             Section("About") {
                 Link(destination: sourceCodeUrl) {
                     Label("Open source code", systemImage: "arrow.up.right.square.fill")
                         .symbolRenderingMode(.multicolor)
                 }
             }
-            
             Section() {
                 Text("Joyful \(version)")
-                
                 Text(
                     "Made with \(Image(systemName: "heart.fill").symbolRenderingMode(.multicolor)) by Wesley Scholl"
                 )

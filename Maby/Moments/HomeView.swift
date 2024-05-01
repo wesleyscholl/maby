@@ -579,8 +579,6 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("Joyful")
-        .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(leading:
         Image(systemName: "video.badge.plus")
             .foregroundColor(colorPink)
