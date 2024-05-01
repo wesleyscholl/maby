@@ -64,7 +64,7 @@ struct ChartView: View {
     
     private func countEvents(for days: Int) -> [(String, Double)] {
         let startOfDay = Calendar.current.date(byAdding: .day, value: -days, to: Calendar.current.startOfDay(for: Date()))!
-        let endOfDay = Calendar.current.startOfDay(for: Date())
+    let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: Calendar.current.startOfDay(for: Date()))!
         var counts: [Double] = [0, 0, 0, 0, 0, 0, 0, 0]
         for section in events {
             for event in section {
