@@ -51,7 +51,8 @@ struct HomeView: View {
         return UIScreen.main.bounds.height
     }
     @Environment(\.colorScheme) var colorScheme
-    @State private var isPresented = false
+    @State private var isPhotoPresented = false
+    @State private var isVideoPresented = false
     @State private var images: [PHAsset] = []
     @State var showPhotoPicker = false
     @State private var mostRecentPhoto: UIImage?
@@ -425,7 +426,7 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                 
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    self.isPresented = true
+                    self.isPhotoPresented = true
                 }) {
                     ZStack() {
                         Circle()
@@ -467,14 +468,22 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                 }
                 .shadow(color: Color.black.opacity(0.2), radius: 10, x: 10, y: 10)
                 .shadow(color: Color.white.opacity(0.7), radius: 10, x: -5, y: -5)
-            }.sheet(isPresented: $isPresented) {
-                VideoContentView(isPresented: $isPresented)
+            }.sheet(isPresented: $isVideoPresented) {
+                VideoContentView(isPresented: $isVideoPresented, captureMode: .video)
             }
-            .onChange(of: isPresented) { newValue in
+            .sheet(isPresented: $isPhotoPresented) {
+                VideoContentView(isPresented: $isPhotoPresented, captureMode: .photo)
+            }
+            .onChange(of: isVideoPresented) { newValue in
             if !newValue {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
             }
-        }
+            }
+            .onChange(of: isPhotoPresented) { newValue in
+                if !newValue {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
+            }
             .sheet(isPresented: $showPhotoPicker) {
                 PhotoPickerView(media: $media, mostRecentVideoURL: $mostRecentVideoURL, mostRecentPhoto: $mostRecentPhoto, showPhotoPicker: $showPhotoPicker)
                     .onDisappear {
@@ -487,23 +496,23 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
         }.onAppear {
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
-        // .navigationBarTitle("Joyful")
-        // .navigationBarTitleDisplayMode(.inline)
-        // .navigationBarBackButtonHidden(true)
-        // .navigationBarItems(leading:
-        // Image(systemName: "video.badge.plus")
-        //     .foregroundColor(colorPink)
-        //     .onTapGesture {
-        //         UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        //         self.isPresented = true
-        //     },trailing: Button(action: {
-        //             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        //             showPhotoPicker = true
-        //         }) {
-        //             Image(systemName: "photo.badge.plus")
-        //                 .foregroundColor(colorPink)
-        //         }
-        //     )
+        .navigationBarBackButtonHidden(true)
+        .navigationTitle("Joyful")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarItems(leading:
+        Image(systemName: "video.badge.plus")
+            .foregroundColor(colorPink)
+            .onTapGesture {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                self.isVideoPresented = true
+            },trailing: Button(action: {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    showPhotoPicker = true
+                }) {
+                    Image(systemName: "photo.badge.plus")
+                        .foregroundColor(colorPink)
+                }
+            )
     }
 }
 

@@ -9,8 +9,7 @@ struct ContentView: View {
     private var babies: FetchedResults<Baby>
     @State private var showingAddBaby = false
     @State private var selectedIndex: Int = 0
-    @State private var isPresented = false
-    @State var showPhotoPicker = false
+    
     let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
 
     private let databaseUpdates = NotificationCenter.default.publisher(
@@ -57,17 +56,6 @@ struct ContentView: View {
 //                        .navigationBarHidden(true)
                 }
             }
-            .sheet(isPresented: $isPresented) {
-                VideoContentView(isPresented: $isPresented, captureMode: .video).onDisappear {
-                    UINotificationFeedbackGenerator().notificationOccurred(.success)
-                }
-            }
-//            .sheet(isPresented: $showPhotoPicker) {
-//                            PhotoPickerView(media: $media, mostRecentVideoURL: $mostRecentVideoURL, mostRecentPhoto: $mostRecentPhoto, showPhotoPicker: $showPhotoPicker)
-//                                .onDisappear {
-//                                    UINotificationFeedbackGenerator().notificationOccurred(.success)
-//                                }
-//                        }
             .tint(colorPink)
             .background(.black)
             .sheet(isPresented: $showingAddBaby) {
@@ -90,23 +78,22 @@ struct ContentView: View {
                     showingAddBaby = babies.isEmpty
                 }
             }
-            .navigationBarTitle("Joyful")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading:
-            Image(systemName: "video.badge.plus")
-                .foregroundColor(colorPink)
-                .onTapGesture {
-                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    self.isPresented = true // Assuming this triggers video picker
-                },trailing: Button(action: {
-                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                        showPhotoPicker = true
-                    }) {
-                        Image(systemName: "photo.badge.plus")
-                            .foregroundColor(colorPink)
-                    }
-            )
+        // .navigationBarTitle("Joyful")
+        //     .navigationBarBackButtonHidden(true)
+        //     .navigationBarItems(leading:
+        //     Image(systemName: "video.badge.plus")
+        //         .foregroundColor(colorPink)
+        //         .onTapGesture {
+        //             UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        //             self.isPresented = true // Assuming this triggers video picker
+        //         },trailing: Button(action: {
+        //                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        //                 showPhotoPicker = true
+        //             }) {
+        //                 Image(systemName: "photo.badge.plus")
+        //                     .foregroundColor(colorPink)
+        //             }
+        //     )
         }
         .navigationBarBackButtonHidden(true)
     }
