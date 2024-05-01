@@ -58,6 +58,8 @@ struct ContentView: View {
             }
             .tint(colorPink)
             .background(.black)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Joyful")
             .sheet(isPresented: $showingAddBaby) {
                 AddBabyView()
                     .interactiveDismissDisabled(true)
@@ -67,6 +69,7 @@ struct ContentView: View {
                 UITabBarItem.appearance().badgeColor = UIColor(colorPink)
                 UITabBar.appearance().backgroundColor = .systemGray4.withAlphaComponent(0.4)
                 UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor(colorPink)]
+                UINavigationBar.appearance().backgroundColor = .black
                 //UITabBar.appearance().scrollEdgeAppearance = UITabBarAppearance()
                 //Above API will kind of override other behaviour and bring the default UI for TabView
                 showingAddBaby = babies.isEmpty
