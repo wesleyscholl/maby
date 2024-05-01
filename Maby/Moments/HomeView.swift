@@ -43,6 +43,36 @@ class Coordinator: NSObject, PHPhotoLibraryChangeObserver {
     }
 }
 
+struct FullScreenImageView: View {
+    var image: UIImage
+    var body: some View {
+        Image(uiImage: image)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+    }
+}
+
+struct VideoPlayerView: View {
+    let url: URL
+    @State private var player: AVPlayer = AVPlayer()
+
+    var body: some View {
+        VideoPlayer(player: player)
+            .onAppear {
+                player.replaceCurrentItem(with: AVPlayerItem(url: url))
+                player.play()
+            }
+            .onDisappear {
+                player.pause()
+            }
+    }
+}
+
+enum SelectedMedia {
+    case image(UIImage)
+    case video(URL)
+}
+
 struct HomeView: View {
     public var screenWidth: CGFloat {
         return UIScreen.main.bounds.width
@@ -72,6 +102,8 @@ struct HomeView: View {
     @State private var hasFetchedMedia = false
     @State private var observableAssets = [String: ObservablePHAsset]()
     @State private var selectedImageIdentifier: String?
+    @State private var selectedMedia: SelectedMedia?
+    @State private var showingMedia = false
 
     let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
     let mediumPink = Color(red: 255/255, green: 193/255, blue: 206/255)
@@ -368,13 +400,58 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                                             }
                                             Button(action: {
                                                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                                                self.selectedImage = images[index]
-                                                self.showingImage = true
+                                                let asset = images[index]
+                                                if asset.mediaType == .image {
+                                                    PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: nil) { (image, _) in
+                                                        if let image = image {
+                                                            DispatchQueue.main.async {
+                                                                self.selectedMedia = .image(image)
+                                                                self.showingMedia = true
+                                                            }
+                                                        }
+                                                    }
+                                                } else if asset.mediaType == .video {
+                                                    PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
+                                                        if let urlAsset = avAsset as? AVURLAsset {
+                                                            DispatchQueue.main.async {
+                                                                self.selectedMedia = .video(urlAsset.url)
+                                                                self.showingMedia = true
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }) {
                                                 Text("View")
-                                                Image(systemName: "eye")
+                                                Image(systemName: "photo")
                                             }
                                             Button(action: {
+                                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                                let assetToRemove = images[index]
+                                                images.remove(at: index)
+                                                PHPhotoLibrary.shared().performChanges({
+                                                    if let album = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: nil).firstObject {
+                                                        let changeRequest = PHAssetCollectionChangeRequest(for: album)
+                                                        changeRequest?.removeAssets([assetToRemove] as NSArray)
+                                                    }
+                                                }, completionHandler: { success, error in
+                                                    if success {
+                                                        DispatchQueue.main.async {
+                                                            if images.isEmpty {
+                                                                mostRecentPhoto = nil
+                                                                mostRecentVideoURL = nil
+                                                            } else {
+                                                                fetchMostRecentMedia()
+                                                            }
+                                                        }
+                                                    } else if let error = error {
+                                                        print("Error removing asset from album: \(error)")
+                                                    }
+                                                })
+                                            }) {
+                                                Text("Remove from Album")
+                                                Image(systemName: "trash")
+                                            }
+                                            Button(role: .destructive, action: {
                                                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                                 let assetToDelete = images[index]
                                                 images.remove(at: index)
@@ -409,13 +486,18 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                                             }
                                         }
                                     }
-                                    }.sheet(isPresented: $showingImage) {
-                                    if let selectedImage = selectedImage {
-                                    PhotoView(image: selectedImage, images: images).onDisappear {
-                                        UINotificationFeedbackGenerator().notificationOccurred(.success)
                                     }
-                                }
-                            }
+                                    .sheet(isPresented: $showingMedia) {
+                                        if let selectedMedia = selectedMedia {
+                                            switch selectedMedia {
+                                            case .image(let image):
+                                                FullScreenImageView(image: image)
+                                            case .video(let videoURL):
+                                                VideoPlayerView(url: videoURL)
+                                                .edgesIgnoringSafeArea(.all)
+                                            }
+                                        }
+                                    }
                         }
                     }
                     .flipsForRightToLeftLayoutDirection(true)
