@@ -427,9 +427,13 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                                             Button(action: {
                                                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                                 let assetToRemove = images[index]
+                                                DispatchQueue.main.async {
                                                 images.remove(at: index)
+                                                }
                                                 PHPhotoLibrary.shared().performChanges({
-                                                    if let album = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: nil).firstObject {
+                                                    let fetchOptions = PHFetchOptions()
+                                                    fetchOptions.predicate = NSPredicate(format: "title = %@", "JOYFUL")
+                                                    if let album = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions).firstObject {
                                                         let changeRequest = PHAssetCollectionChangeRequest(for: album)
                                                         changeRequest?.removeAssets([assetToRemove] as NSArray)
                                                     }

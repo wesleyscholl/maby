@@ -21,7 +21,26 @@ struct JournalView: View {
                 Section(header: JournalSectionHeader(date: section.id)) {
                     ForEach(section) { event in
                         EventView(event: event)
+                        .swipeActions(edge: .trailing) {
+                            Button(role: .destructive, action: {
+//                                    eventToEdit = event
+//                                    isShowingEditSheet = true
+                                    print("delete")
+                                }){
+                                    Label("Delete", systemImage: "trash")
+                                }.tint(.red)
+                            }
+                        .swipeActions(edge: .trailing) {
+                                Button(action: {
+//                                    eventToEdit = event
+//                                    isShowingEditSheet = true
+                                    print("edit")
+                                }){
+                                    Label("Edit", systemImage: "pencil")
+                                }.tint(.yellow)
+                            }
                     }
+                    
                     .onDelete { indexSet in
                         eventService.delete(events: indexSet.map { section[$0] })
                         UINotificationFeedbackGenerator().notificationOccurred(.success)
