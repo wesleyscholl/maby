@@ -60,6 +60,8 @@
 		EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */ = {isa = PBXBuildFile; fileRef = EB33083D2BC8891F000202C0 /* baby-girl-1.png */; };
 		EB3308492BCAE04C000202C0 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = EB3308482BCAE04C000202C0 /* SwiftUICharts */; };
 		EB8F00982BE4D2530057B6AE /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00972BE4D2530057B6AE /* Notification.swift */; };
+		EB8F009A2BE65F310057B6AE /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00992BE65F300057B6AE /* NotificationScheduler.swift */; };
+		EB8F009C2BE66EB40057B6AE /* ReminderSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F009B2BE66EB40057B6AE /* ReminderSectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -139,6 +141,8 @@
 		EB0CCD182BDA9239009ADE4B /* Aespa */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Aespa; path = ../as/Aespa; sourceTree = "<group>"; };
 		EB33083D2BC8891F000202C0 /* baby-girl-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "baby-girl-1.png"; path = "../../Downloads/baby-girl-1.png"; sourceTree = "<group>"; };
 		EB8F00972BE4D2530057B6AE /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		EB8F00992BE65F300057B6AE /* NotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduler.swift; sourceTree = "<group>"; };
+		EB8F009B2BE66EB40057B6AE /* ReminderSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +234,8 @@
 			children = (
 				C9B95D08287CA02400ADC43F /* View+Extensions.swift */,
 				C9B95D13287DAD9C00ADC43F /* ButtonStyles.swift */,
+				EB8F00992BE65F300057B6AE /* NotificationScheduler.swift */,
+				EB8F009B2BE66EB40057B6AE /* ReminderSectionView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -457,6 +463,7 @@
 				EB0CCD0B2BD7352F009ADE4B /* ParentView.swift in Sources */,
 				EB0CCD092BD734F5009ADE4B /* PhotoPickerView.swift in Sources */,
 				C90F725A2888432A005FF2AB /* EditBabyDetailsView.swift in Sources */,
+				EB8F009A2BE65F310057B6AE /* NotificationScheduler.swift in Sources */,
 				EB0CCCD12BD522C9009ADE4B /* ProfileScreenViewModel.swift in Sources */,
 				C9B95D09287CA02400ADC43F /* View+Extensions.swift in Sources */,
 				C90F72602888B0DE005FF2AB /* AddBottleFeedEventView.swift in Sources */,
@@ -469,6 +476,7 @@
 				C9B95D0D287DA6C800ADC43F /* JournalView.swift in Sources */,
 				EB0CCD152BD73877009ADE4B /* GalleryView.swift in Sources */,
 				EB8F00982BE4D2530057B6AE /* Notification.swift in Sources */,
+				EB8F009C2BE66EB40057B6AE /* ReminderSectionView.swift in Sources */,
 				EB0CCD172BD928BC009ADE4B /* Timeline.swift in Sources */,
 				C9ED2EA9287C745100BA3228 /* ContentView.swift in Sources */,
 				EB0CCD112BD737EF009ADE4B /* Direction.swift in Sources */,

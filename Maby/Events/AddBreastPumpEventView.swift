@@ -1,6 +1,7 @@
 import Factory
 import MabyKit
 import SwiftUI
+import UserNotifications
 
 struct AddBreastPumpEventView: View {
     @Injected(Container.eventService) private var eventService
@@ -9,17 +10,28 @@ struct AddBreastPumpEventView: View {
     @State private var endDate = Date.now
     @State private var breast = BreastPumpEvent.Breast.left
     @State private var amount: Int32 = 100
+    @State private var setReminder = false
+    @State private var reminderInterval = 30
     
     var body: some View {
         AddEventView(
             "🥛 Breast Pumping",
             onAdd: {
-                eventService.addBreastPump(
+                let result = eventService.addBreastPump(
                     start: startDate,
                     end: endDate,
                     breast: breast,
                     amount: amount
                 )
+                if setReminder, case .success(let event) = result {
+                    NotificationScheduler.scheduleNotification(
+                        for: event.end,
+                        title: "Breast Pumping Reminder",
+                        body: "It's time to pump milk.",
+                        interval: reminderInterval
+                        )
+                }
+                return result.map { $0 as Event }
             }
         ) {
             Section("Time") {
@@ -48,6 +60,7 @@ struct AddBreastPumpEventView: View {
                 TextField("Amount in milliliters", value: $amount, format: .number)
                     .keyboardType(.numberPad)
             }
+            ReminderSectionView(setReminder: $setReminder, reminderInterval: $reminderInterval)
         }
     }
 }
