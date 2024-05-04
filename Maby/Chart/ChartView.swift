@@ -62,14 +62,23 @@ struct ChartView: View {
         }
     }
     
-    private func countEvents(for days: Int) -> [(String, Double)] {
-        let startOfDay = Calendar.current.date(byAdding: .day, value: -days, to: Calendar.current.startOfDay(for: Date()))!
-    let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: Calendar.current.startOfDay(for: Date()))!
-        var counts: [Double] = [0, 0, 0, 0, 0, 0, 0, 0]
-        for section in events {
-            for event in section {
-                if event.start >= startOfDay && event.start < endOfDay {
-                    switch String(describing: type(of: event)) {
+private func countEvents(for days: Int) -> [(String, Double)] {
+    let now = Date()
+    let startOfDay: Date
+    let endOfDay: Date
+    if days == 0 {
+        startOfDay = Calendar.current.date(byAdding: .minute, value: 1, to: Calendar.current.startOfDay(for: now))!
+        endOfDay = now
+    } else {
+        startOfDay = Calendar.current.date(byAdding: .day, value: -days, to: now)!
+        endOfDay = now
+    }
+    var counts: [Double] = [0, 0, 0, 0, 0, 0, 0, 0]
+    for section in events {
+        for event in section {
+            let eventStartDate = Calendar.current.startOfDay(for: event.start)
+            if eventStartDate >= startOfDay && eventStartDate < endOfDay {
+                switch String(describing: type(of: event)) {
                     case eventTypes[0]:
                         counts[0] += 1
                     case eventTypes[1]:
