@@ -3,6 +3,21 @@ import Factory
 import MabyKit
 import SwiftUI
 
+extension UINavigationBar {
+    static func configureAppearance(color: UIColor, backgroundColor: UIColor) {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = backgroundColor.withAlphaComponent(0.75)
+        appearance.backgroundEffect = nil
+        appearance.titleTextAttributes = [.foregroundColor: color]
+        appearance.largeTitleTextAttributes = [.foregroundColor: color]
+
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+    }
+}
+
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     @FetchRequest(fetchRequest: allBabies)
@@ -81,6 +96,9 @@ struct ContentView: View {
                     showingAddBaby = babies.isEmpty
                 }
             }
+        }
+        .onAppear {
+            UINavigationBar.configureAppearance(color: .white, backgroundColor: .black)
         }
         .navigationBarBackButtonHidden(true)
     }
