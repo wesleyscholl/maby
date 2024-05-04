@@ -49,6 +49,9 @@ struct FullScreenImageView: View {
         Image(uiImage: image)
             .resizable()
             .aspectRatio(contentMode: .fit)
+            .onDisappear {
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+            }
     }
 }
 
@@ -64,6 +67,7 @@ struct VideoPlayerView: View {
             }
             .onDisappear {
                 player.pause()
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
             }
     }
 }
@@ -110,6 +114,7 @@ struct HomeView: View {
     let lightPink = Color(red: 254/255, green: 242/255, blue: 242/255)
     let darkColor = Color(red: 78/255, green: 0/255, blue: 25/255)
     let lightGray = Color(red: 230/255, green: 224/255, blue: 225/255)
+    let darkGrey = Color(red: 128/255, green: 128/255, blue: 128/255)
 
 func loadImages() {
     self.images = []
@@ -330,15 +335,20 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                              }
                         }
                 } else {
-                    Text("Tap + to add a photo or video")
-                        .font(.system(size: 35))
-                        .foregroundStyle(.white)
+                    ZStack {
+                    Rectangle()
+                        .fill(LinearGradient(gradient:
+                                                Gradient(colors: [mediumPink, lightPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
                         .frame(width: screenHeight * 0.35, height: screenHeight * 0.35)
                         .cornerRadius(8)
                         .shadow(color: lightGray, radius: 4)
-                        .multilineTextAlignment(.center)
-                        .background(LinearGradient(mediumPink, lightPink))
-                    }
+                            Text("Tap + to add a photo or video")
+                                .font(.system(size: 35))
+                                .foregroundStyle(darkGrey)
+                                .multilineTextAlignment(.center)
+                                .padding()
+                        }
+                }
                 }.onAppear {
                     fetchMostRecentMedia()
                     if let videoURL = mostRecentVideoURL {

@@ -81,22 +81,6 @@ struct ContentView: View {
                     showingAddBaby = babies.isEmpty
                 }
             }
-        // .navigationBarTitle("Joyful")
-        //     .navigationBarBackButtonHidden(true)
-        //     .navigationBarItems(leading:
-        //     Image(systemName: "video.badge.plus")
-        //         .foregroundColor(colorPink)
-        //         .onTapGesture {
-        //             UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        //             self.isPresented = true // Assuming this triggers video picker
-        //         },trailing: Button(action: {
-        //                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        //                 showPhotoPicker = true
-        //             }) {
-        //                 Image(systemName: "photo.badge.plus")
-        //                     .foregroundColor(colorPink)
-        //             }
-        //     )
         }
         .navigationBarBackButtonHidden(true)
     }

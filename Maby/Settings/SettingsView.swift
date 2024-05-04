@@ -45,10 +45,13 @@ struct SettingsView: View {
                         .symbolRenderingMode(.multicolor)
                 }
             }
+            Section("Notifications") {
+                NotificationView()
+            }
             Section() {
                 Text("Joyful \(version)")
                 Text(
-                    "Made with \(Image(systemName: "heart.fill").symbolRenderingMode(.multicolor)) by Wesley Scholl"
+                    "Made with \(Image(systemName: "heart.fill").symbolRenderingMode(.palette)) by Wesley Scholl"
                 )
             }
             .foregroundColor(.gray)
