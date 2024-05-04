@@ -20,10 +20,7 @@ struct JournalView: View {
                 ForEach(events) { section in
                     Section(header: JournalSectionHeader(date: section.id)) {
                         ForEach(section) { event in
-                        GeometryReader { geometry in
                             EventView(event: event)
-                                .scaleEffect(self.scaleFactor(for: geometry.frame(in: .global).minY, maxY: geometry.frame(in: .global).maxY))
-                                .animation(.easeInOut(duration: 0.25))
                                 .contextMenu {
                                     Button(action: {
                                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
@@ -31,7 +28,6 @@ struct JournalView: View {
                                     }) {
                                         Text("Favorite")
                                         Image(systemName: "heart.fill")
-                                    }
                                 }
                             }   
                         }
@@ -45,22 +41,6 @@ struct JournalView: View {
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             }
     }
-    private func scaleFactor(for minY: CGFloat, maxY: CGFloat) -> CGFloat {
-    let startScale: CGFloat = 0.9
-    let endScale: CGFloat = 1.0
-    let lowerBound: CGFloat = UIScreen.main.bounds.height - 75 // Start scaling up 100 points from the bottom of the screen
-    let upperBound: CGFloat = 25 // Start scaling down 100 points from the top of the screen
-
-    if maxY > lowerBound {
-        let progress = (lowerBound - maxY) / 100
-        return startScale + (endScale - startScale) * progress
-    } else if minY < upperBound {
-        let progress = minY / 100
-        return startScale + (endScale - startScale) * progress
-    } else {
-        return endScale
-    }
-}
 }
 
 private struct JournalSectionHeader: View {

@@ -11,6 +11,7 @@ struct AddEventView<Content: View, E: Event>: View {
     let title: LocalizedStringKey
     let form: Content
     let onAdd: () -> Result<E, AddError>
+    let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
     
     @State private var buttonState: ButtonState = .resting
     
@@ -37,9 +38,9 @@ struct AddEventView<Content: View, E: Event>: View {
         case .resting:
             fallthrough
         case .loading:
-            return Color.blue
+            return colorPink
         case .success:
-            return Color.green
+            return Color.white
         case .errored:
             return Color.red
         }
@@ -94,7 +95,7 @@ struct AddEventView<Content: View, E: Event>: View {
                     case .loading:
                         Text("Adding...")
                     case .success:
-                        Text("Added!")
+                        Text("Added!").foregroundStyle(.black)
                     case .errored:
                         Text("Try again...")
                     }
