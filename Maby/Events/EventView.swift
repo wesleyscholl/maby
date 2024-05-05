@@ -133,7 +133,7 @@ private struct BottleEventDetails: View {
     }
     
     var body: some View {
-        Text("Fed **\(formattedAmount)** from bottle at \(formatDate(for: event))")
+        Text("Fed 👩🏻‍🍼 **\(formattedAmount)** from bottle at \(formatDate(for: event))")
     }
 }
 
@@ -143,13 +143,13 @@ private struct DiaperEventDetails: View {
     var diaperTypeText: String {
         switch event.type {
         case .mixed:
-            return "Mixed diaper"
+            return "Mixed diaper 💦💩"
         case .wet:
-            return "Wet diaper"
+            return "Wet diaper 💦"
         case .clean:
-            return "Clean diaper"
+            return "Clean diaper 🧷"
         case .dirty:
-            return "Dirty diaper"
+            return "Dirty diaper 💩"
         }
     }
     
@@ -239,7 +239,7 @@ private struct NursingEventDetails: View {
     }
     
     var body: some View {
-        Text("Nursed from \(breastText) at \(formattedDate) for **\(duration)**")
+        Text("Nursed 🤱🏼 from \(breastText) at \(formattedDate) for **\(duration)**")
     }
 }
 
@@ -256,7 +256,7 @@ private struct SleepEventDetails: View {
     }
     
     var body: some View {
-        Text("Slept for **\(duration)** at \(formatDate(for: event))")
+        Text("Slept 💤 for **\(duration)** at \(formatDate(for: event))")
     }
 }
 
@@ -313,7 +313,7 @@ private struct BreastPumpEventDetails: View {
     }
     
     var body: some View {
-        Text("Pumped **\(formattedAmount)** from \(breastText) at \(formattedDate) for **\(duration)**")
+        Text("Pumped **\(formattedAmount)** 🍼 from \(breastText) at \(formattedDate) for **\(duration)**")
     }
 }
 
