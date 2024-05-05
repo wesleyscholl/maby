@@ -45,9 +45,6 @@ struct SettingsView: View {
                         .symbolRenderingMode(.multicolor)
                 }
             }
-            Section("Notifications") {
-                NotificationView()
-            }
             Section() {
                 Text("Joyful \(version)")
                 Text(

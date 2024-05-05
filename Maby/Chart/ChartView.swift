@@ -2,7 +2,6 @@ import SwiftUI
 import CoreData
 import Factory
 import MabyKit
-import SwiftUICharts
 
 struct ChartView: View {
     @Injected(Container.eventService) private var eventService
