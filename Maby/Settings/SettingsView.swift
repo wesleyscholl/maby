@@ -32,17 +32,34 @@ struct SettingsView: View {
                 .clearBackground()
             Section("Baby") {
                 Button(action: { showingEditBaby.toggle() }) {
-                    Label("Edit baby details", systemImage: "info.square.fill")
+                    Label {
+                        Text("Edit baby details")
+                            .foregroundColor(.white)
+                    } icon: {
+                        Image(systemName: "info.square.fill")
+                    }
+                    .symbolRenderingMode(.multicolor)
                 }
                 Button(action: { showingRemoveBaby.toggle() }) {
-                    Label("Remove baby", systemImage: "trash.square.fill")
-                        .symbolRenderingMode(.multicolor)
+                    Label {
+                        Text("Remove baby")
+                            .foregroundColor(.white)
+                    } icon: {
+                        Image(systemName: "trash.square.fill")
+                    }
+                    .symbolRenderingMode(.multicolor)
                 }
             }
             Section("About") {
                 Link(destination: sourceCodeUrl) {
-                    Label("Open source code", systemImage: "arrow.up.right.square.fill")
-                        .symbolRenderingMode(.multicolor)
+                    Label {
+                        Text("Open source code")
+                            .foregroundColor(.white)
+                    } icon: {
+                        Image(systemName: "arrow.up.right.square.fill")
+                        .foregroundColor(.green)
+                    }
+                    .symbolRenderingMode(.multicolor)
                 }
             }
             Section() {
