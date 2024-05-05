@@ -6,7 +6,6 @@ import SwiftUICharts
 
 struct ChartView: View {
     @Injected(Container.eventService) private var eventService
-
     @SectionedFetchRequest<Date, Event>(
         sectionIdentifier: \.groupStart,
         sortDescriptors: [
@@ -116,6 +115,7 @@ struct CustomBarChartView: View {
     let data: [(String, Double)]
     let colors: [Color]
     @State private var animate = false
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -158,7 +158,7 @@ struct CustomBarChartView: View {
             Rectangle()
                 .fill(colors[index % colors.count])
                 .cornerRadius(5)
-                .shadow(color: .black, radius: 1, x: 0, y: 1)
+                .shadow(color: colorScheme == .dark ? .black : .gray, radius: 1, x: 0, y: 1)
                 .scaleEffect(y: self.animate ? 1 : 0, anchor: .bottom)
                 .frame(width: UIScreen.main.bounds.width * 0.18, height: CGFloat(data[index].1 == 0 ? 1 : data[index].1 * UIScreen.main.bounds.height * 0.01))
                 .onAppear {
