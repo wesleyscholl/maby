@@ -9,8 +9,8 @@ extension UINavigationBar {
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = backgroundColor.withAlphaComponent(0.75)
         appearance.backgroundEffect = nil
-        appearance.titleTextAttributes = [.foregroundColor: color]
-        appearance.largeTitleTextAttributes = [.foregroundColor: color]
+        // appearance.titleTextAttributes = [.foregroundColor: color]
+        // appearance.largeTitleTextAttributes = [.foregroundColor: color]
 
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance
@@ -97,8 +97,19 @@ struct ContentView: View {
                 }
             }
         }
+        .onChange(of: colorScheme) { value in
+            if value == .dark {
+                UINavigationBar.configureAppearance(color: .white, backgroundColor: UIColor.systemGray6)
+            } else {
+                UINavigationBar.configureAppearance(color: .black, backgroundColor: UIColor.systemGray6)
+            }
+        }
         .onAppear {
-            UINavigationBar.configureAppearance(color: .white, backgroundColor: .black)
+            if colorScheme == .dark {
+                UINavigationBar.configureAppearance(color: .white, backgroundColor: UIColor.systemGray6)
+            } else {
+                UINavigationBar.configureAppearance(color: .black, backgroundColor: UIColor.systemGray6)
+            }
         }
         .navigationBarBackButtonHidden(true)
     }
