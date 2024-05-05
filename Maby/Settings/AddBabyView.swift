@@ -27,7 +27,8 @@ struct AddBabyView: View {
         ) {
             Button(action: onAdd) {
                 Text("Add baby")
-            }.shadow(color: .gray.opacity(0.5), radius: 0.5, x: 0.5, y: 0.5)
+            }
+            .shadow(color: .gray.opacity(0.5), radius: 0.5, x: 0.5, y: 0.5)
         }
     }
 }

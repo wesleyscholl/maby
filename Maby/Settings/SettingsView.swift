@@ -46,9 +46,10 @@ struct SettingsView: View {
                             .foregroundColor(.white)
                     } icon: {
                         Image(systemName: "trash.square.fill")
-                    }
+        
                     .symbolRenderingMode(.multicolor)
                 }
+            }
             }
             Section("About") {
                 Link(destination: sourceCodeUrl) {

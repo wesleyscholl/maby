@@ -336,18 +336,27 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                         }
                 } else {
                     ZStack {
-                    Rectangle()
-                        .fill(LinearGradient(gradient:
-                                                Gradient(colors: [mediumPink, lightPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
-                        .frame(width: screenHeight * 0.35, height: screenHeight * 0.35)
-                        .cornerRadius(8)
-                        .shadow(color: lightGray, radius: 4)
-                            Text("Tap + to add a photo or video")
-                                .font(.system(size: 35))
-                                .foregroundStyle(darkGrey)
-                                .multilineTextAlignment(.center)
-                                .padding()
+                        Rectangle()
+                            .fill(LinearGradient(gradient:
+                                                    Gradient(colors: [mediumPink, lightPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                            .frame(width: screenHeight * 0.35, height: screenHeight * 0.35)
+                            .cornerRadius(8)
+                            .shadow(color: lightGray, radius: 4)
+                        HStack {
+                            Text("Tap")
+                            Image(systemName: "camera")
+                            Text(",")
+                            Image(systemName: "video.badge.plus")
+                            Text("or")
+                            Image(systemName: "photo.badge.plus")
+                            Text("to add photos or videos")
                         }
+                        .font(.system(size: 18))
+                        .foregroundStyle(darkGrey)
+                        .multilineTextAlignment(.center)
+                        .padding()
+                        .opacity(0.7)
+                    }
                 }
                 }.onAppear {
                     fetchMostRecentMedia()
