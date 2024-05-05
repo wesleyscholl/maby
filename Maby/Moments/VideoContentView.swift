@@ -43,6 +43,7 @@ struct VideoContentView: View {
                     .pickerStyle(.segmented)
                     .cornerRadius(8)
                     .frame(width: 200)
+                    .colorScheme(.dark) 
                     .onChange(of: captureMode) { newValue in
                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
                     }
@@ -64,7 +65,7 @@ struct VideoContentView: View {
                         }) {
                             Image(systemName: flashMode == .off ? "bolt.slash.fill" : flashMode == .on ? "bolt.fill" : "bolt.badge.automatic")
                                 .resizable()
-                                .foregroundColor(colorScheme == .dark ? .white : colorPink)
+                                .foregroundColor(.white)
                                 .scaledToFit()
                                 .frame(width: 30, height: 30)
                                 .padding(20)
@@ -79,7 +80,7 @@ struct VideoContentView: View {
                         }) {
                             Image(systemName: "gear")
                                 .resizable()
-                                .foregroundColor(colorScheme == .dark ? .white : colorPink)
+                                .foregroundColor(.white)
                                 .scaledToFit()
                                 .frame(width: 30, height: 30)
                         }
@@ -100,7 +101,7 @@ struct VideoContentView: View {
                         }) {
                             Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
                                 .resizable()
-                                .foregroundColor(colorScheme == .dark ? .white : colorPink)
+                                .foregroundColor(.white)
                                 .scaledToFit()
                                 .frame(width: 40, height: 40)
                                 .padding(20)
@@ -158,7 +159,7 @@ extension VideoContentView {
             .cornerRadius(10)
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(colorScheme == .dark ? .white : colorPink, lineWidth: 1)
+                    .stroke(.white, lineWidth: 1)
             )
             .padding(20)
     }
@@ -168,7 +169,7 @@ extension VideoContentView {
         ZStack(alignment: .center) {
             if captureMode == .video {
                 Circle()
-                    .strokeBorder(colorScheme == .dark ? .white : mediumPink, lineWidth: 3)
+                    .strokeBorder(.white, lineWidth: 3)
                     .frame(width: width)
                 RoundedRectangle(cornerRadius: isRecording ? 5 : width * 0.425)
                             .fill(.red)
@@ -176,11 +177,11 @@ extension VideoContentView {
                             .animation(.easeInOut)
             } else {
                 Circle()
-                    .strokeBorder(colorScheme == .dark ? .white : mediumPink, lineWidth: 3)
+                    .strokeBorder(.white, lineWidth: 3)
                     .frame(width: width)
                 
                 Circle()
-                    .fill(colorScheme == .dark ? .white : colorPink)
+                    .fill(.white)
                     .frame(width: width * 0.85)
             }
         }
