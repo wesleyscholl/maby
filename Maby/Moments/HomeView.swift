@@ -108,6 +108,8 @@ struct HomeView: View {
     @State private var selectedImageIdentifier: String?
     @State private var selectedMedia: SelectedMedia?
     @State private var showingMedia = false
+    @State private var symbolAnimate = false
+    @State private var isTextVisible = false
 
     let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
     let mediumPink = Color(red: 255/255, green: 193/255, blue: 206/255)
@@ -354,13 +356,17 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                             .foregroundStyle(darkGrey)
                             .multilineTextAlignment(.center)
                             .padding()
-                            .opacity(0.7)
+                            .opacity(isTextVisible ? 0.7 : 0)
+                            .animation(Animation.easeIn.delay(0.5))
                             Text("to add photos or videos")
                                 .font(.system(size: 18))
                                 .foregroundStyle(darkGrey)
                                 .multilineTextAlignment(.center)
-                                .opacity(0.7)
+                                .opacity(isTextVisible ? 0.7 : 0)
+                                .animation(Animation.easeIn.delay(1))
                         }
+                    }.onAppear {
+                        isTextVisible = true
                     }
                 }
                 }.onAppear {
@@ -534,50 +540,76 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                 }
                 Divider().overlay(mediumPink).opacity(0.25)
                 
-                Button(action: {
-                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    self.isPhotoPresented = true
-                }) {
-                    ZStack() {
-                        Circle()
-                            .fill(lightPink)
-                            .frame(width: 120, height: 120)
-                            .shadow(color: Color(UIColor.lightGray), radius: 5, x: 0, y: 5)
-                            .overlay(
-                                Circle()
-                                    .stroke(mediumPink, lineWidth: 4)
-                                    .shadow(color: Color(lightGray), radius: 3, x: 0, y: 3)
-                            )
-                            .overlay(
-                                Circle()
-                                    .stroke(Color.white, lineWidth: 2)
-                                    .scaleEffect(0.9)
-                            )
-                        Image(systemName: "camera")
-                            .font(.system(size: 50))
-                            .frame(width: 100, height: 100)
-                            .shadow(color: Color(lightGray), radius: 1, x: 0, y: 1)
-                            .background(LinearGradient(mediumPink, lightPink))
-                            .foregroundStyle(colorPink)
-                            .clipShape(Circle())
-                            .overlay(
-                                Circle()
-                                    .stroke(Color.gray, lineWidth: 4)
-                                    .blur(radius: 4)
-                                    .offset(x: 2, y: 2)
-                                    .mask(Circle().fill(LinearGradient(Color.black, Color.clear)))
-                            )
-                            .overlay(
-                                Circle()
-                                    .stroke(Color.white, lineWidth: 8)
-                                    .blur(radius: 4)
-                                    .offset(x: -2, y: -2)
-                                    .mask(Circle().fill(LinearGradient(Color.clear, Color.black)))
-                            )
+                HStack {
+                    Spacer()
+                    Spacer()
+                    Spacer()
+                    Button(action: {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        self.isPhotoPresented = true
+                    }) {
+                        ZStack() {
+                            Circle()
+                                .fill(lightPink)
+                                .frame(width: 120, height: 120)
+                                .shadow(color: Color(UIColor.lightGray), radius: 5, x: 0, y: 5)
+                                .overlay(
+                                    Circle()
+                                        .stroke(mediumPink, lineWidth: 4)
+                                        .shadow(color: Color(lightGray), radius: 3, x: 0, y: 3)
+                                )
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color.white, lineWidth: 2)
+                                        .scaleEffect(0.9)
+                                )
+                            Image(systemName: "camera")
+                                .font(.system(size: 50))
+                                .frame(width: 100, height: 100)
+                                .shadow(color: Color(lightGray), radius: 1, x: 0, y: 1)
+                                .background(LinearGradient(mediumPink, lightPink))
+                                .foregroundStyle(colorPink)
+                                .clipShape(Circle())
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color.gray, lineWidth: 4)
+                                        .blur(radius: 4)
+                                        .offset(x: 2, y: 2)
+                                        .mask(Circle().fill(LinearGradient(Color.black, Color.clear)))
+                                )
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color.white, lineWidth: 8)
+                                        .blur(radius: 4)
+                                        .offset(x: -2, y: -2)
+                                        .mask(Circle().fill(LinearGradient(Color.clear, Color.black)))
+                                )
+                        }
                     }
+                    .shadow(color: Color.black.opacity(0.2), radius: 10, x: 10, y: 10)
+                    .shadow(color: Color.white.opacity(0.7), radius: 10, x: -5, y: -5)
+                    Spacer()
+                    Button(action: {
+                        withAnimation {
+                            symbolAnimate.toggle()
+                        }
+                    }) {
+                        Image(systemName: "photo.stack.fill")
+                            .font(.system(size: 30))
+                            .frame(width: 50, height: 50)
+                            .shadow(color: Color(lightGray), radius: 1, x: 0, y: 1)
+                            .foregroundStyle(darkGrey)
+                            .onAppear {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                        withAnimation {
+                                            symbolAnimate.toggle()
+                                        }
+                                    }
+                                }
+                                .symbolEffect(.variableColor.reversing.cumulative, options: .repeat(3).speed(3), value: symbolAnimate)
+                    }
+                    Spacer()
                 }
-                .shadow(color: Color.black.opacity(0.2), radius: 10, x: 10, y: 10)
-                .shadow(color: Color.white.opacity(0.7), radius: 10, x: -5, y: -5)
             }.sheet(isPresented: $isVideoPresented) {
                 VideoContentView(isPresented: $isVideoPresented, captureMode: .video)
             }
