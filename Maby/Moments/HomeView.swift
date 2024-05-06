@@ -342,20 +342,25 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                             .frame(width: screenHeight * 0.35, height: screenHeight * 0.35)
                             .cornerRadius(8)
                             .shadow(color: lightGray, radius: 4)
-                        HStack {
-                            Text("Tap")
-                            Image(systemName: "camera")
-                            Text(",")
-                            Image(systemName: "video.badge.plus")
-                            Text("or")
-                            Image(systemName: "photo.badge.plus")
+                        VStack {
+                            HStack {
+                                Text("Tap")
+                                Image(systemName: "camera")
+                                Image(systemName: "video.badge.plus")
+                                Text("or")
+                                Image(systemName: "photo.badge.plus")
+                            }
+                            .font(.system(size: 18))
+                            .foregroundStyle(darkGrey)
+                            .multilineTextAlignment(.center)
+                            .padding()
+                            .opacity(0.7)
                             Text("to add photos or videos")
+                                .font(.system(size: 18))
+                                .foregroundStyle(darkGrey)
+                                .multilineTextAlignment(.center)
+                                .opacity(0.7)
                         }
-                        .font(.system(size: 18))
-                        .foregroundStyle(darkGrey)
-                        .multilineTextAlignment(.center)
-                        .padding()
-                        .opacity(0.7)
                     }
                 }
                 }.onAppear {

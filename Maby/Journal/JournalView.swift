@@ -6,6 +6,8 @@ import SwiftUI
 struct JournalView: View {
     @Injected(Container.eventService) private var eventService
     
+    let darkGrey = Color(red: 128/255, green: 128/255, blue: 128/255)
+    @Binding var selectedIndex: Int
     @SectionedFetchRequest<Date, Event>(
         sectionIdentifier: \.groupStart,
         sortDescriptors: [
@@ -14,9 +16,30 @@ struct JournalView: View {
     ) private var events: SectionedFetchResults<Date, Event>
 
     var body: some View {
-            List {
-                BabyCard()
-                    .clearBackground()
+        List {
+            BabyCard()
+                .clearBackground()
+            if events.isEmpty {
+                Section("No Events") {
+                   Button(action: {
+                        selectedIndex = 1
+                    }) {
+                            HStack {
+                                Text("Tap")
+                                Image(systemName: "plus")
+                                Text("to add some")
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .foregroundColor(darkGrey)
+                                    .opacity(0.7)
+                            }.font(.system(size: 16))
+                                .foregroundStyle(darkGrey)
+                                .multilineTextAlignment(.center)
+                                .opacity(0.7)
+                        
+                    }
+                }
+            } else {
                 ForEach(events) { section in
                     Section(header: JournalSectionHeader(date: section.id)) {
                         ForEach(section) { event in
@@ -28,8 +51,8 @@ struct JournalView: View {
                                     }) {
                                         Text("Favorite")
                                         Image(systemName: "heart.fill")
-                                }
-                            }   
+                                    }
+                                }   
                         }
                         .onDelete { indexSet in
                             eventService.delete(events: indexSet.map { section[$0] })
@@ -37,7 +60,8 @@ struct JournalView: View {
                         }
                     }
                 }
-            }.onAppear {
+            }
+        }.onAppear {
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             }
     }
@@ -51,9 +75,9 @@ private struct JournalSectionHeader: View {
     }
 }
 
-struct JournalView_Previews: PreviewProvider {
-    static var previews: some View {
-        JournalView()
-            .mockedDependencies()
-    }
-}
+//struct JournalView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        JournalView()
+//            .mockedDependencies()
+//    }
+//}

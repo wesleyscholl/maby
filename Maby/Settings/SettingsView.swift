@@ -3,6 +3,7 @@ import SwiftUI
 struct SettingsView: View {
     @State private var showingEditBaby = false
     @State private var showingRemoveBaby = false
+    @Environment(\.colorScheme) var colorScheme
     
     private var sourceCodeUrl: URL {
         return URL(string: "https://github.com/wesleyscholl/maby")!
@@ -34,7 +35,7 @@ struct SettingsView: View {
                 Button(action: { showingEditBaby.toggle() }) {
                     Label {
                         Text("Edit baby details")
-                            .foregroundColor(.white)
+                            .foregroundColor(colorScheme == .dark ? .white : .gray)
                     } icon: {
                         Image(systemName: "info.square.fill")
                     }
@@ -43,7 +44,7 @@ struct SettingsView: View {
                 Button(action: { showingRemoveBaby.toggle() }) {
                     Label {
                         Text("Remove baby")
-                            .foregroundColor(.white)
+                            .foregroundColor(colorScheme == .dark ? .white : .gray)
                     } icon: {
                         Image(systemName: "trash.square.fill")
         
@@ -55,7 +56,7 @@ struct SettingsView: View {
                 Link(destination: sourceCodeUrl) {
                     Label {
                         Text("Open source code")
-                            .foregroundColor(.white)
+                            .foregroundColor(colorScheme == .dark ? .white : .gray)
                     } icon: {
                         Image(systemName: "arrow.up.right.square.fill")
                         .foregroundColor(.green)

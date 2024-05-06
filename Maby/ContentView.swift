@@ -47,11 +47,11 @@ struct ContentView: View {
                         .tabItem {
                             Label("Events", systemImage: "plus")
                         }.tag(1)
-                    JournalView()
+                    JournalView(selectedIndex: $selectedIndex)
                         .tabItem {
                             Label("Journal", systemImage: "book")
                         }.tag(2)
-                    ChartView()
+                    ChartView(selectedIndex: $selectedIndex)
                         .tabItem {
                             Label("Summary", systemImage: "chart.bar.xaxis")
                         }.tag(3)

@@ -11,7 +11,8 @@ struct ChartView: View {
             SortDescriptor(\.start, order: .reverse)
         ]
     ) private var events: SectionedFetchResults<Date, Event>
-    
+    let darkGrey = Color(red: 128/255, green: 128/255, blue: 128/255)
+    @Binding var selectedIndex: Int
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -42,19 +43,41 @@ struct ChartView: View {
                 Text("Totals").font(.title3)
             }
             .headerProminence(.increased)
-            Section(header: Text("Daily Events")){
-                ForEach(events) { section in
-                    Section(header: JournalSectionHeader(date: section.id)) {
-                        ForEach(section) { event in
-                            EventView(event: event)
-                        }
-                        .onDelete { indexSet in
-                            eventService.delete(events: indexSet.map { section[$0] })
-                            UINotificationFeedbackGenerator().notificationOccurred(.success)
-                        }
+            if events.isEmpty {
+                Section("No Events") {
+                   Button(action: {
+                        selectedIndex = 1
+                    }) {
+                            HStack {
+                                Text("Tap")
+                                Image(systemName: "plus")
+                                Text("to add some")
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .foregroundColor(darkGrey)
+                                    .opacity(0.7)
+                            }.font(.system(size: 16))
+                                .foregroundStyle(darkGrey)
+                                .multilineTextAlignment(.center)
+                                .opacity(0.7)
+                        
                     }
                 }
-            }.headerProminence(.increased)
+            } else {
+                Section(header: Text("Daily Events")){
+                    ForEach(events) { section in
+                        Section(header: JournalSectionHeader(date: section.id)) {
+                            ForEach(section) { event in
+                                EventView(event: event)
+                            }
+                            .onDelete { indexSet in
+                                eventService.delete(events: indexSet.map { section[$0] })
+                                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                            }
+                        }
+                    }
+                }.headerProminence(.increased)
+            }
         }.onAppear {
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
