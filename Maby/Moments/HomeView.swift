@@ -272,7 +272,8 @@ struct HomeView: View {
         let mainButton: some View = Image(systemName: "plus")
             .foregroundColor(.white)
               .padding()
-              .background(colorPink)
+              .background(LinearGradient(gradient:
+                            Gradient(colors: [mediumPink, colorPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
               .clipShape(Circle())
               .font(.system(size: 25))
               .frame(width: 60, height: 60)
@@ -280,21 +281,30 @@ struct HomeView: View {
               .animation(.spring())
         
         let buttons: [AnyView] = [
-          AnyView(Button(action: { /* Action for button 1 */ }) {
+            AnyView(Button(action: {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                self.showPhotoPicker = true
+            }) {
               Image(systemName: "photo.stack")
             }
             .frame(width: 50, height: 50)
             .background(lightPink)
             .clipShape(Circle())
             .foregroundColor(colorPink)),
-          AnyView(Button(action: { /* Action for button 2 */ }) {
+          AnyView(Button(action: {
+              UIImpactFeedbackGenerator(style: .light).impactOccurred()
+              self.isPhotoPresented = true
+          }) {
               Image(systemName: "photo.badge.plus.fill")
             }
             .frame(width: 50, height: 50)
             .background(mediumPink)
             .clipShape(Circle())
             .foregroundColor(darkGrey)),
-          AnyView(Button(action: { /* Action for button 3 */ }) {
+          AnyView(Button(action: {
+              UIImpactFeedbackGenerator(style: .light).impactOccurred()
+              self.isVideoPresented = true
+          }) {
               Image(systemName: "video.fill.badge.plus")
             }
             .frame(width: 50, height: 50)
@@ -574,7 +584,7 @@ struct HomeView: View {
                     .padding(10)
                 }
                 Divider().overlay(mediumPink).opacity(0.25)
-                
+                Spacer().frame(height: 20)
                 HStack {
                     Spacer()
                     Button(action: {
@@ -583,9 +593,10 @@ struct HomeView: View {
                         }
                     }) {
                         Image(systemName: "photo.stack.fill")
+                            .hidden()
                             .foregroundColor(colorPink)
                             .font(.system(size: 30))
-                            .frame(width: 50, height: 50)
+                            .frame(width: 60, height: 60)
 //                            .shadow(color: Color(lightGray), radius: 1, x: 0, y: 1)
                             .foregroundStyle(darkGrey)
                             .onAppear {
@@ -595,8 +606,12 @@ struct HomeView: View {
                                     }
                                 }
                             }
-                            .symbolEffect(.variableColor.reversing.cumulative, options: .repeat(3).speed(3), value: symbolAnimate)
+                            .symbolEffect(.bounce.down, options: .repeat(2).speed(0.1), value: symbolAnimate)
+//                            .symbolEffect(.variableColor.reversing.cumulative, options: .repeat(3).speed(3), value: symbolAnimate)
                     }
+                    Spacer()
+                    Spacer()
+                    Spacer()
                     Spacer()
                     Button(action: {
                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
@@ -643,66 +658,17 @@ struct HomeView: View {
                     .shadow(color: Color.black.opacity(0.2), radius: 10, x: 10, y: 10)
                     .shadow(color: Color.white.opacity(0.7), radius: 10, x: -5, y: -5)
                     Spacer()
-//                    ZStack {
-                    FloatingButton(mainButtonView: mainButton, buttons: buttons, isOpen: $isOpen)
-                        .circle()
-                        .startAngle(3/2 * .pi)
-                        .endAngle(2 * .pi)
-                        .radius(70)
-                        .layoutDirection(.counterClockwise)
-                        .delays(delayDelta: 0.1)
-                        .shadow(color: Color(.gray).opacity(0.3), radius: 2, x: 0, y: 2)
-                          // Child buttons - adjust positions and styles as needed
-//                          if isOpen {
-//                            Button(action: { /* Action for button 1 */ }) {
-//                              Text("Button 1")
-//                            }
-//                            .position(x: UIScreen.main.bounds.width / 2 + 50, y: UIScreen.main.bounds.height / 2)
-//                            .frame(width: 50, height: 50)
-//                            .background(Color.blue)
-//                            .clipShape(Circle())
-//                            .foregroundColor(.white)
-//
-//                            Button(action: { /* Action for button 2 */ }) {
-//                              Text("Button 2")
-//                            }
-//                            .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2 + 50)
-//                            .frame(width: 50, height: 50)
-//                            .background(Color.green)
-//                            .clipShape(Circle())
-//                            .foregroundColor(.white)
-//
-//                            Button(action: { /* Action for button 3 */ }) {
-//                              Text("Button 3")
-//                            }
-//                            .position(x: UIScreen.main.bounds.width / 2 - 50, y: UIScreen.main.bounds.height / 2)
-//                            .frame(width: 50, height: 50)
-//                            .background(Color.red)
-//                            .clipShape(Circle())
-//                            .foregroundColor(.white)
-//                          }
-//                        }
-                      
-                    //                    Button(action: {
-                    //                        withAnimation {
-                    //                            symbolAnimate.toggle()
-                    //                        }
-                    //                    }) {
-                    //                        Image(systemName: "photo.stack.fill")
-                    //                            .foregroundColor(colorPink)
-                    //                            .font(.system(size: 30))
-                    //                            .frame(width: 50, height: 50)
-                    //                            .shadow(color: Color(lightGray), radius: 1, x: 0, y: 1)
-                    //                            .foregroundStyle(darkGrey)
-                    //                            .onAppear {
-                    //                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                    //                                        withAnimation {
-                    //                                            symbolAnimate.toggle()
-                    //                                        }
-                    //                                    }
-                    //                                }
-                    //                                .symbolEffect(.variableColor.reversing.cumulative, options: .repeat(3).speed(3), value: symbolAnimate)
-                    //                    }
+                    Spacer()
+                    Spacer()
+                    Spacer()
+                        FloatingButton(mainButtonView: mainButton, buttons: buttons, isOpen: $isOpen)
+                            .circle()
+                            .startAngle(3/2 * .pi)
+                            .endAngle(2 * .pi)
+                            .radius(70)
+                            .layoutDirection(.counterClockwise)
+                            .delays(delayDelta: 0.1)
+                            .shadow(color: Color(.gray).opacity(0.3), radius: 2, x: 0, y: 2)
                     Spacer()
                 }
             }.sheet(isPresented: $isVideoPresented) {
@@ -741,7 +707,7 @@ struct HomeView: View {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 self.isVideoPresented = true
             },trailing: Button(action: {
-                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 showPhotoPicker = true
             }) {
                 Image(systemName: "photo.badge.plus")
