@@ -36,19 +36,19 @@ struct BabyDetailsFormView<Confirm: View>: View {
                         .scaledToFit()
                         .frame(maxWidth: .infinity)
                         .frame(height: 80)
-                    } else if gender == .girl {
-                        Image("baby-girl-1")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 80)
-                    } else if gender == .other {
-                        Image("baby-g")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 80)
-                    }
+                } else if gender == .girl {
+                    Image("baby-girl-1")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 80)
+                } else if gender == .other {
+                    Image("baby-g")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 80)
+                }
                 Text(title)
                     .font(.largeTitle)
             }
@@ -75,10 +75,10 @@ struct BabyDetailsFormView<Confirm: View>: View {
                     displayedComponents: [.date]
                 )
             }
-            
             confirmButton
                 .disabled(disableButton)
                 .buttonStyle(.primaryAction)
+                .tint(gender == .boy ? .blue : gender == .girl ? Color(red: 246/255, green: 138/255, blue: 162/255) : .orange)
                 .clearBackground()
         }
     }

@@ -5,6 +5,7 @@ import PhotosUI
 import AVKit
 import AVFoundation
 import Combine
+import FloatingButton
 
 extension LinearGradient {
     init(_ colors: Color...) {
@@ -101,7 +102,7 @@ struct HomeView: View {
     @State private var mostRecentMedia: PhotoOrVideoMedia?
     @State private var selectedVideoID: String?
     @State private var isPressed = false
-    @State private var selectedAsset: ObservablePHAsset? 
+    @State private var selectedAsset: ObservablePHAsset?
     @State private var isUpdatingFavoriteStatus = false
     @State private var hasFetchedMedia = false
     @State private var observableAssets = [String: ObservablePHAsset]()
@@ -110,163 +111,197 @@ struct HomeView: View {
     @State private var showingMedia = false
     @State private var symbolAnimate = false
     @State private var isTextVisible = false
-
+    @State private var isOpen = false
+    
     let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
     let mediumPink = Color(red: 255/255, green: 193/255, blue: 206/255)
     let lightPink = Color(red: 254/255, green: 242/255, blue: 242/255)
     let darkColor = Color(red: 78/255, green: 0/255, blue: 25/255)
     let lightGray = Color(red: 230/255, green: 224/255, blue: 225/255)
     let darkGrey = Color(red: 128/255, green: 128/255, blue: 128/255)
-
-func loadImages() {
-    self.images = []
-    let fetchOptions = PHFetchOptions()
-    fetchOptions.predicate = NSPredicate(format: "title = %@", "JOYFUL")
-    let collections = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
-    if let joyfulAlbum = collections.firstObject {
-        let assets = PHAsset.fetchAssets(in: joyfulAlbum, options: nil)
-        let reversedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted { $0.creationDate ?? Date() > $1.creationDate ?? Date() }
-        let manager = PHImageManager.default()
-        let option = PHImageRequestOptions()
-        option.isSynchronous = true
-        option.resizeMode = .none
-        option.deliveryMode = .highQualityFormat
-        let operationQueue = OperationQueue()
-        operationQueue.qualityOfService = .userInitiated
-        operationQueue.addOperation {
-            for object in reversedAssets {
-                DispatchQueue.main.async {
-                    if !self.images.contains(object) {
-                        self.images.append(object)
-                        self.observableAssets[object.localIdentifier] = ObservablePHAsset(asset: object)
-                    }
-                    if object.mediaType == .video {
-                        manager.requestAVAsset(forVideo: object, options: nil) { (avAsset, _, _) in
-                            if let avAsset = avAsset as? AVURLAsset {
-                                DispatchQueue.main.async {
-                                    let newMedia = Media(asset: object, videoURL: avAsset.url)
-                                    if !self.media.contains(where: { $0.asset == newMedia.asset }) {
-                                        self.media.append(newMedia)
-                                    }
-                                    self.mostRecentVideoURL = avAsset.url
-                                }
-                            }
-                        }
-                    }
-                }
-                DispatchQueue.main.async {
-                    if let firstAsset = self.images.first {
-                        self.selectedAsset = ObservablePHAsset(asset: firstAsset)
-                    }
-                }
-            }
-        }
-    }
-}
-        
-        func getImage(from asset: PHAsset) -> UIImage {
+    
+    func loadImages() {
+        self.images = []
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.predicate = NSPredicate(format: "title = %@", "JOYFUL")
+        let collections = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
+        if let joyfulAlbum = collections.firstObject {
+            let assets = PHAsset.fetchAssets(in: joyfulAlbum, options: nil)
+            let reversedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted { $0.creationDate ?? Date() > $1.creationDate ?? Date() }
             let manager = PHImageManager.default()
             let option = PHImageRequestOptions()
             option.isSynchronous = true
-            var thumbnail = UIImage()
-            manager.requestImage(for: asset, targetSize: CGSize(width: 300, height: 300), contentMode: .aspectFill, options: option, resultHandler: {(result, info)->Void in
-                thumbnail = result!
-            })
-            return thumbnail
-        }
-
-func fetchMostRecentMedia() {
-    if !hasFetchedMedia && !isUpdatingFavoriteStatus {
-    DispatchQueue.global(qos: .userInteractive).async {
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.predicate = NSPredicate(format: "title = %@", "JOYFUL")
-        let albums = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
-        if let album = albums.firstObject {
-            let assets = PHAsset.fetchAssets(in: album, options: nil)
-            let sortedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted { $0.creationDate ?? Date() > $1.creationDate ?? Date() }
-            if let asset = sortedAssets.first {
-                if asset.mediaType == .image {
-                    PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: screenWidth * 0.95, height: screenHeight * 0.35), contentMode: .aspectFill, options: nil) { image, _ in
-                        DispatchQueue.main.async {
-                            if let image = image {
-                                self.mostRecentPhoto = image
-                                self.mostRecentMedia = .photo(image)
-                                if !self.images.contains(asset) {
-                                    self.images.insert(asset, at: 0)
+            option.resizeMode = .none
+            option.deliveryMode = .highQualityFormat
+            let operationQueue = OperationQueue()
+            operationQueue.qualityOfService = .userInitiated
+            operationQueue.addOperation {
+                for object in reversedAssets {
+                    DispatchQueue.main.async {
+                        if !self.images.contains(object) {
+                            self.images.append(object)
+                            self.observableAssets[object.localIdentifier] = ObservablePHAsset(asset: object)
+                        }
+                        if object.mediaType == .video {
+                            manager.requestAVAsset(forVideo: object, options: nil) { (avAsset, _, _) in
+                                if let avAsset = avAsset as? AVURLAsset {
+                                    DispatchQueue.main.async {
+                                        let newMedia = Media(asset: object, videoURL: avAsset.url)
+                                        if !self.media.contains(where: { $0.asset == newMedia.asset }) {
+                                            self.media.append(newMedia)
+                                        }
+                                        self.mostRecentVideoURL = avAsset.url
+                                    }
                                 }
-                                self.selectedImageIdentifier = asset.localIdentifier
-                                self.hasFetchedMedia = true
                             }
                         }
                     }
-                }
-                if asset.mediaType == .video {
-                    PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
-                        if let avAsset = avAsset as? AVURLAsset {
-                            DispatchQueue.main.async {
-                                self.mostRecentVideoURL = avAsset.url
-                                self.mostRecentMedia = .video(avAsset.url)
-                                if !self.images.contains(asset) {
-                                    self.images.insert(asset, at: 0)
-                                }
-                                self.selectedImageIdentifier = asset.localIdentifier
-                                self.hasFetchedMedia = true
-                            }
+                    DispatchQueue.main.async {
+                        if let firstAsset = self.images.first {
+                            self.selectedAsset = ObservablePHAsset(asset: firstAsset)
                         }
                     }
                 }
             }
         }
     }
-}
-}
-
-class ObservablePHAsset: ObservableObject {
-    @Published var isFavorite: Bool
-    let asset: PHAsset
-    init(asset: PHAsset) {
-        self.asset = asset
-        self.isFavorite = asset.isFavorite
-    }
-    func updateFavoriteStatus() {
-        PHPhotoLibrary.shared().performChanges({
-            let changeRequest = PHAssetChangeRequest(for: self.asset)
-            changeRequest.isFavorite = !self.asset.isFavorite
-        }, completionHandler: { success, error in
-            if success {
-                DispatchQueue.main.async {
-                    self.isFavorite = !self.isFavorite
-                }
-            } else if let error = error {
-                print("Error updating asset: \(error)")
-            }
+    
+    func getImage(from asset: PHAsset) -> UIImage {
+        let manager = PHImageManager.default()
+        let option = PHImageRequestOptions()
+        option.isSynchronous = true
+        var thumbnail = UIImage()
+        manager.requestImage(for: asset, targetSize: CGSize(width: 300, height: 300), contentMode: .aspectFill, options: option, resultHandler: {(result, info)->Void in
+            thumbnail = result!
         })
+        return thumbnail
     }
-}
-
-private func buttonsView(for asset: ObservablePHAsset) -> some View {
-    HStack(spacing: 60) {
-     if let identifier = selectedImageIdentifier, let asset = observableAssets[identifier] {
-            Button {
-                asset.updateFavoriteStatus()
-            } label: {
-                Image(systemName: asset.isFavorite == true ? "heart.fill" : "heart")
-                    .font(.system(size: 24))
-                    .foregroundColor(asset.isFavorite == true ? colorPink : .white)
-                    .scaleEffect(isPressed ? 4.0 : 1.0)
-                    .animation(.easeInOut(duration: 0.5), value: isPressed)
-            }
-            .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
-                withAnimation {
-                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    isPressed = pressing
+    
+    func fetchMostRecentMedia() {
+        if !hasFetchedMedia && !isUpdatingFavoriteStatus {
+            DispatchQueue.global(qos: .userInteractive).async {
+                let fetchOptions = PHFetchOptions()
+                fetchOptions.predicate = NSPredicate(format: "title = %@", "JOYFUL")
+                let albums = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
+                if let album = albums.firstObject {
+                    let assets = PHAsset.fetchAssets(in: album, options: nil)
+                    let sortedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted { $0.creationDate ?? Date() > $1.creationDate ?? Date() }
+                    if let asset = sortedAssets.first {
+                        if asset.mediaType == .image {
+                            PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: screenWidth * 0.95, height: screenHeight * 0.35), contentMode: .aspectFill, options: nil) { image, _ in
+                                DispatchQueue.main.async {
+                                    if let image = image {
+                                        self.mostRecentPhoto = image
+                                        self.mostRecentMedia = .photo(image)
+                                        if !self.images.contains(asset) {
+                                            self.images.insert(asset, at: 0)
+                                        }
+                                        self.selectedImageIdentifier = asset.localIdentifier
+                                        self.hasFetchedMedia = true
+                                    }
+                                }
+                            }
+                        }
+                        if asset.mediaType == .video {
+                            PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
+                                if let avAsset = avAsset as? AVURLAsset {
+                                    DispatchQueue.main.async {
+                                        self.mostRecentVideoURL = avAsset.url
+                                        self.mostRecentMedia = .video(avAsset.url)
+                                        if !self.images.contains(asset) {
+                                            self.images.insert(asset, at: 0)
+                                        }
+                                        self.selectedImageIdentifier = asset.localIdentifier
+                                        self.hasFetchedMedia = true
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-            }, perform: {})
+            }
         }
     }
-}
+    
+    class ObservablePHAsset: ObservableObject {
+        @Published var isFavorite: Bool
+        let asset: PHAsset
+        init(asset: PHAsset) {
+            self.asset = asset
+            self.isFavorite = asset.isFavorite
+        }
+        func updateFavoriteStatus() {
+            PHPhotoLibrary.shared().performChanges({
+                let changeRequest = PHAssetChangeRequest(for: self.asset)
+                changeRequest.isFavorite = !self.asset.isFavorite
+            }, completionHandler: { success, error in
+                if success {
+                    DispatchQueue.main.async {
+                        self.isFavorite = !self.isFavorite
+                    }
+                } else if let error = error {
+                    print("Error updating asset: \(error)")
+                }
+            })
+        }
+    }
+    
+    private func buttonsView(for asset: ObservablePHAsset) -> some View {
+        HStack(spacing: 60) {
+            if let identifier = selectedImageIdentifier, let asset = observableAssets[identifier] {
+                Button {
+                    asset.updateFavoriteStatus()
+                } label: {
+                    Image(systemName: asset.isFavorite == true ? "heart.fill" : "heart")
+                        .font(.system(size: 24))
+                        .foregroundColor(asset.isFavorite == true ? colorPink : .white)
+                        .scaleEffect(isPressed ? 4.0 : 1.0)
+                        .animation(.easeInOut(duration: 0.5), value: isPressed)
+                }
+                .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
+                    withAnimation {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        isPressed = pressing
+                    }
+                }, perform: {})
+            }
+        }
+    }
     
     var body: some View {
+        let mainButton: some View = Image(systemName: "plus")
+            .foregroundColor(.white)
+              .padding()
+              .background(colorPink)
+              .clipShape(Circle())
+              .font(.system(size: 25))
+              .frame(width: 60, height: 60)
+              .rotationEffect(.degrees(isOpen ? 45 : 0))
+              .animation(.spring())
+        
+        let buttons: [AnyView] = [
+          AnyView(Button(action: { /* Action for button 1 */ }) {
+              Image(systemName: "photo.stack")
+            }
+            .frame(width: 50, height: 50)
+            .background(lightPink)
+            .clipShape(Circle())
+            .foregroundColor(colorPink)),
+          AnyView(Button(action: { /* Action for button 2 */ }) {
+              Image(systemName: "photo.badge.plus.fill")
+            }
+            .frame(width: 50, height: 50)
+            .background(mediumPink)
+            .clipShape(Circle())
+            .foregroundColor(darkGrey)),
+          AnyView(Button(action: { /* Action for button 3 */ }) {
+              Image(systemName: "video.fill.badge.plus")
+            }
+            .frame(width: 50, height: 50)
+            .background(colorPink)
+            .clipShape(Circle())
+            .foregroundColor(.white))
+        ]
         NavigationView {
             VStack(spacing: 10) {
                 VStack {
@@ -286,94 +321,94 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                                 }
                                 .overlay(alignment: .bottom) {
                                     if let asset = selectedAsset {
-                                    buttonsView(for: asset)
-                                        .offset(x: 0, y: -20)
-                                }
+                                        buttonsView(for: asset)
+                                            .offset(x: 0, y: -20)
+                                    }
                                 }
                         case .video(let videoURL):
-                                VideoPlayer(player: player)
-                                    .id(selectedVideoID)
-                                    .scaledToFill()
-                                    .frame(width: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35, height: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35)
-                                    .cornerRadius(8)
-                                    .shadow(color: lightGray, radius: 4)
-                                    .onTapGesture {
-                                        withAnimation {
-                                            isFullScreen.toggle()
-                                        }
+                            VideoPlayer(player: player)
+                                .id(selectedVideoID)
+                                .scaledToFill()
+                                .frame(width: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35, height: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35)
+                                .cornerRadius(8)
+                                .shadow(color: lightGray, radius: 4)
+                                .onTapGesture {
+                                    withAnimation {
+                                        isFullScreen.toggle()
                                     }
-                                    .onAppear {
-                                            player = AVPlayer(url: videoURL)
-                                            player?.play()
-                                    }
-                                    .onDisappear {
-                                            player?.pause()
-                                    }
-                                    .onChange(of: selectedVideoID) { newValue in
-                                        if let videoURL = mostRecentVideoURL {
-                                            player = AVPlayer(url: videoURL)
-                                            player?.play()
-                                        }
-                                    }
-                                    .overlay(alignment: .bottom) {
-                                        if let asset = selectedAsset {
-                                    buttonsView(for: asset)
-                                        .offset(x: 0, y: -20)
                                 }
+                                .onAppear {
+                                    player = AVPlayer(url: videoURL)
+                                    player?.play()
+                                }
+                                .onDisappear {
+                                    player?.pause()
+                                }
+                                .onChange(of: selectedVideoID) { newValue in
+                                    if let videoURL = mostRecentVideoURL {
+                                        player = AVPlayer(url: videoURL)
+                                        player?.play()
                                     }
-                    }
-                } else if let asset = images.first {
-                    Image(uiImage: getImage(from: asset))
-                        .resizable()
-                        .scaledToFill()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: screenHeight * 0.35, height: screenHeight * 0.35)
-                        .cornerRadius(8)
-                        .shadow(color: lightGray, radius: 4)
-                        .overlay(alignment: .bottom) {
-                             if let asset = selectedAsset {
-                            buttonsView(for: asset)
-                            .offset(x: 0, y: -20)
-                             }
+                                }
+                                .overlay(alignment: .bottom) {
+                                    if let asset = selectedAsset {
+                                        buttonsView(for: asset)
+                                            .offset(x: 0, y: -20)
+                                    }
+                                }
                         }
-                } else {
-                    ZStack {
-                        Rectangle()
-                            .fill(LinearGradient(gradient:
-                                                    Gradient(colors: [mediumPink, lightPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                    } else if let asset = images.first {
+                        Image(uiImage: getImage(from: asset))
+                            .resizable()
+                            .scaledToFill()
+                            .aspectRatio(contentMode: .fill)
                             .frame(width: screenHeight * 0.35, height: screenHeight * 0.35)
                             .cornerRadius(8)
                             .shadow(color: lightGray, radius: 4)
-                        VStack {
-                            HStack {
-                                Text("Tap")
-                                Image(systemName: "camera")
-                                Image(systemName: "video.badge.plus")
-                                Text("or")
-                                Image(systemName: "photo.badge.plus")
+                            .overlay(alignment: .bottom) {
+                                if let asset = selectedAsset {
+                                    buttonsView(for: asset)
+                                        .offset(x: 0, y: -20)
+                                }
                             }
-                            .font(.system(size: 18))
-                            .foregroundStyle(darkGrey)
-                            .multilineTextAlignment(.center)
-                            .padding()
-                            .opacity(isTextVisible ? 0.7 : 0)
-                            .animation(Animation.easeIn.delay(0.5))
-                            Text("to add photos or videos")
+                    } else {
+                        ZStack {
+                            Rectangle()
+                                .fill(LinearGradient(gradient:
+                                                        Gradient(colors: [mediumPink, lightPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                                .frame(width: screenHeight * 0.35, height: screenHeight * 0.35)
+                                .cornerRadius(8)
+                                .shadow(color: lightGray, radius: 4)
+                            VStack {
+                                HStack {
+                                    Text("Tap")
+                                    Image(systemName: "camera")
+                                    Image(systemName: "video.badge.plus")
+                                    Text("or")
+                                    Image(systemName: "photo.badge.plus")
+                                }
                                 .font(.system(size: 18))
                                 .foregroundStyle(darkGrey)
                                 .multilineTextAlignment(.center)
+                                .padding()
                                 .opacity(isTextVisible ? 0.7 : 0)
-                                .animation(Animation.easeIn.delay(1))
+                                .animation(Animation.easeIn.delay(0.5))
+                                Text("to add photos or videos")
+                                    .font(.system(size: 18))
+                                    .foregroundStyle(darkGrey)
+                                    .multilineTextAlignment(.center)
+                                    .opacity(isTextVisible ? 0.7 : 0)
+                                    .animation(Animation.easeIn.delay(1))
+                            }
+                        }.onAppear {
+                            isTextVisible = true
                         }
-                    }.onAppear {
-                        isTextVisible = true
                     }
-                }
                 }.onAppear {
                     fetchMostRecentMedia()
                     if let videoURL = mostRecentVideoURL {
-                    player = AVPlayer(url: videoURL)
-                }
+                        player = AVPlayer(url: videoURL)
+                    }
                 }
                 ScrollView(.horizontal) {
                     let rows = Array(repeating: GridItem(.fixed(75), spacing: 10), count: 2)
@@ -399,28 +434,28 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                                         .cornerRadius(8)
                                         .shadow(color: lightGray, radius: 2)
                                         .onTapGesture {
-                                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                                        self.selectedImageIdentifier = asset.localIdentifier
-                                        selectedAsset = ObservablePHAsset(asset: asset)
-                                        if asset.mediaType == .video {
-                                            PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
-                                                if let avAsset = avAsset as? AVURLAsset {
-                                                    self.mostRecentMedia = .video(avAsset.url)
-                                                    self.mostRecentVideoURL = avAsset.url
-                                                    self.mostRecentPhoto = nil
-                                                    self.player = AVPlayer(url: avAsset.url)
-                                                    self.selectedVideoID = asset.localIdentifier
+                                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                            self.selectedImageIdentifier = asset.localIdentifier
+                                            selectedAsset = ObservablePHAsset(asset: asset)
+                                            if asset.mediaType == .video {
+                                                PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
+                                                    if let avAsset = avAsset as? AVURLAsset {
+                                                        self.mostRecentMedia = .video(avAsset.url)
+                                                        self.mostRecentVideoURL = avAsset.url
+                                                        self.mostRecentPhoto = nil
+                                                        self.player = AVPlayer(url: avAsset.url)
+                                                        self.selectedVideoID = asset.localIdentifier
+                                                    }
                                                 }
+                                            } else {
+                                                self.mostRecentMedia = .photo(getImage(from: images[index]))
+                                                self.mostRecentPhoto = getImage(from: images[index])
+                                                self.mostRecentVideoURL = nil
+                                                self.player = nil
                                             }
-                                        } else {
-                                        self.mostRecentMedia = .photo(getImage(from: images[index]))
-                                        self.mostRecentPhoto = getImage(from: images[index])
-                                        self.mostRecentVideoURL = nil
-                                        self.player = nil
+                                            self.isPressed = false
                                         }
-                                        self.isPressed = false
-                                        }
-                                        .contextMenu { 
+                                        .contextMenu {
                                             Button(action: {
                                                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                                 observableAsset.updateFavoriteStatus()
@@ -458,7 +493,7 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                                                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                                 let assetToRemove = images[index]
                                                 DispatchQueue.main.async {
-                                                images.remove(at: index)
+                                                    images.remove(at: index)
                                                 }
                                                 PHPhotoLibrary.shared().performChanges({
                                                     let fetchOptions = PHFetchOptions()
@@ -505,10 +540,10 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                                                         print("Error deleting asset: \(error)")
                                                     }
                                                 })
-                                                }) {
+                                            }) {
                                                 Text("Delete")
                                                 Image(systemName: "trash")
-                                                }
+                                            }
                                         }
                                         .overlay(alignment: .bottomLeading) {
                                             if asset.isFavorite {
@@ -519,19 +554,19 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                                                     .offset(x: 4, y: -4)
                                             }
                                         }
+                                }
+                            }
+                            .sheet(isPresented: $showingMedia) {
+                                if let selectedMedia = selectedMedia {
+                                    switch selectedMedia {
+                                    case .image(let image):
+                                        FullScreenImageView(image: image)
+                                    case .video(let videoURL):
+                                        VideoPlayerView(url: videoURL)
+                                            .edgesIgnoringSafeArea(.all)
                                     }
-                                    }
-                                    .sheet(isPresented: $showingMedia) {
-                                        if let selectedMedia = selectedMedia {
-                                            switch selectedMedia {
-                                            case .image(let image):
-                                                FullScreenImageView(image: image)
-                                            case .video(let videoURL):
-                                                VideoPlayerView(url: videoURL)
-                                                .edgesIgnoringSafeArea(.all)
-                                            }
-                                        }
-                                    }
+                                }
+                            }
                         }
                     }
                     .flipsForRightToLeftLayoutDirection(true)
@@ -542,7 +577,26 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                 
                 HStack {
                     Spacer()
-                    Spacer()
+                    Button(action: {
+                        withAnimation {
+                            symbolAnimate.toggle()
+                        }
+                    }) {
+                        Image(systemName: "photo.stack.fill")
+                            .foregroundColor(colorPink)
+                            .font(.system(size: 30))
+                            .frame(width: 50, height: 50)
+//                            .shadow(color: Color(lightGray), radius: 1, x: 0, y: 1)
+                            .foregroundStyle(darkGrey)
+                            .onAppear {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                    withAnimation {
+                                        symbolAnimate.toggle()
+                                    }
+                                }
+                            }
+                            .symbolEffect(.variableColor.reversing.cumulative, options: .repeat(3).speed(3), value: symbolAnimate)
+                    }
                     Spacer()
                     Button(action: {
                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
@@ -589,25 +643,66 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                     .shadow(color: Color.black.opacity(0.2), radius: 10, x: 10, y: 10)
                     .shadow(color: Color.white.opacity(0.7), radius: 10, x: -5, y: -5)
                     Spacer()
-                    Button(action: {
-                        withAnimation {
-                            symbolAnimate.toggle()
-                        }
-                    }) {
-                        Image(systemName: "photo.stack.fill")
-                            .font(.system(size: 30))
-                            .frame(width: 50, height: 50)
-                            .shadow(color: Color(lightGray), radius: 1, x: 0, y: 1)
-                            .foregroundStyle(darkGrey)
-                            .onAppear {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                        withAnimation {
-                                            symbolAnimate.toggle()
-                                        }
-                                    }
-                                }
-                                .symbolEffect(.variableColor.reversing.cumulative, options: .repeat(3).speed(3), value: symbolAnimate)
-                    }
+//                    ZStack {
+                    FloatingButton(mainButtonView: mainButton, buttons: buttons, isOpen: $isOpen)
+                        .circle()
+                        .startAngle(3/2 * .pi)
+                        .endAngle(2 * .pi)
+                        .radius(70)
+                        .layoutDirection(.counterClockwise)
+                        .delays(delayDelta: 0.1)
+                        .shadow(color: Color(.gray).opacity(0.3), radius: 2, x: 0, y: 2)
+                          // Child buttons - adjust positions and styles as needed
+//                          if isOpen {
+//                            Button(action: { /* Action for button 1 */ }) {
+//                              Text("Button 1")
+//                            }
+//                            .position(x: UIScreen.main.bounds.width / 2 + 50, y: UIScreen.main.bounds.height / 2)
+//                            .frame(width: 50, height: 50)
+//                            .background(Color.blue)
+//                            .clipShape(Circle())
+//                            .foregroundColor(.white)
+//
+//                            Button(action: { /* Action for button 2 */ }) {
+//                              Text("Button 2")
+//                            }
+//                            .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2 + 50)
+//                            .frame(width: 50, height: 50)
+//                            .background(Color.green)
+//                            .clipShape(Circle())
+//                            .foregroundColor(.white)
+//
+//                            Button(action: { /* Action for button 3 */ }) {
+//                              Text("Button 3")
+//                            }
+//                            .position(x: UIScreen.main.bounds.width / 2 - 50, y: UIScreen.main.bounds.height / 2)
+//                            .frame(width: 50, height: 50)
+//                            .background(Color.red)
+//                            .clipShape(Circle())
+//                            .foregroundColor(.white)
+//                          }
+//                        }
+                      
+                    //                    Button(action: {
+                    //                        withAnimation {
+                    //                            symbolAnimate.toggle()
+                    //                        }
+                    //                    }) {
+                    //                        Image(systemName: "photo.stack.fill")
+                    //                            .foregroundColor(colorPink)
+                    //                            .font(.system(size: 30))
+                    //                            .frame(width: 50, height: 50)
+                    //                            .shadow(color: Color(lightGray), radius: 1, x: 0, y: 1)
+                    //                            .foregroundStyle(darkGrey)
+                    //                            .onAppear {
+                    //                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    //                                        withAnimation {
+                    //                                            symbolAnimate.toggle()
+                    //                                        }
+                    //                                    }
+                    //                                }
+                    //                                .symbolEffect(.variableColor.reversing.cumulative, options: .repeat(3).speed(3), value: symbolAnimate)
+                    //                    }
                     Spacer()
                 }
             }.sheet(isPresented: $isVideoPresented) {
@@ -617,9 +712,9 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
                 VideoContentView(isPresented: $isPhotoPresented, captureMode: .photo)
             }
             .onChange(of: isVideoPresented) { newValue in
-            if !newValue {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-            }
+                if !newValue {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
             }
             .onChange(of: isPhotoPresented) { newValue in
                 if !newValue {
@@ -640,19 +735,19 @@ private func buttonsView(for asset: ObservablePHAsset) -> some View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading:
-        Image(systemName: "video.badge.plus")
+                                Image(systemName: "video.badge.plus")
             .foregroundColor(colorPink)
             .onTapGesture {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 self.isVideoPresented = true
             },trailing: Button(action: {
-                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                    showPhotoPicker = true
-                }) {
-                    Image(systemName: "photo.badge.plus")
-                        .foregroundColor(colorPink)
-                }
-            )
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                showPhotoPicker = true
+            }) {
+                Image(systemName: "photo.badge.plus")
+                    .foregroundColor(colorPink)
+            }
+        )
     }
 }
 

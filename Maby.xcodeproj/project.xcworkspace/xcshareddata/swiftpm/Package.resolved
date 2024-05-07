@@ -20,15 +20,6 @@
         }
       },
       {
-        "package": "FloatingButton",
-        "repositoryURL": "https://github.com/exyte/FloatingButton.git",
-        "state": {
-          "branch": null,
-          "revision": "cf77c2f124df1423d90a9a1985e9b9ccfa4b9b3e",
-          "version": "1.3.0"
-        }
-      },
-      {
         "package": "ScalingHeaderScrollView",
         "repositoryURL": "https://github.com/exyte/ScalingHeaderScrollView.git",
         "state": {

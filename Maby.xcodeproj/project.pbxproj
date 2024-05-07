@@ -54,6 +54,9 @@
 		EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */ = {isa = PBXBuildFile; fileRef = EB33083D2BC8891F000202C0 /* baby-girl-1.png */; };
 		EB8F009A2BE65F310057B6AE /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00992BE65F300057B6AE /* NotificationScheduler.swift */; };
 		EB8F009C2BE66EB40057B6AE /* ReminderSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F009B2BE66EB40057B6AE /* ReminderSectionView.swift */; };
+		EB8F00A02BE97E2A0057B6AE /* FloatingButton in Frameworks */ = {isa = PBXBuildFile; productRef = EB8F009F2BE97E2A0057B6AE /* FloatingButton */; };
+		EB8F00A22BE9824F0057B6AE /* FloatingButton in Resources */ = {isa = PBXBuildFile; fileRef = EB8F00A12BE9824F0057B6AE /* FloatingButton */; };
+		EB8F00A82BEA74010057B6AE /* PermissionsSwiftUI in Resources */ = {isa = PBXBuildFile; fileRef = EB8F00A72BEA74010057B6AE /* PermissionsSwiftUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -131,6 +134,9 @@
 		EB33083D2BC8891F000202C0 /* baby-girl-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "baby-girl-1.png"; path = "../../Downloads/baby-girl-1.png"; sourceTree = "<group>"; };
 		EB8F00992BE65F300057B6AE /* NotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduler.swift; sourceTree = "<group>"; };
 		EB8F009B2BE66EB40057B6AE /* ReminderSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSectionView.swift; sourceTree = "<group>"; };
+		EB8F00A12BE9824F0057B6AE /* FloatingButton */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FloatingButton; path = ../FloatingButton; sourceTree = "<group>"; };
+		EB8F00A72BEA74010057B6AE /* PermissionsSwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PermissionsSwiftUI; path = ../PermissionsSwiftUI; sourceTree = "<group>"; };
+		EB8F00AA2BEA74AA0057B6AE /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../PermissionsSwiftUI/Package.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +146,7 @@
 			files = (
 				C9ED2ED5287C98C000BA3228 /* MabyKit in Frameworks */,
 				C9ED2EDB287C995300BA3228 /* Factory in Frameworks */,
+				EB8F00A02BE97E2A0057B6AE /* FloatingButton in Frameworks */,
 				EB0CCD052BD73488009ADE4B /* Aespa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -235,6 +242,8 @@
 		C9ED2E95287C745100BA3228 = {
 			isa = PBXGroup;
 			children = (
+				EB8F00A72BEA74010057B6AE /* PermissionsSwiftUI */,
+				EB8F00A12BE9824F0057B6AE /* FloatingButton */,
 				EB0CCD182BDA9239009ADE4B /* Aespa */,
 				C9ED2ED2287C971600BA3228 /* MabyKit */,
 				C9ED2EA0287C745100BA3228 /* Maby */,
@@ -288,6 +297,7 @@
 		C9ED2ED3287C98C000BA3228 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EB8F00AA2BEA74AA0057B6AE /* Package.swift */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -339,6 +349,7 @@
 				C9ED2ED4287C98C000BA3228 /* MabyKit */,
 				C9ED2EDA287C995300BA3228 /* Factory */,
 				EB0CCD042BD73488009ADE4B /* Aespa */,
+				EB8F009F2BE97E2A0057B6AE /* FloatingButton */,
 			);
 			productName = Maby;
 			productReference = C9ED2E9E287C745100BA3228 /* Joyful.app */;
@@ -375,6 +386,7 @@
 				EB0CCCD42BD5E1CE009ADE4B /* XCRemoteSwiftPackageReference "ScrollKit" */,
 				EB0CCCF92BD69822009ADE4B /* XCRemoteSwiftPackageReference "FloatingButton" */,
 				EB0CCD032BD73488009ADE4B /* XCRemoteSwiftPackageReference "Aespa" */,
+				EB8F00AB2BEA74E20057B6AE /* XCRemoteSwiftPackageReference "PermissionsSwiftUI" */,
 			);
 			productRefGroup = C9ED2E9F287C745100BA3228 /* Products */;
 			projectDirPath = "";
@@ -391,6 +403,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */,
+				EB8F00A82BEA74010057B6AE /* PermissionsSwiftUI in Resources */,
+				EB8F00A22BE9824F0057B6AE /* FloatingButton in Resources */,
 				C9ED2EAF287C745300BA3228 /* Preview Assets.xcassets in Resources */,
 				EB0CCCC92BD41B95009ADE4B /* lilyan.jpg in Resources */,
 				EB0CCD192BDA9239009ADE4B /* Aespa in Resources */,
@@ -711,6 +725,14 @@
 				minimumVersion = 1.5.5;
 			};
 		};
+		EB8F00AB2BEA74E20057B6AE /* XCRemoteSwiftPackageReference "PermissionsSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jevonmao/PermissionsSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.11;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -727,6 +749,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EB0CCD032BD73488009ADE4B /* XCRemoteSwiftPackageReference "Aespa" */;
 			productName = Aespa;
+		};
+		EB8F009F2BE97E2A0057B6AE /* FloatingButton */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB0CCCF92BD69822009ADE4B /* XCRemoteSwiftPackageReference "FloatingButton" */;
+			productName = FloatingButton;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
