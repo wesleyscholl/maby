@@ -57,6 +57,7 @@
 		EB8F00A02BE97E2A0057B6AE /* FloatingButton in Frameworks */ = {isa = PBXBuildFile; productRef = EB8F009F2BE97E2A0057B6AE /* FloatingButton */; };
 		EB8F00A22BE9824F0057B6AE /* FloatingButton in Resources */ = {isa = PBXBuildFile; fileRef = EB8F00A12BE9824F0057B6AE /* FloatingButton */; };
 		EB8F00A82BEA74010057B6AE /* PermissionsSwiftUI in Resources */ = {isa = PBXBuildFile; fileRef = EB8F00A72BEA74010057B6AE /* PermissionsSwiftUI */; };
+		EB8F00B52BEB2A520057B6AE /* Reactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00B42BEB2A520057B6AE /* Reactions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -137,6 +138,7 @@
 		EB8F00A12BE9824F0057B6AE /* FloatingButton */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FloatingButton; path = ../FloatingButton; sourceTree = "<group>"; };
 		EB8F00A72BEA74010057B6AE /* PermissionsSwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PermissionsSwiftUI; path = ../PermissionsSwiftUI; sourceTree = "<group>"; };
 		EB8F00AA2BEA74AA0057B6AE /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../PermissionsSwiftUI/Package.swift; sourceTree = "<group>"; };
+		EB8F00B42BEB2A520057B6AE /* Reactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reactions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -324,6 +326,7 @@
 				EB0CCD102BD737EF009ADE4B /* Direction.swift */,
 				EB0CCD122BD73856009ADE4B /* SettingView.swift */,
 				EB0CCD142BD73877009ADE4B /* GalleryView.swift */,
+				EB8F00B42BEB2A520057B6AE /* Reactions.swift */,
 			);
 			path = Moments;
 			sourceTree = "<group>";
@@ -422,6 +425,7 @@
 			files = (
 				C90F725828883B1B005FF2AB /* SettingsView.swift in Sources */,
 				C953DD43287F206400F1E1B7 /* AddNursingEventView.swift in Sources */,
+				EB8F00B52BEB2A520057B6AE /* Reactions.swift in Sources */,
 				C9B95D12287DA9D000ADC43F /* AddBabyView.swift in Sources */,
 				C9B95D16287DF50D00ADC43F /* BabyCard.swift in Sources */,
 				EB0CCD132BD73856009ADE4B /* SettingView.swift in Sources */,

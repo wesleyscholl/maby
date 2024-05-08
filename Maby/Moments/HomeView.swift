@@ -113,6 +113,27 @@ struct HomeView: View {
     @State private var isTextVisible = false
     @State private var isOpen = false
     
+    @State private var showReactionsBackground = false
+    @State private var showLike = false
+    @State private var showThumbsUp = false
+    @State private var thumbsUpRotation: Double = -45 // 🤔
+    @State private var showThumbsDown = false
+    @State private var thumbsDownRotation: Double = -45 // 🤔
+    @State private var showLol = false
+    @State private var showWutReaction = false
+    @State private var showStarReaction = false
+    
+    var isThumbsUpRotated: Bool {
+      thumbsUpRotation == -45
+    }
+
+    var isThumbsDownRotated: Bool {
+      thumbsDownRotation == -45
+    }
+    
+    let inboundBubbleColor = Color(#colorLiteral(red: 0.07058823529, green: 0.07843137255, blue: 0.0862745098, alpha: 1))
+    let reactionsBGColor = Color(#colorLiteral(red: 0.07058823529, green: 0.07843137255, blue: 0.0862745098, alpha: 1))
+    
     let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
     let mediumPink = Color(red: 255/255, green: 193/255, blue: 206/255)
     let lightPink = Color(red: 254/255, green: 242/255, blue: 242/255)
@@ -315,6 +336,37 @@ struct HomeView: View {
         NavigationView {
             VStack(spacing: 10) {
                 VStack {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 28)
+                            .fill(Color(UIColor.tertiarySystemGroupedBackground))
+                            .frame(width: 240, height: 40)
+                            .scaleEffect(showReactionsBackground ? 1 : 0, anchor: .bottomTrailing)
+                            .animation(
+                                .interpolatingSpring(stiffness: 170, damping: 15).delay(0.05),
+                                value: showReactionsBackground
+                            )
+                        HStack(spacing: 20) {
+                            Image(systemName: "heart.fill")
+                                .scaleEffect(showLike ? 1 : 0)
+                                .rotationEffect(.degrees(showLike ? 720 : 0))
+                            Image(systemName: "hand.thumbsup.fill")
+                                .scaleEffect(showThumbsUp ? 1 : 0)
+                                .rotationEffect(.degrees(thumbsUpRotation))
+                            Image(systemName: "hand.thumbsdown.fill")
+                                .scaleEffect(showThumbsDown ? 1 : 0)
+                                .rotationEffect(.degrees(thumbsDownRotation))
+                            Image(systemName: "star.fill")
+                                .scaleEffect(showStarReaction ? 1 : 0)
+                                .rotationEffect(.degrees(showStarReaction ? 360 : 0)) // Rotate the star
+//                                .scaleEffect(showStarReaction ? 1.5 : 1) // Bounce the star
+                            Image(systemName: "exclamationmark.2")
+                                .scaleEffect(showLol ? 1 : 0)
+                                .rotationEffect(.degrees(showLol ? 0 : 360))
+                            Image(systemName: "questionmark")
+                                .scaleEffect(showWutReaction ? 1 : 0)
+                                .rotationEffect(.degrees(showWutReaction ? 360 : 0))
+                        }
+                    }.padding(.bottom, 2)
                     if let media = mostRecentMedia {
                         switch media {
                         case .photo(let image):
@@ -334,6 +386,30 @@ struct HomeView: View {
                                         buttonsView(for: asset)
                                             .offset(x: 0, y: -20)
                                     }
+                                }
+                                .onLongPressGesture {
+                                    showReactionsBackground.toggle()
+                                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.15)) {
+                                        showLike.toggle()
+                                    }
+                                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.3)) {
+                                        showThumbsUp.toggle()
+                                        thumbsUpRotation = isThumbsUpRotated ? 0 : -45
+                                    }
+                                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.45)) {
+                                        showThumbsDown.toggle()
+                                        thumbsDownRotation = isThumbsDownRotated ? 0 : -45
+                                    }
+                                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.6)) {
+                                        showStarReaction.toggle()
+                                    }
+                                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.75)) {
+                                        showLol.toggle()
+                                    }
+                                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.9)) {
+                                        showWutReaction.toggle()
+                                    }
+                                    
                                 }
                         case .video(let videoURL):
                             VideoPlayer(player: player)
