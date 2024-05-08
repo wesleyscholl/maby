@@ -73,6 +73,62 @@ struct VideoPlayerView: View {
     }
 }
 
+struct ReactionButtonView: View {
+    @Binding var reaction: Reaction
+    let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
+    let mediumPink = Color(red: 255/255, green: 193/255, blue: 206/255)
+
+    var body: some View {
+        Button(action: {
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            withAnimation(.spring()) {
+                reaction.isSelected.toggle()
+            }
+        }) {
+            ZStack {
+                Circle()
+                    .fill(LinearGradient(gradient:
+                                            Gradient(colors: [mediumPink, colorPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .opacity(reaction.isSelected && reaction.isShown ? 1 : 0)
+                    .scaleEffect(reaction.isSelected && reaction.isShown ? 0.9 : 0)
+                    .animation(.spring(), value: reaction.isSelected)
+                Image(systemName: reaction.imageName)
+                    .foregroundColor(.white)
+                    .scaleEffect(reaction.isShown ? 1 : 0)
+                    .rotationEffect(.degrees(reaction.isShown ? reaction.rotation : 0))
+            }
+        }
+    }
+}
+
+struct ReactionBarView: View {
+    @Binding var reactions: [Reaction]
+
+    var body: some View {
+        HStack(spacing: 2) {
+            ForEach(reactions.indices, id: \.self) { index in
+                ReactionButtonView(reaction: $reactions[index])
+            }
+        }
+        .drawingGroup()
+    }
+}
+
+struct ReactionBackgroundView: View {
+    @Binding var showReactionsBackground: Bool
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: 35)
+            .fill(Color(UIColor.tertiarySystemGroupedBackground))
+            .frame(width: 375, height: 60)
+            .scaleEffect(showReactionsBackground ? 1 : 0, anchor: .bottomTrailing)
+            .animation(
+                .interpolatingSpring(stiffness: 170, damping: 15).delay(0.05),
+                value: showReactionsBackground
+            )
+    }
+}
+
 enum SelectedMedia {
     case image(UIImage)
     case video(URL)
@@ -148,9 +204,6 @@ struct HomeView: View {
       thumbsDownRotation == -45
     }
     
-    let inboundBubbleColor = Color(#colorLiteral(red: 0.07058823529, green: 0.07843137255, blue: 0.0862745098, alpha: 1))
-    let reactionsBGColor = Color(#colorLiteral(red: 0.07058823529, green: 0.07843137255, blue: 0.0862745098, alpha: 1))
-    
     let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
     let mediumPink = Color(red: 255/255, green: 193/255, blue: 206/255)
     let lightPink = Color(red: 254/255, green: 242/255, blue: 242/255)
@@ -209,7 +262,7 @@ struct HomeView: View {
         let option = PHImageRequestOptions()
         option.isSynchronous = true
         var thumbnail = UIImage()
-        manager.requestImage(for: asset, targetSize: CGSize(width: 300, height: 300), contentMode: .aspectFill, options: option, resultHandler: {(result, info)->Void in
+        manager.requestImage(for: asset, targetSize: CGSize(width: 500, height: 500), contentMode: .aspectFill, options: option, resultHandler: {(result, info)->Void in
             thumbnail = result!
         })
         return thumbnail
@@ -226,7 +279,7 @@ struct HomeView: View {
                     let sortedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted { $0.creationDate ?? Date() > $1.creationDate ?? Date() }
                     if let asset = sortedAssets.first {
                         if asset.mediaType == .image {
-                            PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: screenWidth * 0.95, height: screenHeight * 0.35), contentMode: .aspectFill, options: nil) { image, _ in
+                            PHImageManager.default().requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: nil) { image, _ in
                                 DispatchQueue.main.async {
                                     if let image = image {
                                         self.mostRecentPhoto = image
@@ -316,7 +369,7 @@ struct HomeView: View {
               .font(.system(size: 25))
               .frame(width: 60, height: 60)
               .rotationEffect(.degrees(isOpen ? 45 : 0))
-              .animation(.spring())
+              .animation(.spring(), value: isOpen)
         
         let buttons: [AnyView] = [
             AnyView(Button(action: {
@@ -351,47 +404,17 @@ struct HomeView: View {
             .foregroundColor(.white))
         ]
         NavigationView {
-            VStack(spacing: 10) {
+            VStack(spacing: 0) {
+                Spacer()
                 VStack {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 28)
-                            .fill(Color(UIColor.tertiarySystemGroupedBackground))
-                            .frame(width: 240, height: 40)
-                            .scaleEffect(showReactionsBackground ? 1 : 0, anchor: .bottomTrailing)
-                            .animation(
-                                .interpolatingSpring(stiffness: 170, damping: 15).delay(0.05),
-                                value: showReactionsBackground
-                            )
-                        HStack(spacing: -5) {
-                                    ForEach(reactions.indices, id: \.self) { index in
-                                        Button(action: {
-                                            withAnimation(.interpolatingSpring(stiffness: 170, damping: 15)) {
-                                                reactions[index].isSelected.toggle()
-                                            }
-                                        }) {
-                                            ZStack {
-                                                Circle()
-                                                    .fill(LinearGradient(gradient:
-                                                        Gradient(colors: [mediumPink, colorPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
-                                                    .opacity(reactions[index].isSelected && reactions[index].isShown ? 1 : 0)
-                                                    .scaleEffect(reactions[index].isSelected && reactions[index].isShown ? 0.8 : 0)
-                                                    .animation(.interpolatingSpring(stiffness: 170, damping: 15), value: reactions[index].isSelected)
-                                                Image(systemName: reactions[index].imageName)
-                                                    .foregroundColor(.white)
-                                                    .scaleEffect(reactions[index].isShown ? 1 : 0)
-                                                    .rotationEffect(.degrees(reactions[index].isShown ? reactions[index].rotation : 0))
-                                            }
-                                        }
-                                    }
-                                }
-                            }
                     if let media = mostRecentMedia {
                         switch media {
                         case .photo(let image):
+
                             Image(uiImage: image)
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: isFullScreen ? screenHeight * 0.45 : screenHeight * 0.35, height: isFullScreen ? screenHeight * 0.45 : screenHeight * 0.35)
+                                .frame(width: isFullScreen ? screenWidth * 0.98 : screenWidth * 0.9, height: isFullScreen ? screenHeight * 0.43 : screenHeight * 0.32)
                                 .cornerRadius(8)
                                 .shadow(color: lightGray, radius: 4)
                                 .onTapGesture {
@@ -405,11 +428,12 @@ struct HomeView: View {
                                             .offset(x: 0, y: -20)
                                     }
                                 }
+                                
                         case .video(let videoURL):
                             VideoPlayer(player: player)
                                 .id(selectedVideoID)
                                 .scaledToFill()
-                                .frame(width: isFullScreen ? screenHeight * 0.45 : screenHeight * 0.35, height: isFullScreen ? screenHeight * 0.45 : screenHeight * 0.35)
+                                .frame(width: isFullScreen ? screenHeight * 0.45 : screenHeight * 0.30, height: isFullScreen ? screenHeight * 0.43 : screenHeight * 0.32)
                                 .cornerRadius(8)
                                 .shadow(color: lightGray, radius: 4)
                                 .onTapGesture {
@@ -635,6 +659,7 @@ struct HomeView: View {
                                             }
                                         }
                                 }
+                                
                             }
                             .sheet(isPresented: $showingMedia) {
                                 if let selectedMedia = selectedMedia {
@@ -654,9 +679,14 @@ struct HomeView: View {
                     .padding(10)
                 }
                 Divider().overlay(mediumPink).opacity(0.25)
-                Spacer().frame(height: 20)
+                if showReactionsBackground {
+                    ZStack {
+                        ReactionBackgroundView(showReactionsBackground: $showReactionsBackground)
+                        ReactionBarView(reactions: $reactions)
+                    }
+                    .padding(.bottom, 5)
+                }
                 HStack {
-                    Spacer()
                     Button(action: {
                         withAnimation {
                             symbolAnimate.toggle()
@@ -682,7 +712,7 @@ struct HomeView: View {
                     Spacer()
                     Spacer()
                     Button(action: {
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
                         self.isPhotoPresented = true
                     }) {
                         ZStack() {
@@ -729,6 +759,9 @@ struct HomeView: View {
                     Spacer()
                     Spacer()
                     Spacer()
+                    VStack {
+                        Spacer()
+                        Spacer()
                         FloatingButton(mainButtonView: mainButton, buttons: buttons, isOpen: $isOpen)
                             .circle()
                             .startAngle(3/2 * .pi)
@@ -737,7 +770,24 @@ struct HomeView: View {
                             .layoutDirection(.counterClockwise)
                             .delays(delayDelta: 0.1)
                             .shadow(color: Color(.gray).opacity(0.3), radius: 2, x: 0, y: 2)
-                    Spacer()
+                            .onChange(of: isOpen, {
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                        showReactionsBackground.toggle()
+                                        if reactions.first(where: { $0.isShown }) != nil {
+                                            for index in reactions.indices.reversed() {
+                                                withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.15 * Double(reactions.count - index))) {
+                                                    reactions[index].isShown.toggle()
+                                                }
+                                            }
+                                        } else {
+                                            for index in reactions.indices {
+                                                withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.15 * Double(index + 1))) {
+                                                    reactions[index].isShown.toggle()
+                                                }
+                                            }
+                                        }
+                            })
+                    }
                 }
                 Spacer()
             }.sheet(isPresented: $isVideoPresented) {
@@ -745,25 +795,6 @@ struct HomeView: View {
             }
             .sheet(isPresented: $isPhotoPresented) {
                 VideoContentView(isPresented: $isPhotoPresented, captureMode: .photo)
-            }
-            .onChange(of: isOpen) {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                    showReactionsBackground.toggle()
-                    if reactions.first(where: { $0.isShown }) != nil {
-                        for index in reactions.indices.reversed() {
-                            withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.15 * Double(reactions.count - index))) {
-                                reactions[index].isShown.toggle()
-                            }
-                        }
-                    } else {
-                        for index in reactions.indices {
-                            withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.15 * Double(index + 1))) {
-                                reactions[index].isShown.toggle()
-                                
-                            }
-                        }
-                    }
-                }
             }
             .onChange(of: isVideoPresented) { newValue in
                 if !newValue {
