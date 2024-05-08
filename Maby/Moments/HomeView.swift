@@ -410,7 +410,6 @@ struct HomeView: View {
                     if let media = mostRecentMedia {
                         switch media {
                         case .photo(let image):
-
                             Image(uiImage: image)
                                 .resizable()
                                 .scaledToFill()
@@ -428,7 +427,6 @@ struct HomeView: View {
                                             .offset(x: 0, y: -20)
                                     }
                                 }
-                                
                         case .video(let videoURL):
                             VideoPlayer(player: player)
                                 .id(selectedVideoID)
