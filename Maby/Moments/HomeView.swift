@@ -78,6 +78,13 @@ enum SelectedMedia {
     case video(URL)
 }
 
+struct Reaction {
+    let imageName: String
+    var isShown: Bool
+    var rotation: Double
+    var isSelected: Bool
+}
+
 struct HomeView: View {
     public var screenWidth: CGFloat {
         return UIScreen.main.bounds.width
@@ -122,6 +129,16 @@ struct HomeView: View {
     @State private var showLol = false
     @State private var showWutReaction = false
     @State private var showStarReaction = false
+    @State private var heartSelected = false
+    
+    @State private var reactions = [
+        Reaction(imageName: "heart.fill", isShown: false, rotation: 360, isSelected: false),
+        Reaction(imageName: "hand.thumbsup.fill", isShown: false, rotation: 360, isSelected: false),
+        Reaction(imageName: "hand.thumbsdown.fill", isShown: false, rotation: 360, isSelected: false),
+        Reaction(imageName: "star.fill", isShown: false, rotation: 360, isSelected: false),
+        Reaction(imageName: "exclamationmark.2", isShown: false, rotation: 360, isSelected: false),
+        Reaction(imageName: "questionmark", isShown: false, rotation: 360, isSelected: false)
+    ]
     
     var isThumbsUpRotated: Bool {
       thumbsUpRotation == -45
@@ -345,35 +362,36 @@ struct HomeView: View {
                                 .interpolatingSpring(stiffness: 170, damping: 15).delay(0.05),
                                 value: showReactionsBackground
                             )
-                        HStack(spacing: 20) {
-                            Image(systemName: "heart.fill")
-                                .scaleEffect(showLike ? 1 : 0)
-                                .rotationEffect(.degrees(showLike ? 720 : 0))
-                            Image(systemName: "hand.thumbsup.fill")
-                                .scaleEffect(showThumbsUp ? 1 : 0)
-                                .rotationEffect(.degrees(thumbsUpRotation))
-                            Image(systemName: "hand.thumbsdown.fill")
-                                .scaleEffect(showThumbsDown ? 1 : 0)
-                                .rotationEffect(.degrees(thumbsDownRotation))
-                            Image(systemName: "star.fill")
-                                .scaleEffect(showStarReaction ? 1 : 0)
-                                .rotationEffect(.degrees(showStarReaction ? 360 : 0)) // Rotate the star
-//                                .scaleEffect(showStarReaction ? 1.5 : 1) // Bounce the star
-                            Image(systemName: "exclamationmark.2")
-                                .scaleEffect(showLol ? 1 : 0)
-                                .rotationEffect(.degrees(showLol ? 0 : 360))
-                            Image(systemName: "questionmark")
-                                .scaleEffect(showWutReaction ? 1 : 0)
-                                .rotationEffect(.degrees(showWutReaction ? 360 : 0))
-                        }
-                    }.padding(.bottom, 2)
+                        HStack(spacing: -5) {
+                                    ForEach(reactions.indices, id: \.self) { index in
+                                        Button(action: {
+                                            withAnimation(.interpolatingSpring(stiffness: 170, damping: 15)) {
+                                                reactions[index].isSelected.toggle()
+                                            }
+                                        }) {
+                                            ZStack {
+                                                Circle()
+                                                    .fill(LinearGradient(gradient:
+                                                        Gradient(colors: [mediumPink, colorPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                                                    .opacity(reactions[index].isSelected && reactions[index].isShown ? 1 : 0)
+                                                    .scaleEffect(reactions[index].isSelected && reactions[index].isShown ? 0.8 : 0)
+                                                    .animation(.interpolatingSpring(stiffness: 170, damping: 15), value: reactions[index].isSelected)
+                                                Image(systemName: reactions[index].imageName)
+                                                    .foregroundColor(.white)
+                                                    .scaleEffect(reactions[index].isShown ? 1 : 0)
+                                                    .rotationEffect(.degrees(reactions[index].isShown ? reactions[index].rotation : 0))
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                     if let media = mostRecentMedia {
                         switch media {
                         case .photo(let image):
                             Image(uiImage: image)
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35, height: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35)
+                                .frame(width: isFullScreen ? screenHeight * 0.45 : screenHeight * 0.35, height: isFullScreen ? screenHeight * 0.45 : screenHeight * 0.35)
                                 .cornerRadius(8)
                                 .shadow(color: lightGray, radius: 4)
                                 .onTapGesture {
@@ -387,35 +405,11 @@ struct HomeView: View {
                                             .offset(x: 0, y: -20)
                                     }
                                 }
-                                .onLongPressGesture {
-                                    showReactionsBackground.toggle()
-                                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.15)) {
-                                        showLike.toggle()
-                                    }
-                                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.3)) {
-                                        showThumbsUp.toggle()
-                                        thumbsUpRotation = isThumbsUpRotated ? 0 : -45
-                                    }
-                                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.45)) {
-                                        showThumbsDown.toggle()
-                                        thumbsDownRotation = isThumbsDownRotated ? 0 : -45
-                                    }
-                                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.6)) {
-                                        showStarReaction.toggle()
-                                    }
-                                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.75)) {
-                                        showLol.toggle()
-                                    }
-                                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.9)) {
-                                        showWutReaction.toggle()
-                                    }
-                                    
-                                }
                         case .video(let videoURL):
                             VideoPlayer(player: player)
                                 .id(selectedVideoID)
                                 .scaledToFill()
-                                .frame(width: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35, height: isFullScreen ? screenHeight * 0.5 : screenHeight * 0.35)
+                                .frame(width: isFullScreen ? screenHeight * 0.45 : screenHeight * 0.35, height: isFullScreen ? screenHeight * 0.45 : screenHeight * 0.35)
                                 .cornerRadius(8)
                                 .shadow(color: lightGray, radius: 4)
                                 .onTapGesture {
@@ -673,7 +667,6 @@ struct HomeView: View {
                             .foregroundColor(colorPink)
                             .font(.system(size: 30))
                             .frame(width: 60, height: 60)
-//                            .shadow(color: Color(lightGray), radius: 1, x: 0, y: 1)
                             .foregroundStyle(darkGrey)
                             .onAppear {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -683,7 +676,6 @@ struct HomeView: View {
                                 }
                             }
                             .symbolEffect(.bounce.down, options: .repeat(2).speed(0.1), value: symbolAnimate)
-//                            .symbolEffect(.variableColor.reversing.cumulative, options: .repeat(3).speed(3), value: symbolAnimate)
                     }
                     Spacer()
                     Spacer()
@@ -747,11 +739,31 @@ struct HomeView: View {
                             .shadow(color: Color(.gray).opacity(0.3), radius: 2, x: 0, y: 2)
                     Spacer()
                 }
+                Spacer()
             }.sheet(isPresented: $isVideoPresented) {
                 VideoContentView(isPresented: $isVideoPresented, captureMode: .video)
             }
             .sheet(isPresented: $isPhotoPresented) {
                 VideoContentView(isPresented: $isPhotoPresented, captureMode: .photo)
+            }
+            .onChange(of: isOpen) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                    showReactionsBackground.toggle()
+                    if reactions.first(where: { $0.isShown }) != nil {
+                        for index in reactions.indices.reversed() {
+                            withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.15 * Double(reactions.count - index))) {
+                                reactions[index].isShown.toggle()
+                            }
+                        }
+                    } else {
+                        for index in reactions.indices {
+                            withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.15 * Double(index + 1))) {
+                                reactions[index].isShown.toggle()
+                                
+                            }
+                        }
+                    }
+                }
             }
             .onChange(of: isVideoPresented) { newValue in
                 if !newValue {
