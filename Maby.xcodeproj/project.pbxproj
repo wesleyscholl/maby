@@ -58,6 +58,7 @@
 		EB8F00A22BE9824F0057B6AE /* FloatingButton in Resources */ = {isa = PBXBuildFile; fileRef = EB8F00A12BE9824F0057B6AE /* FloatingButton */; };
 		EB8F00A82BEA74010057B6AE /* PermissionsSwiftUI in Resources */ = {isa = PBXBuildFile; fileRef = EB8F00A72BEA74010057B6AE /* PermissionsSwiftUI */; };
 		EB8F00B52BEB2A520057B6AE /* Reactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00B42BEB2A520057B6AE /* Reactions.swift */; };
+		EB8F00B82BEC04610057B6AE /* animated-tab-bar in Resources */ = {isa = PBXBuildFile; fileRef = EB8F00B72BEC04610057B6AE /* animated-tab-bar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -139,6 +140,7 @@
 		EB8F00A72BEA74010057B6AE /* PermissionsSwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PermissionsSwiftUI; path = ../PermissionsSwiftUI; sourceTree = "<group>"; };
 		EB8F00AA2BEA74AA0057B6AE /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../PermissionsSwiftUI/Package.swift; sourceTree = "<group>"; };
 		EB8F00B42BEB2A520057B6AE /* Reactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reactions.swift; sourceTree = "<group>"; };
+		EB8F00B72BEC04610057B6AE /* animated-tab-bar */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "animated-tab-bar"; path = "../animated-tab-bar"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +246,7 @@
 		C9ED2E95287C745100BA3228 = {
 			isa = PBXGroup;
 			children = (
+				EB8F00B72BEC04610057B6AE /* animated-tab-bar */,
 				EB8F00A72BEA74010057B6AE /* PermissionsSwiftUI */,
 				EB8F00A12BE9824F0057B6AE /* FloatingButton */,
 				EB0CCD182BDA9239009ADE4B /* Aespa */,
@@ -390,6 +393,7 @@
 				EB0CCCF92BD69822009ADE4B /* XCRemoteSwiftPackageReference "FloatingButton" */,
 				EB0CCD032BD73488009ADE4B /* XCRemoteSwiftPackageReference "Aespa" */,
 				EB8F00AB2BEA74E20057B6AE /* XCRemoteSwiftPackageReference "PermissionsSwiftUI" */,
+				EB8F00B62BEC03F30057B6AE /* XCRemoteSwiftPackageReference "animated-tab-bar" */,
 			);
 			productRefGroup = C9ED2E9F287C745100BA3228 /* Products */;
 			projectDirPath = "";
@@ -410,6 +414,7 @@
 				EB8F00A22BE9824F0057B6AE /* FloatingButton in Resources */,
 				C9ED2EAF287C745300BA3228 /* Preview Assets.xcassets in Resources */,
 				EB0CCCC92BD41B95009ADE4B /* lilyan.jpg in Resources */,
+				EB8F00B82BEC04610057B6AE /* animated-tab-bar in Resources */,
 				EB0CCD192BDA9239009ADE4B /* Aespa in Resources */,
 				C9ED2EAB287C745300BA3228 /* Assets.xcassets in Resources */,
 				EB0CCCF62BD67525009ADE4B /* ScrollKit in Resources */,
@@ -735,6 +740,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.5.11;
+			};
+		};
+		EB8F00B62BEC03F30057B6AE /* XCRemoteSwiftPackageReference "animated-tab-bar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Ramotion/animated-tab-bar.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

@@ -6,6 +6,7 @@ import AVKit
 import AVFoundation
 import Combine
 import FloatingButton
+import LinkPresentation
 
 extension LinearGradient {
     init(_ colors: Color...) {
@@ -97,6 +98,10 @@ struct ReactionButtonView: View {
                     .scaleEffect(reaction.isShown ? 1 : 0)
                     .rotationEffect(.degrees(reaction.isShown ? reaction.rotation : 0))
             }
+        }.onDisappear {
+            withAnimation(.interpolatingSpring(stiffness: 170, damping: 15)) {
+                reaction.isShown = false
+            }
         }
     }
 }
@@ -111,6 +116,13 @@ struct ReactionBarView: View {
             }
         }
         .drawingGroup()
+        .onDisappear {
+            withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.05)) {
+                for index in reactions.indices {
+                    reactions[index].isShown = false
+                }
+            }
+        }
     }
 }
 
@@ -129,10 +141,35 @@ struct ReactionBackgroundView: View {
     }
 }
 
-enum SelectedMedia {
-    case image(UIImage)
-    case video(URL)
+struct ShareSheet: UIViewControllerRepresentable {
+    var activityItems: [Any]
+    var applicationActivities: [UIActivity]? = nil
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        print("ShareSheet")
+        print("activityItems: \(activityItems)")
+        print("applicationActivities: \(applicationActivities)")
+        if let activityItems = activityItems as? [Any] {
+    for item in activityItems {
+        if let metadata = item as? LPLinkMetadata {
+            print("Title: \(metadata.title ?? "No title")")
+            print("Description: \(metadata.description ?? "No description")")
+            print("Original URL: \(metadata.originalURL?.absoluteString ?? "No original URL")")
+            print("URL: \(metadata.url?.absoluteString ?? "No URL")")
+        }
+    }
 }
+        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
+        return controller
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
+
+    enum SelectedMedia {
+        case image(UIImage)
+        case video(URL)
+    }
 
 struct Reaction {
     let imageName: String
@@ -175,17 +212,9 @@ struct HomeView: View {
     @State private var symbolAnimate = false
     @State private var isTextVisible = false
     @State private var isOpen = false
-    
+    @State private var showingShareSheet = false
     @State private var showReactionsBackground = false
-    @State private var showLike = false
-    @State private var showThumbsUp = false
-    @State private var thumbsUpRotation: Double = -45 // 🤔
-    @State private var showThumbsDown = false
-    @State private var thumbsDownRotation: Double = -45 // 🤔
-    @State private var showLol = false
-    @State private var showWutReaction = false
-    @State private var showStarReaction = false
-    @State private var heartSelected = false
+    @State private var linkMetadata: LPLinkMetadata?
     
     @State private var reactions = [
         Reaction(imageName: "heart.fill", isShown: false, rotation: 360, isSelected: false),
@@ -195,14 +224,6 @@ struct HomeView: View {
         Reaction(imageName: "exclamationmark.2", isShown: false, rotation: 360, isSelected: false),
         Reaction(imageName: "questionmark", isShown: false, rotation: 360, isSelected: false)
     ]
-    
-    var isThumbsUpRotated: Bool {
-      thumbsUpRotation == -45
-    }
-
-    var isThumbsDownRotated: Bool {
-      thumbsDownRotation == -45
-    }
     
     let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
     let mediumPink = Color(red: 255/255, green: 193/255, blue: 206/255)
@@ -258,15 +279,17 @@ struct HomeView: View {
     }
     
     func getImage(from asset: PHAsset) -> UIImage {
-        let manager = PHImageManager.default()
-        let option = PHImageRequestOptions()
-        option.isSynchronous = true
-        var thumbnail = UIImage()
-        manager.requestImage(for: asset, targetSize: CGSize(width: 500, height: 500), contentMode: .aspectFill, options: option, resultHandler: {(result, info)->Void in
-            thumbnail = result!
-        })
-        return thumbnail
+    let manager = PHImageManager.default()
+    let option = PHImageRequestOptions()
+    option.isSynchronous = false // Use asynchronous request
+    var image: UIImage?
+    manager.requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: option) { result, info in
+        if let result = result {
+            image = result
+        }
     }
+        return image!
+}
     
     func fetchMostRecentMedia() {
         if !hasFetchedMedia && !isUpdatingFavoriteStatus {
@@ -313,7 +336,95 @@ struct HomeView: View {
             }
         }
     }
-    
+
+func fetchURLPreview(url: URL) {
+  print("Fetching metadata for URL: \(url)")
+  let metadataProvider = LPMetadataProvider()
+  metadataProvider.startFetchingMetadata(for: url) { (metadata, error) in
+      if let error = error {
+          print("Error fetching metadata: \(error.localizedDescription)")
+          // Handle the error gracefully, provide a default metadata object
+          let defaultMetadata = LPLinkMetadata()
+          defaultMetadata.title = "Your Title Here"
+          defaultMetadata.originalURL = url
+          defaultMetadata.url = url
+          DispatchQueue.main.async {
+              self.linkMetadata = defaultMetadata
+              self.showingShareSheet = true
+          }
+          return
+      }
+      guard let data = metadata, data.originalURL != nil else {
+          print("Failed to fetch metadata")
+          // Handle the case where no metadata is available
+          let defaultMetadata = LPLinkMetadata()
+          defaultMetadata.title = "Your Title Here"
+          defaultMetadata.originalURL = url
+          defaultMetadata.url = url
+          DispatchQueue.main.async {
+              self.linkMetadata = defaultMetadata
+              self.showingShareSheet = true
+          }
+          return
+      }
+      print("Fetched metadata: \(data)") // Print the fetched metadata
+      DispatchQueue.main.async {
+        data.title = "Your Custom Title Here" // Set the title here
+          self.linkMetadata = data
+          self.showingShareSheet = true
+      }
+  }
+}
+
+
+func handleButtonAction(with asset: PHAsset) {
+    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+    if asset.mediaType == .image {
+        handleImageAsset(asset)
+    } else if asset.mediaType == .video {
+        handleVideoAsset(asset)
+    }
+}
+
+func handleImageAsset(_ asset: PHAsset) {
+    let options = PHImageRequestOptions()
+    options.isSynchronous = false
+    PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: options) { (image, info) in        
+        if let image = image {
+            DispatchQueue.main.async {
+                self.selectedMedia = .image(image)
+                if let url = info?["PHImageFileURLKey"] as? URL {
+                    print("URL: \(url)")
+                    self.fetchURLPreview(url: url)
+                } else {
+                    print("No URL found")
+                    print("Image: \(image)")
+                    print("Asset: \(asset)")
+                    print("Info: \(info)")
+                    let metadata = LPLinkMetadata()
+                    metadata.imageProvider = NSItemProvider(object: image)
+                    metadata.title = "Your Title Here"
+                    self.linkMetadata = metadata
+                    self.showingShareSheet = true
+                }
+            }
+        }
+    }
+}
+
+
+func handleVideoAsset(_ asset: PHAsset) {
+    PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
+        if let urlAsset = avAsset as? AVURLAsset {
+            print("URL: \(urlAsset.url)")
+            DispatchQueue.main.async {
+                self.selectedMedia = .video(urlAsset.url)
+                self.fetchURLPreview(url: urlAsset.url)
+            }
+        }
+    }
+}
+
     class ObservablePHAsset: ObservableObject {
         @Published var isFavorite: Bool
         let asset: PHAsset
@@ -379,9 +490,10 @@ struct HomeView: View {
               Image(systemName: "photo.stack")
             }
             .frame(width: 50, height: 50)
-            .background(lightPink)
+            .background(LinearGradient(gradient:
+                            Gradient(colors: [colorPink, mediumPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
             .clipShape(Circle())
-            .foregroundColor(colorPink)),
+            .foregroundColor(.white)),
           AnyView(Button(action: {
               UIImpactFeedbackGenerator(style: .light).impactOccurred()
               self.isPhotoPresented = true
@@ -389,9 +501,10 @@ struct HomeView: View {
               Image(systemName: "photo.badge.plus.fill")
             }
             .frame(width: 50, height: 50)
-            .background(mediumPink)
+            .background(LinearGradient(gradient:
+                            Gradient(colors: [colorPink, mediumPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
             .clipShape(Circle())
-            .foregroundColor(darkGrey)),
+            .foregroundColor(.white)),
           AnyView(Button(action: {
               UIImpactFeedbackGenerator(style: .light).impactOccurred()
               self.isVideoPresented = true
@@ -399,7 +512,8 @@ struct HomeView: View {
               Image(systemName: "video.fill.badge.plus")
             }
             .frame(width: 50, height: 50)
-            .background(colorPink)
+            .background(LinearGradient(gradient:
+                            Gradient(colors: [colorPink, mediumPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
             .clipShape(Circle())
             .foregroundColor(.white))
         ]
@@ -464,7 +578,7 @@ struct HomeView: View {
                             .resizable()
                             .scaledToFill()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: screenHeight * 0.35, height: screenHeight * 0.35)
+                            .frame(width: screenWidth * 0.9, height: screenHeight * 0.32)
                             .cornerRadius(8)
                             .shadow(color: lightGray, radius: 4)
                             .overlay(alignment: .bottom) {
@@ -478,7 +592,7 @@ struct HomeView: View {
                             Rectangle()
                                 .fill(LinearGradient(gradient:
                                                         Gradient(colors: [mediumPink, lightPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
-                                .frame(width: screenHeight * 0.35, height: screenHeight * 0.35)
+                                .frame(width: screenWidth * 0.9, height: screenHeight * 0.32)
                                 .cornerRadius(8)
                                 .shadow(color: lightGray, radius: 4)
                             VStack {
@@ -558,6 +672,12 @@ struct HomeView: View {
                                             self.isPressed = false
                                         }
                                         .contextMenu {
+                                             Button(action: {
+                                               self.handleButtonAction(with: images[index])
+                                            }) {
+                                                Text("Share")
+                                                Image(systemName: "square.and.arrow.up")
+                                            }
                                             Button(action: {
                                                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                                 observableAsset.updateFavoriteStatus()
@@ -577,16 +697,23 @@ struct HomeView: View {
                                                             }
                                                         }
                                                     }
-                                                } else if asset.mediaType == .video {
-                                                    PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
-                                                        if let urlAsset = avAsset as? AVURLAsset {
-                                                            DispatchQueue.main.async {
-                                                                self.selectedMedia = .video(urlAsset.url)
-                                                                self.showingMedia = true
+                                                } 
+                                                if asset.mediaType == .video {
+                                                PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
+                                                    if let avAsset = avAsset as? AVURLAsset {
+                                                        DispatchQueue.main.async {
+                                                            self.mostRecentVideoURL = avAsset.url
+                                                            self.mostRecentMedia = .video(avAsset.url)
+                                                            if !self.images.contains(asset) {
+                                                                self.images.insert(asset, at: 0)
                                                             }
+                                                            self.selectedImageIdentifier = asset.localIdentifier
+                                                            self.hasFetchedMedia = true
+                                                            self.fetchURLPreview(url: avAsset.url)
                                                         }
                                                     }
                                                 }
+                                            }
                                             }) {
                                                 Text("View")
                                                 Image(systemName: "photo")
@@ -647,6 +774,13 @@ struct HomeView: View {
                                                 Image(systemName: "trash")
                                             }
                                         }
+                                        .sheet(isPresented: $showingShareSheet) {
+                                            if case .image(let image) = selectedMedia {
+                                                ShareSheet(activityItems: [image, linkMetadata].compactMap { $0 })
+                                            } else if case .video(let url) = selectedMedia {
+                                                ShareSheet(activityItems: [url, linkMetadata as Any].compactMap { $0 })
+                                            }
+                                        }
                                         .overlay(alignment: .bottomLeading) {
                                             if asset.isFavorite {
                                                 Image(systemName: "heart.fill")
@@ -677,13 +811,13 @@ struct HomeView: View {
                     .padding(10)
                 }
                 Divider().overlay(mediumPink).opacity(0.25)
-                if showReactionsBackground {
+                // if showReactionsBackground {
                     ZStack {
                         ReactionBackgroundView(showReactionsBackground: $showReactionsBackground)
                         ReactionBarView(reactions: $reactions)
                     }
                     .padding(.bottom, 5)
-                }
+                // }
                 HStack {
                     Button(action: {
                         withAnimation {
@@ -764,7 +898,7 @@ struct HomeView: View {
                             .circle()
                             .startAngle(3/2 * .pi)
                             .endAngle(2 * .pi)
-                            .radius(70)
+                            .radius(67)
                             .layoutDirection(.counterClockwise)
                             .delays(delayDelta: 0.1)
                             .shadow(color: Color(.gray).opacity(0.3), radius: 2, x: 0, y: 2)
@@ -773,13 +907,13 @@ struct HomeView: View {
                                         showReactionsBackground.toggle()
                                         if reactions.first(where: { $0.isShown }) != nil {
                                             for index in reactions.indices.reversed() {
-                                                withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.15 * Double(reactions.count - index))) {
+                                                withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.1 * Double(reactions.count - index))) {
                                                     reactions[index].isShown.toggle()
                                                 }
                                             }
                                         } else {
                                             for index in reactions.indices {
-                                                withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.15 * Double(index + 1))) {
+                                                withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.1 * Double(index + 1))) {
                                                     reactions[index].isShown.toggle()
                                                 }
                                             }
