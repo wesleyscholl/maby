@@ -47,7 +47,8 @@ struct ContentView: View {
                         .tabItem {
                             Label("Events", systemImage: "plus")
                         }.tag(1)
-                    JournalView(selectedIndex: $selectedIndex)
+//                    JournalView(selectedIndex: $selectedIndex)
+                    ScrollTransitionView()
                         .tabItem {
                             Label("Journal", systemImage: "book")
                         }.tag(2)

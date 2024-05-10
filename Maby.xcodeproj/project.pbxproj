@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -28,19 +28,15 @@
 		C9ED2EA9287C745100BA3228 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9ED2EA8287C745100BA3228 /* ContentView.swift */; };
 		C9ED2EAB287C745300BA3228 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9ED2EAA287C745300BA3228 /* Assets.xcassets */; };
 		C9ED2EAF287C745300BA3228 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9ED2EAE287C745300BA3228 /* Preview Assets.xcassets */; };
-		C9ED2ED5287C98C000BA3228 /* MabyKit in Frameworks */ = {isa = PBXBuildFile; productRef = C9ED2ED4287C98C000BA3228 /* MabyKit */; };
-		C9ED2EDB287C995300BA3228 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = C9ED2EDA287C995300BA3228 /* Factory */; };
 		EB0CCCBE2BCDF9CE009ADE4B /* AddBreastPumpEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCBD2BCDF9CE009ADE4B /* AddBreastPumpEventView.swift */; };
 		EB0CCCC02BD07ABD009ADE4B /* AddBathingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCBF2BD07ABD009ADE4B /* AddBathingView.swift */; };
 		EB0CCCC22BD0845F009ADE4B /* AddActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCC12BD0845F009ADE4B /* AddActivityView.swift */; };
 		EB0CCCC52BD3720E009ADE4B /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCC42BD3720E009ADE4B /* ChartView.swift */; };
 		EB0CCCC72BD41976009ADE4B /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCC62BD41976009ADE4B /* SplashView.swift */; };
 		EB0CCCC92BD41B95009ADE4B /* lilyan.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EB0CCCC82BD41B95009ADE4B /* lilyan.jpg */; };
-		EB0CCCF62BD67525009ADE4B /* ScrollKit in Resources */ = {isa = PBXBuildFile; fileRef = EB0CCCF52BD67525009ADE4B /* ScrollKit */; };
 		EB0CCCFD2BD73391009ADE4B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCFC2BD73390009ADE4B /* HomeView.swift */; };
 		EB0CCD002BD733EA009ADE4B /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCCFF2BD733EA009ADE4B /* PhotoView.swift */; };
 		EB0CCD022BD7345E009ADE4B /* VideoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD012BD7345E009ADE4B /* VideoContentView.swift */; };
-		EB0CCD052BD73488009ADE4B /* Aespa in Frameworks */ = {isa = PBXBuildFile; productRef = EB0CCD042BD73488009ADE4B /* Aespa */; };
 		EB0CCD072BD734BA009ADE4B /* VideoContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD062BD734BA009ADE4B /* VideoContentViewModel.swift */; };
 		EB0CCD092BD734F5009ADE4B /* PhotoPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD082BD734F5009ADE4B /* PhotoPickerView.swift */; };
 		EB0CCD0B2BD7352F009ADE4B /* ParentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD0A2BD7352F009ADE4B /* ParentView.swift */; };
@@ -50,15 +46,17 @@
 		EB0CCD132BD73856009ADE4B /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD122BD73856009ADE4B /* SettingView.swift */; };
 		EB0CCD152BD73877009ADE4B /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD142BD73877009ADE4B /* GalleryView.swift */; };
 		EB0CCD172BD928BC009ADE4B /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD162BD928BC009ADE4B /* Timeline.swift */; };
-		EB0CCD192BDA9239009ADE4B /* Aespa in Resources */ = {isa = PBXBuildFile; fileRef = EB0CCD182BDA9239009ADE4B /* Aespa */; };
 		EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */ = {isa = PBXBuildFile; fileRef = EB33083D2BC8891F000202C0 /* baby-girl-1.png */; };
+		EB7E400D2BEE03F5006DA8D8 /* MabyKit in Resources */ = {isa = PBXBuildFile; fileRef = EB7E400C2BEE03F5006DA8D8 /* MabyKit */; };
+		EB7E400F2BEE0413006DA8D8 /* FloatingButton in Resources */ = {isa = PBXBuildFile; fileRef = EB7E400E2BEE0413006DA8D8 /* FloatingButton */; };
+		EB7E40112BEE0444006DA8D8 /* Aespa in Resources */ = {isa = PBXBuildFile; fileRef = EB7E40102BEE0444006DA8D8 /* Aespa */; };
+		EB7E40142BEE0465006DA8D8 /* MabyKit in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E40132BEE0465006DA8D8 /* MabyKit */; };
+		EB7E40172BEE048D006DA8D8 /* FloatingButton in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E40162BEE048D006DA8D8 /* FloatingButton */; };
+		EB7E401A2BEE04B3006DA8D8 /* Aespa in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E40192BEE04B3006DA8D8 /* Aespa */; };
+		EB7E401C2BEE08E4006DA8D8 /* Gallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7E401B2BEE08E4006DA8D8 /* Gallery.swift */; };
 		EB8F009A2BE65F310057B6AE /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00992BE65F300057B6AE /* NotificationScheduler.swift */; };
 		EB8F009C2BE66EB40057B6AE /* ReminderSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F009B2BE66EB40057B6AE /* ReminderSectionView.swift */; };
-		EB8F00A02BE97E2A0057B6AE /* FloatingButton in Frameworks */ = {isa = PBXBuildFile; productRef = EB8F009F2BE97E2A0057B6AE /* FloatingButton */; };
-		EB8F00A22BE9824F0057B6AE /* FloatingButton in Resources */ = {isa = PBXBuildFile; fileRef = EB8F00A12BE9824F0057B6AE /* FloatingButton */; };
-		EB8F00A82BEA74010057B6AE /* PermissionsSwiftUI in Resources */ = {isa = PBXBuildFile; fileRef = EB8F00A72BEA74010057B6AE /* PermissionsSwiftUI */; };
 		EB8F00B52BEB2A520057B6AE /* Reactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00B42BEB2A520057B6AE /* Reactions.swift */; };
-		EB8F00B82BEC04610057B6AE /* animated-tab-bar in Resources */ = {isa = PBXBuildFile; fileRef = EB8F00B72BEC04610057B6AE /* animated-tab-bar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -112,14 +110,12 @@
 		C9ED2EAA287C745300BA3228 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C9ED2EAC287C745300BA3228 /* Maby.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Maby.entitlements; sourceTree = "<group>"; };
 		C9ED2EAE287C745300BA3228 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		C9ED2ED2287C971600BA3228 /* MabyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MabyKit; sourceTree = "<group>"; };
 		EB0CCCBD2BCDF9CE009ADE4B /* AddBreastPumpEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBreastPumpEventView.swift; sourceTree = "<group>"; };
 		EB0CCCBF2BD07ABD009ADE4B /* AddBathingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBathingView.swift; sourceTree = "<group>"; };
 		EB0CCCC12BD0845F009ADE4B /* AddActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddActivityView.swift; sourceTree = "<group>"; };
 		EB0CCCC42BD3720E009ADE4B /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		EB0CCCC62BD41976009ADE4B /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EB0CCCC82BD41B95009ADE4B /* lilyan.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = lilyan.jpg; path = ../../Documents/lilyan.jpg; sourceTree = "<group>"; };
-		EB0CCCF52BD67525009ADE4B /* ScrollKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ScrollKit; path = ../../ScrollKit; sourceTree = "<group>"; };
 		EB0CCCFC2BD73390009ADE4B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		EB0CCCFF2BD733EA009ADE4B /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
 		EB0CCD012BD7345E009ADE4B /* VideoContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoContentView.swift; sourceTree = "<group>"; };
@@ -132,15 +128,15 @@
 		EB0CCD122BD73856009ADE4B /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		EB0CCD142BD73877009ADE4B /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
 		EB0CCD162BD928BC009ADE4B /* Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
-		EB0CCD182BDA9239009ADE4B /* Aespa */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Aespa; path = ../as/Aespa; sourceTree = "<group>"; };
 		EB33083D2BC8891F000202C0 /* baby-girl-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "baby-girl-1.png"; path = "../../Downloads/baby-girl-1.png"; sourceTree = "<group>"; };
+		EB7E400C2BEE03F5006DA8D8 /* MabyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MabyKit; sourceTree = "<group>"; };
+		EB7E400E2BEE0413006DA8D8 /* FloatingButton */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FloatingButton; path = ../FloatingButton; sourceTree = "<group>"; };
+		EB7E40102BEE0444006DA8D8 /* Aespa */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Aespa; path = ../Aespa; sourceTree = "<group>"; };
+		EB7E401B2BEE08E4006DA8D8 /* Gallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gallery.swift; sourceTree = "<group>"; };
 		EB8F00992BE65F300057B6AE /* NotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduler.swift; sourceTree = "<group>"; };
 		EB8F009B2BE66EB40057B6AE /* ReminderSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSectionView.swift; sourceTree = "<group>"; };
-		EB8F00A12BE9824F0057B6AE /* FloatingButton */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FloatingButton; path = ../FloatingButton; sourceTree = "<group>"; };
-		EB8F00A72BEA74010057B6AE /* PermissionsSwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PermissionsSwiftUI; path = ../PermissionsSwiftUI; sourceTree = "<group>"; };
 		EB8F00AA2BEA74AA0057B6AE /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../PermissionsSwiftUI/Package.swift; sourceTree = "<group>"; };
 		EB8F00B42BEB2A520057B6AE /* Reactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reactions.swift; sourceTree = "<group>"; };
-		EB8F00B72BEC04610057B6AE /* animated-tab-bar */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "animated-tab-bar"; path = "../animated-tab-bar"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,10 +144,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9ED2ED5287C98C000BA3228 /* MabyKit in Frameworks */,
-				C9ED2EDB287C995300BA3228 /* Factory in Frameworks */,
-				EB8F00A02BE97E2A0057B6AE /* FloatingButton in Frameworks */,
-				EB0CCD052BD73488009ADE4B /* Aespa in Frameworks */,
+				EB7E401A2BEE04B3006DA8D8 /* Aespa in Frameworks */,
+				EB7E40172BEE048D006DA8D8 /* FloatingButton in Frameworks */,
+				EB7E40142BEE0465006DA8D8 /* MabyKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,11 +241,9 @@
 		C9ED2E95287C745100BA3228 = {
 			isa = PBXGroup;
 			children = (
-				EB8F00B72BEC04610057B6AE /* animated-tab-bar */,
-				EB8F00A72BEA74010057B6AE /* PermissionsSwiftUI */,
-				EB8F00A12BE9824F0057B6AE /* FloatingButton */,
-				EB0CCD182BDA9239009ADE4B /* Aespa */,
-				C9ED2ED2287C971600BA3228 /* MabyKit */,
+				EB7E40102BEE0444006DA8D8 /* Aespa */,
+				EB7E400E2BEE0413006DA8D8 /* FloatingButton */,
+				EB7E400C2BEE03F5006DA8D8 /* MabyKit */,
 				C9ED2EA0287C745100BA3228 /* Maby */,
 				C9A78ACB2884387D00753D58 /* MabyWatch Watch App */,
 				C9ED2E9F287C745100BA3228 /* Products */,
@@ -269,7 +262,6 @@
 		C9ED2EA0287C745100BA3228 /* Maby */ = {
 			isa = PBXGroup;
 			children = (
-				EB0CCCF52BD67525009ADE4B /* ScrollKit */,
 				EB0CCCC82BD41B95009ADE4B /* lilyan.jpg */,
 				EB33083D2BC8891F000202C0 /* baby-girl-1.png */,
 				C91DF4B02884D6110014F602 /* Info.plist */,
@@ -287,6 +279,7 @@
 				C9ED2EA8287C745100BA3228 /* ContentView.swift */,
 				EB0CCCC62BD41976009ADE4B /* SplashView.swift */,
 				EB0CCD162BD928BC009ADE4B /* Timeline.swift */,
+				EB7E401B2BEE08E4006DA8D8 /* Gallery.swift */,
 			);
 			path = Maby;
 			sourceTree = "<group>";
@@ -352,10 +345,9 @@
 			);
 			name = Joyful;
 			packageProductDependencies = (
-				C9ED2ED4287C98C000BA3228 /* MabyKit */,
-				C9ED2EDA287C995300BA3228 /* Factory */,
-				EB0CCD042BD73488009ADE4B /* Aespa */,
-				EB8F009F2BE97E2A0057B6AE /* FloatingButton */,
+				EB7E40132BEE0465006DA8D8 /* MabyKit */,
+				EB7E40162BEE048D006DA8D8 /* FloatingButton */,
+				EB7E40192BEE04B3006DA8D8 /* Aespa */,
 			);
 			productName = Maby;
 			productReference = C9ED2E9E287C745100BA3228 /* Joyful.app */;
@@ -386,14 +378,9 @@
 			);
 			mainGroup = C9ED2E95287C745100BA3228;
 			packageReferences = (
-				C9ED2ED9287C995300BA3228 /* XCRemoteSwiftPackageReference "Factory" */,
-				EB3308472BCAE04C000202C0 /* XCRemoteSwiftPackageReference "ChartView" */,
-				EB0CCCCD2BD46498009ADE4B /* XCRemoteSwiftPackageReference "ScalingHeaderScrollView" */,
-				EB0CCCD42BD5E1CE009ADE4B /* XCRemoteSwiftPackageReference "ScrollKit" */,
-				EB0CCCF92BD69822009ADE4B /* XCRemoteSwiftPackageReference "FloatingButton" */,
-				EB0CCD032BD73488009ADE4B /* XCRemoteSwiftPackageReference "Aespa" */,
-				EB8F00AB2BEA74E20057B6AE /* XCRemoteSwiftPackageReference "PermissionsSwiftUI" */,
-				EB8F00B62BEC03F30057B6AE /* XCRemoteSwiftPackageReference "animated-tab-bar" */,
+				EB7E40122BEE0465006DA8D8 /* XCLocalSwiftPackageReference "MabyKit" */,
+				EB7E40152BEE048D006DA8D8 /* XCLocalSwiftPackageReference "../FloatingButton" */,
+				EB7E40182BEE04B3006DA8D8 /* XCLocalSwiftPackageReference "../Aespa" */,
 			);
 			productRefGroup = C9ED2E9F287C745100BA3228 /* Products */;
 			projectDirPath = "";
@@ -409,15 +396,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB7E400F2BEE0413006DA8D8 /* FloatingButton in Resources */,
 				EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */,
-				EB8F00A82BEA74010057B6AE /* PermissionsSwiftUI in Resources */,
-				EB8F00A22BE9824F0057B6AE /* FloatingButton in Resources */,
+				EB7E400D2BEE03F5006DA8D8 /* MabyKit in Resources */,
 				C9ED2EAF287C745300BA3228 /* Preview Assets.xcassets in Resources */,
 				EB0CCCC92BD41B95009ADE4B /* lilyan.jpg in Resources */,
-				EB8F00B82BEC04610057B6AE /* animated-tab-bar in Resources */,
-				EB0CCD192BDA9239009ADE4B /* Aespa in Resources */,
 				C9ED2EAB287C745300BA3228 /* Assets.xcassets in Resources */,
-				EB0CCCF62BD67525009ADE4B /* ScrollKit in Resources */,
+				EB7E40112BEE0444006DA8D8 /* Aespa in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -444,6 +429,7 @@
 				C969734B2881B0FA00156287 /* AddEventView.swift in Sources */,
 				C90F725C28884379005FF2AB /* BabyDetailsFormView.swift in Sources */,
 				C953DD41287F011B00F1E1B7 /* AddDiaperEventView.swift in Sources */,
+				EB7E401C2BEE08E4006DA8D8 /* Gallery.swift in Sources */,
 				EB0CCCC72BD41976009ADE4B /* SplashView.swift in Sources */,
 				EB0CCD0D2BD735E3009ADE4B /* MyVal.swift in Sources */,
 				C953DD3D287E0C0700F1E1B7 /* AddEventListView.swift in Sources */,
@@ -685,92 +671,33 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		C9ED2ED9287C995300BA3228 /* XCRemoteSwiftPackageReference "Factory" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/hmlongco/Factory";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.4;
-			};
+/* Begin XCLocalSwiftPackageReference section */
+		EB7E40122BEE0465006DA8D8 /* XCLocalSwiftPackageReference "MabyKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = MabyKit;
 		};
-		EB0CCCCD2BD46498009ADE4B /* XCRemoteSwiftPackageReference "ScalingHeaderScrollView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/exyte/ScalingHeaderScrollView.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.2;
-			};
+		EB7E40152BEE048D006DA8D8 /* XCLocalSwiftPackageReference "../FloatingButton" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../FloatingButton;
 		};
-		EB0CCCD42BD5E1CE009ADE4B /* XCRemoteSwiftPackageReference "ScrollKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/danielsaidi/ScrollKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.5.0;
-			};
+		EB7E40182BEE04B3006DA8D8 /* XCLocalSwiftPackageReference "../Aespa" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Aespa;
 		};
-		EB0CCCF92BD69822009ADE4B /* XCRemoteSwiftPackageReference "FloatingButton" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/exyte/FloatingButton.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.0;
-			};
-		};
-		EB0CCD032BD73488009ADE4B /* XCRemoteSwiftPackageReference "Aespa" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/enebin/Aespa.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.5.1;
-			};
-		};
-		EB3308472BCAE04C000202C0 /* XCRemoteSwiftPackageReference "ChartView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/AppPear/ChartView";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.5.5;
-			};
-		};
-		EB8F00AB2BEA74E20057B6AE /* XCRemoteSwiftPackageReference "PermissionsSwiftUI" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jevonmao/PermissionsSwiftUI";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.5.11;
-			};
-		};
-		EB8F00B62BEC03F30057B6AE /* XCRemoteSwiftPackageReference "animated-tab-bar" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Ramotion/animated-tab-bar.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.2.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
+/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C9ED2ED4287C98C000BA3228 /* MabyKit */ = {
+		EB7E40132BEE0465006DA8D8 /* MabyKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MabyKit;
 		};
-		C9ED2EDA287C995300BA3228 /* Factory */ = {
+		EB7E40162BEE048D006DA8D8 /* FloatingButton */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C9ED2ED9287C995300BA3228 /* XCRemoteSwiftPackageReference "Factory" */;
-			productName = Factory;
-		};
-		EB0CCD042BD73488009ADE4B /* Aespa */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EB0CCD032BD73488009ADE4B /* XCRemoteSwiftPackageReference "Aespa" */;
-			productName = Aespa;
-		};
-		EB8F009F2BE97E2A0057B6AE /* FloatingButton */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EB0CCCF92BD69822009ADE4B /* XCRemoteSwiftPackageReference "FloatingButton" */;
 			productName = FloatingButton;
+		};
+		EB7E40192BEE04B3006DA8D8 /* Aespa */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Aespa;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

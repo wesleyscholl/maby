@@ -1,52 +1,23 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "SwiftUICharts",
-        "repositoryURL": "https://github.com/AppPear/ChartView",
-        "state": {
-          "branch": null,
-          "revision": "9115a992c91fa19cbb4f2241084240d38654a1fc",
-          "version": "1.5.5"
-        }
-      },
-      {
-        "package": "Factory",
-        "repositoryURL": "https://github.com/hmlongco/Factory",
-        "state": {
-          "branch": null,
-          "revision": "bb3cfd694f73d281cd38047eaf05d12e544c69f5",
-          "version": "1.2.4"
-        }
-      },
-      {
-        "package": "ScalingHeaderScrollView",
-        "repositoryURL": "https://github.com/exyte/ScalingHeaderScrollView.git",
-        "state": {
-          "branch": null,
-          "revision": "77274e1936b654322e736b43d63b548cea10eb30",
-          "version": "1.1.3"
-        }
-      },
-      {
-        "package": "swift-log",
-        "repositoryURL": "https://github.com/apple/swift-log.git",
-        "state": {
-          "branch": null,
-          "revision": "5d66f7ba25daf4f94100e7022febf3c75e37a6c7",
-          "version": "1.4.2"
-        }
-      },
-      {
-        "package": "swiftui-introspect",
-        "repositoryURL": "https://github.com/siteline/swiftui-introspect",
-        "state": {
-          "branch": null,
-          "revision": "0cd2a5a5895306bc21d54a2254302d24a9a571e4",
-          "version": "1.1.3"
-        }
+  "pins" : [
+    {
+      "identity" : "factory",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hmlongco/Factory",
+      "state" : {
+        "revision" : "bb3cfd694f73d281cd38047eaf05d12e544c69f5",
+        "version" : "1.2.4"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "swift-log",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-log.git",
+      "state" : {
+        "revision" : "e97a6fcb1ab07462881ac165fdbb37f067e205d5",
+        "version" : "1.5.4"
+      }
+    }
+  ],
+  "version" : 2
 }
