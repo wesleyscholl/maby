@@ -31,11 +31,11 @@ struct RemoveBabyView: View {
             Text("Remove \(baby?.name ?? "")")
                 .font(.title)
                 .bold()
-            
+                .padding(.bottom)
             Text("This will remove all data related to the baby and **cannot** be undone. Are you sure?")
-            
+                .padding(.vertical)
             Button(action: onRemove) {
-                Text("Yes, delete it")
+                Text("Yes, delete \(baby?.name ?? "") and all data")
             }
             .buttonStyle(.primaryAction)
             .tint(.red)

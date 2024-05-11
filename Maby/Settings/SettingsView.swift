@@ -32,7 +32,10 @@ struct SettingsView: View {
             BabyCard()
                 .clearBackground()
             Section("Baby") {
-                Button(action: { showingEditBaby.toggle() }) {
+                Button(action: { 
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    showingEditBaby.toggle() 
+                    }) {
                     Label {
                         Text("Edit baby details")
                             .foregroundColor(colorScheme == .dark ? .white : .gray)
@@ -41,7 +44,10 @@ struct SettingsView: View {
                     }
                     .symbolRenderingMode(.multicolor)
                 }
-                Button(action: { showingRemoveBaby.toggle() }) {
+                Button(action: { 
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    showingRemoveBaby.toggle() 
+                    }) {
                     Label {
                         Text("Remove baby")
                             .foregroundColor(colorScheme == .dark ? .white : .gray)
@@ -77,6 +83,16 @@ struct SettingsView: View {
         }
         .onAppear {
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        }
+        .onChange(of: showingEditBaby) { newValue in
+            if !newValue {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            }
+        }
+        .onChange(of: showingRemoveBaby) { newValue in
+            if !newValue {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            }
         }
         .sheet(isPresented: $showingEditBaby) {
             EditBabyDetailsView()
