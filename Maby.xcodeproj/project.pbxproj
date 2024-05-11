@@ -54,6 +54,7 @@
 		EB7E40172BEE048D006DA8D8 /* FloatingButton in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E40162BEE048D006DA8D8 /* FloatingButton */; };
 		EB7E401A2BEE04B3006DA8D8 /* Aespa in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E40192BEE04B3006DA8D8 /* Aespa */; };
 		EB7E401C2BEE08E4006DA8D8 /* Gallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7E401B2BEE08E4006DA8D8 /* Gallery.swift */; };
+		EB7E401E2BEE91D6006DA8D8 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7E401D2BEE91D6006DA8D8 /* Animation.swift */; };
 		EB8F009A2BE65F310057B6AE /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00992BE65F300057B6AE /* NotificationScheduler.swift */; };
 		EB8F009C2BE66EB40057B6AE /* ReminderSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F009B2BE66EB40057B6AE /* ReminderSectionView.swift */; };
 		EB8F00B52BEB2A520057B6AE /* Reactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00B42BEB2A520057B6AE /* Reactions.swift */; };
@@ -133,6 +134,7 @@
 		EB7E400E2BEE0413006DA8D8 /* FloatingButton */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FloatingButton; path = ../FloatingButton; sourceTree = "<group>"; };
 		EB7E40102BEE0444006DA8D8 /* Aespa */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Aespa; path = ../Aespa; sourceTree = "<group>"; };
 		EB7E401B2BEE08E4006DA8D8 /* Gallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gallery.swift; sourceTree = "<group>"; };
+		EB7E401D2BEE91D6006DA8D8 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		EB8F00992BE65F300057B6AE /* NotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduler.swift; sourceTree = "<group>"; };
 		EB8F009B2BE66EB40057B6AE /* ReminderSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSectionView.swift; sourceTree = "<group>"; };
 		EB8F00AA2BEA74AA0057B6AE /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../PermissionsSwiftUI/Package.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 				EB0CCCC62BD41976009ADE4B /* SplashView.swift */,
 				EB0CCD162BD928BC009ADE4B /* Timeline.swift */,
 				EB7E401B2BEE08E4006DA8D8 /* Gallery.swift */,
+				EB7E401D2BEE91D6006DA8D8 /* Animation.swift */,
 			);
 			path = Maby;
 			sourceTree = "<group>";
@@ -432,6 +435,7 @@
 				EB7E401C2BEE08E4006DA8D8 /* Gallery.swift in Sources */,
 				EB0CCCC72BD41976009ADE4B /* SplashView.swift in Sources */,
 				EB0CCD0D2BD735E3009ADE4B /* MyVal.swift in Sources */,
+				EB7E401E2BEE91D6006DA8D8 /* Animation.swift in Sources */,
 				C953DD3D287E0C0700F1E1B7 /* AddEventListView.swift in Sources */,
 				EB0CCCBE2BCDF9CE009ADE4B /* AddBreastPumpEventView.swift in Sources */,
 				C90F725E28884DD6005FF2AB /* RemoveBabyView.swift in Sources */,

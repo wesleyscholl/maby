@@ -280,15 +280,16 @@ struct HomeView: View {
     
     func getImage(from asset: PHAsset) -> UIImage {
     let manager = PHImageManager.default()
-    let option = PHImageRequestOptions()
-    option.isSynchronous = false // Use asynchronous request
+    let options = PHImageRequestOptions()
+    options.isSynchronous = true
+    options.resizeMode = .exact
     var image: UIImage?
-    manager.requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: option) { result, info in
+    manager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: options) { result, info in
         if let result = result {
             image = result
         }
     }
-        return image!
+    return image!
 }
     
     func fetchMostRecentMedia() {
@@ -302,7 +303,7 @@ struct HomeView: View {
                     let sortedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted { $0.creationDate ?? Date() > $1.creationDate ?? Date() }
                     if let asset = sortedAssets.first {
                         if asset.mediaType == .image {
-                            PHImageManager.default().requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: nil) { image, _ in
+                            PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: nil) { image, _ in
                                 DispatchQueue.main.async {
                                     if let image = image {
                                         self.mostRecentPhoto = image
