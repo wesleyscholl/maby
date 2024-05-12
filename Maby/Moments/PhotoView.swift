@@ -11,36 +11,46 @@ struct PhotoView: View {
     public var screenHeight: CGFloat {
         return UIScreen.main.bounds.height
     }
+    @State var uiImage: UIImage?
     @State var image: PHAsset
     var images: [PHAsset]
 
     var body: some View {
         VStack {
-            Image(uiImage: getImage(from: image))
-                .resizable()
-                .scaledToFit()
-                .frame(height: screenHeight * 0.65)
+            Text("Photo View")
+                .font(.title)
+                .foregroundColor(colorPink)
+                .padding()
+            if let uiImage = uiImage {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: screenHeight * 0.65)
+            }
             ScrollView(.horizontal) {
                 let rows = Array(repeating: GridItem(.fixed(75), spacing: 10), count: 2)
-               LazyHGrid(rows: rows) {
+                LazyHGrid(rows: rows) {
                     ForEach(images.indices, id: \.self) { index in
-                    Button(action: {
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    }) {
-                        Image(uiImage: getImage(from: images[index]))
-                            .resizable()
-                            .scaledToFill()
-                            .cornerRadius(10)
-                            .frame(width: 75, height: 75)
-                            .padding(.horizontal, 0)
-                            .onTapGesture {
-                                image = images[index]
-                                
+                        Button(action: {
+                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                            image = images[index]
+                            getImage(from: image)
+                        }) {
+                            if let uiImage = uiImage {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .cornerRadius(10)
+                                    .frame(width: 75, height: 75)
+                                    .padding(.horizontal, 0)
                             }
                         }
                     }
                 }
             }
+        }
+        .onAppear {
+            getImage(from: image)
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: NavigationLink(destination: ParentView()) {
@@ -51,14 +61,15 @@ struct PhotoView: View {
         })
     }
 
-    func getImage(from asset: PHAsset) -> UIImage {
-    let manager = PHImageManager.default()
-    let option = PHImageRequestOptions()
-    option.isSynchronous = true
-    var thumbnail = UIImage()
-    manager.requestImage(for: asset, targetSize: CGSize(width: 1000, height: 1000), contentMode: .aspectFill, options: option, resultHandler: {(result, info)->Void in
-        thumbnail = result!
-    })
-    return thumbnail
-}
+    func getImage(from asset: PHAsset) {
+            let manager = PHImageManager.default()
+            let options = PHImageRequestOptions()
+            options.isSynchronous = false
+            options.resizeMode = .exact
+            manager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: options) { result, info in
+                if let result = result {
+                    uiImage = result
+                }
+            }
+        }
 }

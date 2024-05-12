@@ -55,6 +55,16 @@
 		EB7E401A2BEE04B3006DA8D8 /* Aespa in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E40192BEE04B3006DA8D8 /* Aespa */; };
 		EB7E401C2BEE08E4006DA8D8 /* Gallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7E401B2BEE08E4006DA8D8 /* Gallery.swift */; };
 		EB7E401E2BEE91D6006DA8D8 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7E401D2BEE91D6006DA8D8 /* Animation.swift */; };
+		EB7E40272BF0857B006DA8D8 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7E40262BF0857B006DA8D8 /* Permissions.swift */; };
+		EB7E40292BF08674006DA8D8 /* PermissionsSwiftUI in Resources */ = {isa = PBXBuildFile; fileRef = EB7E40282BF08674006DA8D8 /* PermissionsSwiftUI */; };
+		EB7E402F2BF089A3006DA8D8 /* PermissionsSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E402E2BF089A3006DA8D8 /* PermissionsSwiftUI */; };
+		EB7E40312BF089A3006DA8D8 /* PermissionsSwiftUICamera in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E40302BF089A3006DA8D8 /* PermissionsSwiftUICamera */; };
+		EB7E40332BF089A3006DA8D8 /* PermissionsSwiftUIMicrophone in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E40322BF089A3006DA8D8 /* PermissionsSwiftUIMicrophone */; };
+		EB7E40352BF089A3006DA8D8 /* PermissionsSwiftUIPhoto in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E40342BF089A3006DA8D8 /* PermissionsSwiftUIPhoto */; };
+		EB7E40382BF089C3006DA8D8 /* PermissionsSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E40372BF089C3006DA8D8 /* PermissionsSwiftUI */; };
+		EB7E403A2BF089C3006DA8D8 /* PermissionsSwiftUICamera in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E40392BF089C3006DA8D8 /* PermissionsSwiftUICamera */; };
+		EB7E403C2BF089C3006DA8D8 /* PermissionsSwiftUIMicrophone in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E403B2BF089C3006DA8D8 /* PermissionsSwiftUIMicrophone */; };
+		EB7E403E2BF089C3006DA8D8 /* PermissionsSwiftUIPhoto in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E403D2BF089C3006DA8D8 /* PermissionsSwiftUIPhoto */; };
 		EB8F009A2BE65F310057B6AE /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00992BE65F300057B6AE /* NotificationScheduler.swift */; };
 		EB8F009C2BE66EB40057B6AE /* ReminderSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F009B2BE66EB40057B6AE /* ReminderSectionView.swift */; };
 		EB8F00B52BEB2A520057B6AE /* Reactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00B42BEB2A520057B6AE /* Reactions.swift */; };
@@ -135,6 +145,8 @@
 		EB7E40102BEE0444006DA8D8 /* Aespa */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Aespa; path = ../Aespa; sourceTree = "<group>"; };
 		EB7E401B2BEE08E4006DA8D8 /* Gallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gallery.swift; sourceTree = "<group>"; };
 		EB7E401D2BEE91D6006DA8D8 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
+		EB7E40262BF0857B006DA8D8 /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
+		EB7E40282BF08674006DA8D8 /* PermissionsSwiftUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PermissionsSwiftUI; path = ../PermissionsSwiftUI; sourceTree = "<group>"; };
 		EB8F00992BE65F300057B6AE /* NotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduler.swift; sourceTree = "<group>"; };
 		EB8F009B2BE66EB40057B6AE /* ReminderSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSectionView.swift; sourceTree = "<group>"; };
 		EB8F00AA2BEA74AA0057B6AE /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../PermissionsSwiftUI/Package.swift; sourceTree = "<group>"; };
@@ -146,9 +158,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB7E403E2BF089C3006DA8D8 /* PermissionsSwiftUIPhoto in Frameworks */,
 				EB7E401A2BEE04B3006DA8D8 /* Aespa in Frameworks */,
+				EB7E40382BF089C3006DA8D8 /* PermissionsSwiftUI in Frameworks */,
+				EB7E40332BF089A3006DA8D8 /* PermissionsSwiftUIMicrophone in Frameworks */,
+				EB7E402F2BF089A3006DA8D8 /* PermissionsSwiftUI in Frameworks */,
+				EB7E403A2BF089C3006DA8D8 /* PermissionsSwiftUICamera in Frameworks */,
+				EB7E403C2BF089C3006DA8D8 /* PermissionsSwiftUIMicrophone in Frameworks */,
 				EB7E40172BEE048D006DA8D8 /* FloatingButton in Frameworks */,
+				EB7E40312BF089A3006DA8D8 /* PermissionsSwiftUICamera in Frameworks */,
 				EB7E40142BEE0465006DA8D8 /* MabyKit in Frameworks */,
+				EB7E40352BF089A3006DA8D8 /* PermissionsSwiftUIPhoto in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,6 +263,7 @@
 		C9ED2E95287C745100BA3228 = {
 			isa = PBXGroup;
 			children = (
+				EB7E40282BF08674006DA8D8 /* PermissionsSwiftUI */,
 				EB7E40102BEE0444006DA8D8 /* Aespa */,
 				EB7E400E2BEE0413006DA8D8 /* FloatingButton */,
 				EB7E400C2BEE03F5006DA8D8 /* MabyKit */,
@@ -283,6 +304,7 @@
 				EB0CCD162BD928BC009ADE4B /* Timeline.swift */,
 				EB7E401B2BEE08E4006DA8D8 /* Gallery.swift */,
 				EB7E401D2BEE91D6006DA8D8 /* Animation.swift */,
+				EB7E40262BF0857B006DA8D8 /* Permissions.swift */,
 			);
 			path = Maby;
 			sourceTree = "<group>";
@@ -351,6 +373,14 @@
 				EB7E40132BEE0465006DA8D8 /* MabyKit */,
 				EB7E40162BEE048D006DA8D8 /* FloatingButton */,
 				EB7E40192BEE04B3006DA8D8 /* Aespa */,
+				EB7E402E2BF089A3006DA8D8 /* PermissionsSwiftUI */,
+				EB7E40302BF089A3006DA8D8 /* PermissionsSwiftUICamera */,
+				EB7E40322BF089A3006DA8D8 /* PermissionsSwiftUIMicrophone */,
+				EB7E40342BF089A3006DA8D8 /* PermissionsSwiftUIPhoto */,
+				EB7E40372BF089C3006DA8D8 /* PermissionsSwiftUI */,
+				EB7E40392BF089C3006DA8D8 /* PermissionsSwiftUICamera */,
+				EB7E403B2BF089C3006DA8D8 /* PermissionsSwiftUIMicrophone */,
+				EB7E403D2BF089C3006DA8D8 /* PermissionsSwiftUIPhoto */,
 			);
 			productName = Maby;
 			productReference = C9ED2E9E287C745100BA3228 /* Joyful.app */;
@@ -364,7 +394,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1400;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					C9ED2E9D287C745100BA3228 = {
 						CreatedOnToolsVersion = 14.0;
@@ -384,6 +414,7 @@
 				EB7E40122BEE0465006DA8D8 /* XCLocalSwiftPackageReference "MabyKit" */,
 				EB7E40152BEE048D006DA8D8 /* XCLocalSwiftPackageReference "../FloatingButton" */,
 				EB7E40182BEE04B3006DA8D8 /* XCLocalSwiftPackageReference "../Aespa" */,
+				EB7E40362BF089C3006DA8D8 /* XCRemoteSwiftPackageReference "PermissionsSwiftUI" */,
 			);
 			productRefGroup = C9ED2E9F287C745100BA3228 /* Products */;
 			projectDirPath = "";
@@ -400,6 +431,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB7E400F2BEE0413006DA8D8 /* FloatingButton in Resources */,
+				EB7E40292BF08674006DA8D8 /* PermissionsSwiftUI in Resources */,
 				EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */,
 				EB7E400D2BEE03F5006DA8D8 /* MabyKit in Resources */,
 				C9ED2EAF287C745300BA3228 /* Preview Assets.xcassets in Resources */,
@@ -444,6 +476,7 @@
 				EB0CCD092BD734F5009ADE4B /* PhotoPickerView.swift in Sources */,
 				C90F725A2888432A005FF2AB /* EditBabyDetailsView.swift in Sources */,
 				EB8F009A2BE65F310057B6AE /* NotificationScheduler.swift in Sources */,
+				EB7E40272BF0857B006DA8D8 /* Permissions.swift in Sources */,
 				C9B95D09287CA02400ADC43F /* View+Extensions.swift in Sources */,
 				C90F72602888B0DE005FF2AB /* AddBottleFeedEventView.swift in Sources */,
 				C969734D2881EF4400156287 /* AddVomitEventView.swift in Sources */,
@@ -496,9 +529,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -555,9 +590,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -582,6 +619,7 @@
 				CODE_SIGN_ENTITLEMENTS = Maby/Maby.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 4;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Maby/Preview Content\"";
 				DEVELOPMENT_TEAM = CH2CHWN4XN;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -621,6 +659,7 @@
 				CODE_SIGN_ENTITLEMENTS = Maby/Maby.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 4;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Maby/Preview Content\"";
 				DEVELOPMENT_TEAM = CH2CHWN4XN;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -690,6 +729,17 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		EB7E40362BF089C3006DA8D8 /* XCRemoteSwiftPackageReference "PermissionsSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jevonmao/PermissionsSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.11;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		EB7E40132BEE0465006DA8D8 /* MabyKit */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -702,6 +752,42 @@
 		EB7E40192BEE04B3006DA8D8 /* Aespa */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Aespa;
+		};
+		EB7E402E2BF089A3006DA8D8 /* PermissionsSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PermissionsSwiftUI;
+		};
+		EB7E40302BF089A3006DA8D8 /* PermissionsSwiftUICamera */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PermissionsSwiftUICamera;
+		};
+		EB7E40322BF089A3006DA8D8 /* PermissionsSwiftUIMicrophone */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PermissionsSwiftUIMicrophone;
+		};
+		EB7E40342BF089A3006DA8D8 /* PermissionsSwiftUIPhoto */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PermissionsSwiftUIPhoto;
+		};
+		EB7E40372BF089C3006DA8D8 /* PermissionsSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB7E40362BF089C3006DA8D8 /* XCRemoteSwiftPackageReference "PermissionsSwiftUI" */;
+			productName = PermissionsSwiftUI;
+		};
+		EB7E40392BF089C3006DA8D8 /* PermissionsSwiftUICamera */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB7E40362BF089C3006DA8D8 /* XCRemoteSwiftPackageReference "PermissionsSwiftUI" */;
+			productName = PermissionsSwiftUICamera;
+		};
+		EB7E403B2BF089C3006DA8D8 /* PermissionsSwiftUIMicrophone */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB7E40362BF089C3006DA8D8 /* XCRemoteSwiftPackageReference "PermissionsSwiftUI" */;
+			productName = PermissionsSwiftUIMicrophone;
+		};
+		EB7E403D2BF089C3006DA8D8 /* PermissionsSwiftUIPhoto */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB7E40362BF089C3006DA8D8 /* XCRemoteSwiftPackageReference "PermissionsSwiftUI" */;
+			productName = PermissionsSwiftUIPhoto;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

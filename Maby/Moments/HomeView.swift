@@ -215,6 +215,7 @@ struct HomeView: View {
     @State private var showingShareSheet = false
     @State private var showReactionsBackground = false
     @State private var linkMetadata: LPLinkMetadata?
+    @State private var mediaType: AssetType = .photo
     
     @State private var reactions = [
         Reaction(imageName: "heart.fill", isShown: false, rotation: 360, isSelected: false),
@@ -225,6 +226,7 @@ struct HomeView: View {
         Reaction(imageName: "questionmark", isShown: false, rotation: 360, isSelected: false)
     ]
     
+    let viewModel = VideoContentViewModel()
     let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
     let mediumPink = Color(red: 255/255, green: 193/255, blue: 206/255)
     let lightPink = Color(red: 254/255, green: 242/255, blue: 242/255)
@@ -683,38 +685,14 @@ func handleVideoAsset(_ asset: PHAsset) {
                                                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                                 observableAsset.updateFavoriteStatus()
                                             }) {
-                                                Text(observableAsset.isFavorite == true ? "Deselect" : "Favorite")
+                                                Text(observableAsset.isFavorite == true ? "Unfavorite" : "Favorite")
                                                 Image(systemName: observableAsset.isFavorite == true ? "heart.fill" : "heart")
                                             }
                                             Button(action: {
                                                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                                 let asset = images[index]
-                                                if asset.mediaType == .image {
-                                                    PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: nil) { (image, _) in
-                                                        if let image = image {
-                                                            DispatchQueue.main.async {
-                                                                self.selectedMedia = .image(image)
-                                                                self.showingMedia = true
-                                                            }
-                                                        }
-                                                    }
-                                                } 
-                                                if asset.mediaType == .video {
-                                                PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
-                                                    if let avAsset = avAsset as? AVURLAsset {
-                                                        DispatchQueue.main.async {
-                                                            self.mostRecentVideoURL = avAsset.url
-                                                            self.mostRecentMedia = .video(avAsset.url)
-                                                            if !self.images.contains(asset) {
-                                                                self.images.insert(asset, at: 0)
-                                                            }
-                                                            self.selectedImageIdentifier = asset.localIdentifier
-                                                            self.hasFetchedMedia = true
-                                                            self.fetchURLPreview(url: avAsset.url)
-                                                        }
-                                                    }
-                                                }
-                                            }
+                                                self.selectedImage = asset
+                                                self.showingMedia = true
                                             }) {
                                                 Text("View")
                                                 Image(systemName: "photo")
@@ -775,6 +753,11 @@ func handleVideoAsset(_ asset: PHAsset) {
                                                 Image(systemName: "trash")
                                             }
                                         }
+                                        .sheet(isPresented: $showingMedia) {
+                                            if let selectedImage = selectedImage {
+                                                PhotoView(image: selectedImage, images: images)
+                                            }
+                                        }
                                         .sheet(isPresented: $showingShareSheet) {
                                             if case .image(let image) = selectedMedia {
                                                 ShareSheet(activityItems: [image, linkMetadata].compactMap { $0 })
@@ -792,18 +775,6 @@ func handleVideoAsset(_ asset: PHAsset) {
                                             }
                                         }
                                 }
-                                
-                            }
-                            .sheet(isPresented: $showingMedia) {
-                                if let selectedMedia = selectedMedia {
-                                    switch selectedMedia {
-                                    case .image(let image):
-                                        FullScreenImageView(image: image)
-                                    case .video(let videoURL):
-                                        VideoPlayerView(url: videoURL)
-                                            .edgesIgnoringSafeArea(.all)
-                                    }
-                                }
                             }
                         }
                     }
@@ -812,13 +783,11 @@ func handleVideoAsset(_ asset: PHAsset) {
                     .padding(10)
                 }
                 Divider().overlay(mediumPink).opacity(0.25)
-                // if showReactionsBackground {
                     ZStack {
                         ReactionBackgroundView(showReactionsBackground: $showReactionsBackground)
                         ReactionBarView(reactions: $reactions)
                     }
                     .padding(.bottom, 5)
-                // }
                 HStack {
                     Button(action: {
                         withAnimation {
