@@ -14,6 +14,25 @@ extension LinearGradient {
     }
 }
 
+extension UIImage {
+    func thumbnailImage(maxSize: CGSize) -> UIImage? {
+        let maxResolution = max(maxSize.width, maxSize.height)
+        let scale = maxResolution / max(size.width, size.height)
+
+        let thumbnailSize = CGSize(
+            width: size.width * scale,
+            height: size.height * scale
+        )
+
+        UIGraphicsBeginImageContextWithOptions(thumbnailSize, true, 0.0)
+        draw(in: CGRect(origin: .zero, size: thumbnailSize))
+        let thumbnailImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return thumbnailImage
+    }
+}
+
 enum PhotoOrVideoMedia {
     case photo(UIImage)
     case video(URL)
@@ -146,25 +165,44 @@ class ShareItem: NSObject, UIActivityItemSource {
     let bodyText: String?
     let thumbnail: UIImage?
     let contentURL: URL?
+    let image: UIImage?
+    let data: Data?
 
-    init(title: String, bodyText: String? = nil, thumbnail: UIImage? = nil, contentURL: URL? = nil) {
+    init(title: String, bodyText: String? = nil, thumbnail: UIImage? = nil, contentURL: URL? = nil, image: UIImage? = nil, data: Data? = nil) {
         self.title = title
         self.bodyText = bodyText
         self.thumbnail = thumbnail
         self.contentURL = contentURL
+        self.image = image
+        self.data = data
     }
 
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-        return contentURL?.absoluteString ?? title
+        if let image = image {
+            return image
+        } else if let data = data {
+            return data
+        } else if let contentURL = contentURL {
+            return contentURL
+        } else {
+            return title
+        }
     }
 
     func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-        if activityType == UIActivity.ActivityType.mail {
-            let mailData = "\(title)\n\n\(description ?? "")\n\(contentURL?.absoluteString ?? "")"
-            return mailData.data(using: .utf8)
-        }
-        return contentURL?.absoluteString ?? title
+    if activityType == UIActivity.ActivityType.mail {
+        let mailData = "\(title)\n\n\(bodyText ?? "")\n\(contentURL?.absoluteString ?? "")"
+        return mailData.data(using: .utf8)
+    } else if let image = image {
+        return image
+    } else if let data = data {
+        return data
+    } else if let contentURL = contentURL {
+        return contentURL
+    } else {
+        return title
     }
+}
 
     func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
         return title
@@ -173,6 +211,8 @@ class ShareItem: NSObject, UIActivityItemSource {
     func activityViewController(_ activityViewController: UIActivityViewController, thumbnailImageForActivityType activityType: UIActivity.ActivityType?, suggestedSize size: CGSize) -> UIImage? {
         return thumbnail
     }
+
+
 }
 
 struct ShareSheet: UIViewControllerRepresentable {
@@ -368,51 +408,53 @@ struct HomeView: View {
     }
 
 func fetchURLPreview(url: URL) {
-  print("Fetching metadata for URL: \(url)")
-  let metadataProvider = LPMetadataProvider()
-  metadataProvider.startFetchingMetadata(for: url) { (metadata, error) in
-      if let error = error {
-          print("Error fetching metadata: \(error.localizedDescription)")
-          // Handle the error gracefully, provide a default metadata object
-          let defaultMetadata = LPLinkMetadata()
-          defaultMetadata.title = "Your Title Here"
-          defaultMetadata.originalURL = url
-          defaultMetadata.url = url
-          DispatchQueue.main.async {
-              self.linkMetadata = defaultMetadata
-              self.showingShareSheet = true
-          }
-          return
-      }
-      guard let data = metadata, data.originalURL != nil else {
-          print("Failed to fetch metadata")
-          // Handle the case where no metadata is available
-          let defaultMetadata = LPLinkMetadata()
-          defaultMetadata.title = "Your Title Here"
-          defaultMetadata.originalURL = url
-          defaultMetadata.url = url
-          DispatchQueue.main.async {
-              self.linkMetadata = defaultMetadata
-              self.showingShareSheet = true
-          }
-          return
-      }
-      print("Fetched metadata: \(data)") // Print the fetched metadata
-      DispatchQueue.main.async {
-          let modifiedMetadata = LPLinkMetadata()
-          modifiedMetadata.title = "Your Custom Title Here"
-          modifiedMetadata.originalURL = data.originalURL
-          modifiedMetadata.url = data.url
-          
-          // If you have a UIImage for the thumbnail
-          if let thumbnailImage = UIImage(named: "your_thumbnail_image") {
-              modifiedMetadata.imageProvider = NSItemProvider(object: thumbnailImage)
-          }
-          
-          self.linkMetadata = modifiedMetadata
-          self.showingShareSheet = true
-      }
-  }
+    print("Fetching metadata for URL: \(url)")
+    let metadataProvider = LPMetadataProvider()
+    metadataProvider.startFetchingMetadata(for: url) { (metadata, error) in
+        if let error = error {
+            print("Error fetching metadata: \(error.localizedDescription)")
+            // Handle the error gracefully, provide a default metadata object
+            let defaultMetadata = LPLinkMetadata()
+            defaultMetadata.title = "Your Title Here"
+            defaultMetadata.originalURL = url
+            defaultMetadata.url = url
+            DispatchQueue.main.async {
+                self.linkMetadata = defaultMetadata
+                self.showingShareSheet = true
+            }
+            return
+        }
+
+        guard let data = metadata, data.originalURL != nil else {
+            print("Failed to fetch metadata")
+            // Handle the case where no metadata is available
+            let defaultMetadata = LPLinkMetadata()
+            defaultMetadata.title = "Your Title Here"
+            defaultMetadata.originalURL = url
+            defaultMetadata.url = url
+            DispatchQueue.main.async {
+                self.linkMetadata = defaultMetadata
+                self.showingShareSheet = true
+            }
+            return
+        }
+
+        print("Fetched metadata: \(data)") // Print the fetched metadata
+        DispatchQueue.main.async {
+            let modifiedMetadata = LPLinkMetadata()
+            modifiedMetadata.title = "Your Custom Title Here"
+            modifiedMetadata.originalURL = data.originalURL
+            modifiedMetadata.url = data.url
+
+            // If you have a UIImage for the thumbnail
+            if let thumbnailImage = UIImage(named: "your_thumbnail_image") {
+                modifiedMetadata.imageProvider = NSItemProvider(object: thumbnailImage)
+            }
+
+            self.linkMetadata = modifiedMetadata
+            self.showingShareSheet = true
+        }
+    }
 }
 
 func handleButtonAction(with asset: PHAsset) {
@@ -424,43 +466,47 @@ func handleButtonAction(with asset: PHAsset) {
     }
 }
 
-func handleImageAsset(_ asset: PHAsset) {
-    let options = PHImageRequestOptions()
-    options.isSynchronous = false
-    PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: options) { (image, info) in        
-        if let image = image {
-            DispatchQueue.main.async {
-                self.selectedMedia = .image(image)
-                let metadata = LPLinkMetadata()
-                metadata.imageProvider = NSItemProvider(object: image)
-                metadata.title = "Your Title Here"
-                metadata.originalURL = nil // Set this if you have a URL
-                metadata.url = nil // Set this if you have a URL
-                self.linkMetadata = metadata
-                self.showingShareSheet = true
+    func handleImageAsset(_ asset: PHAsset) {
+        let options = PHImageRequestOptions()
+        options.isSynchronous = false
+        PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: options) { (image, info) in
+            if let image = image {
+                DispatchQueue.main.async {
+                    self.selectedMedia = .image(image)
+                    let shareItem = ShareItem(
+                        title: "Custom Title for \(asset.creationDate?.formatted() ?? "Image")",
+                        bodyText: "Custom description for \(asset.creationDate?.formatted() ?? "Image")",
+                        thumbnail: image.thumbnailImage(maxSize: CGSize(width: 100, height: 100)),
+                        contentURL: URL(string: "https://wikipedia.com"),
+                        image: image,
+                        data: nil
+                    )
+                    self.showingShareSheet = true
+                }
             }
         }
     }
-}
 
-
-func handleVideoAsset(_ asset: PHAsset) {
-    PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
-        if let urlAsset = avAsset as? AVURLAsset {
-            print("URL: \(urlAsset.url)")
-            DispatchQueue.main.async {
-                self.fetchURLPreview(url: urlAsset.url)
-                self.selectedMedia = .video(urlAsset.url)
-                let metadata = LPLinkMetadata()
-                metadata.url = urlAsset.url
-                metadata.title = "Your Title Here"
-                metadata.originalURL = urlAsset.url
-                self.linkMetadata = metadata
-                self.showingShareSheet = true
+    func handleVideoAsset(_ asset: PHAsset) {
+        PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
+            if let urlAsset = avAsset as? AVURLAsset {
+                print("URL: \(urlAsset.url)")
+                DispatchQueue.main.async {
+                    self.fetchURLPreview(url: urlAsset.url)
+                    self.selectedMedia = .video(urlAsset.url)
+                    let shareItem = ShareItem(
+                        title: "Custom Title for \(asset.creationDate?.formatted() ?? "Video")",
+                        bodyText: "Custom description for \(asset.creationDate?.formatted() ?? "Video")",
+                        thumbnail: nil, // No thumbnail for videos
+                        contentURL: URL(string: "https://\(urlAsset.url).com"),
+                        image: nil,
+                        data: nil
+                    )
+                    self.showingShareSheet = true
+                }
             }
         }
     }
-}
 
     class ObservablePHAsset: ObservableObject {
         @Published var isFavorite: Bool
@@ -793,18 +839,14 @@ func handleVideoAsset(_ asset: PHAsset) {
                                             }
                                         }
                                         .sheet(isPresented: $showingShareSheet) {
-                                            if case .image(let image) = selectedMedia {
-                                                let shareItem = ShareItem(title: "Your Custom Title",
-                          bodyText: "Your Custom Description",
-                          thumbnail: UIImage(named: "your_thumbnail_image"),
-                          contentURL: URL(string: "https://google.com"))
-
-                                                ShareSheet(shareItem: shareItem)
-                                                // ShareSheet(activityItems: [image, linkMetadata].compactMap { $0 })
-                                            } 
-//                                            else if case .video(let url) = selectedMedia {
-//                                                ShareSheet(activityItems: [url, linkMetadata as Any].compactMap { $0 })
-//                                            }
+                                            if let media = selectedMedia {
+                                                switch media {
+                                                case .image(let image):
+                                                    ShareSheet(shareItem: ShareItem(title: "Custom Title for \(asset.creationDate?.formatted() ?? "Image")", bodyText: "Custom description for \(asset.creationDate?.formatted() ?? "Image")", thumbnail: image, contentURL: nil, image: image, data: nil))
+                                                case .video(let videoURL):
+                                                    ShareSheet(shareItem: ShareItem(title: "Custom Title for \(asset.creationDate?.formatted() ?? "Video")", bodyText: "Custom description for \(asset.creationDate?.formatted() ?? "Video")", thumbnail: nil, contentURL: videoURL, image: nil, data: nil))
+                                                }
+                                            }
                                         }
                                         .overlay(alignment: .bottomLeading) {
                                             if asset.isFavorite {
