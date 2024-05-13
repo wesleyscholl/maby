@@ -632,7 +632,7 @@ func handleButtonAction(with asset: PHAsset) {
                             VideoPlayer(player: player)
                                 .id(selectedVideoID)
                                 .scaledToFill()
-                                .frame(width: isFullScreen ? screenHeight * 0.45 : screenHeight * 0.30, height: isFullScreen ? screenHeight * 0.43 : screenHeight * 0.32)
+                                .frame(width: isFullScreen ? screenWidth * 1.1 : screenWidth, height: isFullScreen ? screenHeight * 0.43 : screenHeight * 0.32)
                                 .cornerRadius(8)
                                 .shadow(color: lightGray, radius: 4)
                                 .onTapGesture {
@@ -679,12 +679,13 @@ func handleButtonAction(with asset: PHAsset) {
                             Rectangle()
                                 .fill(LinearGradient(gradient:
                                                         Gradient(colors: [mediumPink, lightPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
-                                .frame(width: screenWidth * 0.9, height: screenHeight * 0.32)
+                                .frame(width: screenWidth, height: screenHeight * 0.32)
                                 .cornerRadius(8)
                                 .shadow(color: lightGray, radius: 4)
                             VStack {
                                 HStack {
                                     Text("Tap")
+                                    Image(systemName: "plus")
                                     Image(systemName: "camera")
                                     Image(systemName: "video.badge.plus")
                                     Text("or")
@@ -724,6 +725,16 @@ func handleButtonAction(with asset: PHAsset) {
             .shadow(color: lightGray, radius: 2)
                             }
                             } else {
+                                if images.isEmpty {
+                ForEach(0..<30, id: \.self) { _ in
+                    Image("lilyan")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 75, height: 75)
+                        .cornerRadius(8)
+                        .shadow(color: lightGray, radius: 2)
+                }
+            } else {
                             ForEach(images.indices, id: \.self) { index in
                                     let asset = images[index]
                                     let observableAsset = ObservablePHAsset(asset: asset)
@@ -856,6 +867,7 @@ func handleButtonAction(with asset: PHAsset) {
                                                     .offset(x: 4, y: -4)
                                             }
                                         }
+                                }
                             }
                         }
                         // } else if images.isEmpty {
