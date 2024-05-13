@@ -68,7 +68,11 @@ struct FullScreenImageView: View {
     var image: UIImage
     var body: some View {
         Image(uiImage: image)
-            .resizable()
+                    .resizable()
+                    .scaledToFit()
+                    .onTapGesture {
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    }
             .aspectRatio(contentMode: .fit)
             .onDisappear {
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
@@ -220,11 +224,6 @@ struct ShareSheet: UIViewControllerRepresentable {
     var applicationActivities: [UIActivity]? = nil
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        print("ShareSheet")
-        print("shareItem.title: \(shareItem.title)")
-        print("shareItem.description: \(shareItem.description ?? "No description")")
-        print("shareItem.contentURL: \(shareItem.contentURL?.absoluteString ?? "No URL")")
-
         let activityItems: [Any] = [shareItem]
         let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
         return controller
@@ -412,11 +411,9 @@ struct HomeView: View {
     }
 
 func fetchURLPreview(url: URL) {
-    print("Fetching metadata for URL: \(url)")
     let metadataProvider = LPMetadataProvider()
     metadataProvider.startFetchingMetadata(for: url) { (metadata, error) in
         if let error = error {
-            print("Error fetching metadata: \(error.localizedDescription)")
             // Handle the error gracefully, provide a default metadata object
             let defaultMetadata = LPLinkMetadata()
             defaultMetadata.title = "Your Title Here"
@@ -430,7 +427,6 @@ func fetchURLPreview(url: URL) {
         }
 
         guard let data = metadata, data.originalURL != nil else {
-            print("Failed to fetch metadata")
             // Handle the case where no metadata is available
             let defaultMetadata = LPLinkMetadata()
             defaultMetadata.title = "Your Title Here"
@@ -443,7 +439,6 @@ func fetchURLPreview(url: URL) {
             return
         }
 
-        print("Fetched metadata: \(data)") // Print the fetched metadata
         DispatchQueue.main.async {
             let modifiedMetadata = LPLinkMetadata()
             modifiedMetadata.title = "Your Custom Title Here"
@@ -494,7 +489,6 @@ func handleButtonAction(with asset: PHAsset) {
     func handleVideoAsset(_ asset: PHAsset) {
         PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
             if let urlAsset = avAsset as? AVURLAsset {
-                print("URL: \(urlAsset.url)")
                 DispatchQueue.main.async {
                     self.fetchURLPreview(url: urlAsset.url)
                     self.selectedMedia = .video(urlAsset.url)
@@ -725,16 +719,6 @@ func handleButtonAction(with asset: PHAsset) {
             .shadow(color: lightGray, radius: 2)
                             }
                             } else {
-                                if images.isEmpty {
-                ForEach(0..<30, id: \.self) { _ in
-                    Image("lilyan")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 75, height: 75)
-                        .cornerRadius(8)
-                        .shadow(color: lightGray, radius: 2)
-                }
-            } else {
                             ForEach(images.indices, id: \.self) { index in
                                     let asset = images[index]
                                     let observableAsset = ObservablePHAsset(asset: asset)
@@ -782,9 +766,8 @@ func handleButtonAction(with asset: PHAsset) {
                                             }
                                             Button(action: {
                                                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                                                let asset = images[index]
-                                                self.selectedImage = asset
-                                                self.showingMedia = true
+                                                    self.selectedMedia = .image(getImage(from: images[index]))
+                                                    self.showingMedia = true
                                             }) {
                                                 Text("View")
                                                 Image(systemName: "photo")
@@ -846,7 +829,14 @@ func handleButtonAction(with asset: PHAsset) {
                                             }
                                         }
                                         .sheet(isPresented: $showingMedia) {
-                                                PhotoView(image: images[index])
+                                            if let media = selectedMedia {
+                                                switch media {
+                                                case .image(let image):
+                                                    FullScreenImageView(image: image)
+                                                case .video(let videoURL):
+                                                    VideoPlayerView(url: videoURL)
+                                                }
+                                            }
                                         }
                                         .sheet(isPresented: $showingShareSheet) {
                                             if let media = selectedMedia {
@@ -867,23 +857,16 @@ func handleButtonAction(with asset: PHAsset) {
                                                     .offset(x: 4, y: -4)
                                             }
                                         }
-                                }
+                                
                             }
                         }
-                        // } else if images.isEmpty {
-                        //     ForEach(0..<30, id: \.self) { _ in
-                        //         Image("lilyan")
-                        //             .resizable()
-                        //             .scaledToFill()
-                        //             .frame(width: 75, height: 75)
-                        //             .cornerRadius(8)
-                        //             .shadow(color: lightGray, radius: 2)
-                        //     }
-                        // }
                     }
                     .flipsForRightToLeftLayoutDirection(true)
                     .onAppear(perform: loadImages)
                     .padding(10)
+                    .onAppear {
+            
+                    }
                 }
                 Divider().overlay(mediumPink).opacity(0.25)
                     ZStack {
