@@ -283,6 +283,7 @@ struct HomeView: View {
     @State private var showReactionsBackground = false
     @State private var linkMetadata: LPLinkMetadata?
     @State private var mediaType: AssetType = .photo
+    @State private var isLoadingImages = true
     
     @State private var reactions = [
         Reaction(imageName: "heart.fill", isShown: false, rotation: 360, isSelected: false),
@@ -345,6 +346,9 @@ struct HomeView: View {
                 }
             }
         }
+          DispatchQueue.main.async { 
+      isLoadingImages = false
+  }
     }
     
     func getImage(from asset: PHAsset) -> UIImage {
@@ -477,7 +481,7 @@ func handleButtonAction(with asset: PHAsset) {
                         title: "Custom Title for \(asset.creationDate?.formatted() ?? "Image")",
                         bodyText: "Custom description for \(asset.creationDate?.formatted() ?? "Image")",
                         thumbnail: image.thumbnailImage(maxSize: CGSize(width: 100, height: 100)),
-                        contentURL: URL(string: "https://wikipedia.com"),
+                        contentURL: URL(string: "https://\(asset.localIdentifier).com"),
                         image: image,
                         data: nil
                     )
@@ -610,7 +614,7 @@ func handleButtonAction(with asset: PHAsset) {
                             Image(uiImage: image)
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: isFullScreen ? screenWidth * 0.98 : screenWidth * 0.9, height: isFullScreen ? screenHeight * 0.43 : screenHeight * 0.32)
+                                .frame(width: isFullScreen ? screenWidth * 1.1 : screenWidth, height: isFullScreen ? screenHeight * 0.43 : screenHeight * 0.32)
                                 .cornerRadius(8)
                                 .shadow(color: lightGray, radius: 4)
                                 .onTapGesture {
@@ -712,18 +716,15 @@ func handleButtonAction(with asset: PHAsset) {
                 ScrollView(.horizontal) {
                     let rows = Array(repeating: GridItem(.fixed(75), spacing: 10), count: 2)
                     LazyHGrid(rows: rows) {
-                        if images.isEmpty {
-                            ForEach(0..<30, id: \.self) { _ in
-                                Image("lilyan")
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 75, height: 75)
-                                    .cornerRadius(8)
-                                    .shadow(color: lightGray, radius: 2)
+                        if isLoadingImages {
+                            ForEach(0..<10) { _ in
+                                ProgressView()
+            .frame(width: 75, height: 75)
+            .cornerRadius(8)
+            .shadow(color: lightGray, radius: 2)
                             }
-                        } else {
+                            } else {
                             ForEach(images.indices, id: \.self) { index in
-                                NavigationLink(destination: PhotoView(image: images[index], images: images)) {
                                     let asset = images[index]
                                     let observableAsset = ObservablePHAsset(asset: asset)
                                     Image(uiImage: getImage(from: asset))
@@ -834,9 +835,7 @@ func handleButtonAction(with asset: PHAsset) {
                                             }
                                         }
                                         .sheet(isPresented: $showingMedia) {
-                                            if let selectedImage = selectedImage {
-                                                PhotoView(image: selectedImage, images: images)
-                                            }
+                                                PhotoView(image: images[index])
                                         }
                                         .sheet(isPresented: $showingShareSheet) {
                                             if let media = selectedMedia {
@@ -857,9 +856,18 @@ func handleButtonAction(with asset: PHAsset) {
                                                     .offset(x: 4, y: -4)
                                             }
                                         }
-                                }
                             }
                         }
+                        // } else if images.isEmpty {
+                        //     ForEach(0..<30, id: \.self) { _ in
+                        //         Image("lilyan")
+                        //             .resizable()
+                        //             .scaledToFill()
+                        //             .frame(width: 75, height: 75)
+                        //             .cornerRadius(8)
+                        //             .shadow(color: lightGray, radius: 2)
+                        //     }
+                        // }
                     }
                     .flipsForRightToLeftLayoutDirection(true)
                     .onAppear(perform: loadImages)
