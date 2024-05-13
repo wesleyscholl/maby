@@ -141,24 +141,51 @@ struct ReactionBackgroundView: View {
     }
 }
 
+class ShareItem: NSObject, UIActivityItemSource {
+    let title: String
+    let bodyText: String?
+    let thumbnail: UIImage?
+    let contentURL: URL?
+
+    init(title: String, bodyText: String? = nil, thumbnail: UIImage? = nil, contentURL: URL? = nil) {
+        self.title = title
+        self.bodyText = bodyText
+        self.thumbnail = thumbnail
+        self.contentURL = contentURL
+    }
+
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        return contentURL?.absoluteString ?? title
+    }
+
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        if activityType == UIActivity.ActivityType.mail {
+            let mailData = "\(title)\n\n\(description ?? "")\n\(contentURL?.absoluteString ?? "")"
+            return mailData.data(using: .utf8)
+        }
+        return contentURL?.absoluteString ?? title
+    }
+
+    func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
+        return title
+    }
+
+    func activityViewController(_ activityViewController: UIActivityViewController, thumbnailImageForActivityType activityType: UIActivity.ActivityType?, suggestedSize size: CGSize) -> UIImage? {
+        return thumbnail
+    }
+}
+
 struct ShareSheet: UIViewControllerRepresentable {
-    var activityItems: [Any]
+    var shareItem: ShareItem
     var applicationActivities: [UIActivity]? = nil
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
         print("ShareSheet")
-        print("activityItems: \(activityItems)")
-        print("applicationActivities: \(applicationActivities)")
-        if let activityItems = activityItems as? [Any] {
-    for item in activityItems {
-        if let metadata = item as? LPLinkMetadata {
-            print("Title: \(metadata.title ?? "No title")")
-            print("Description: \(metadata.description ?? "No description")")
-            print("Original URL: \(metadata.originalURL?.absoluteString ?? "No original URL")")
-            print("URL: \(metadata.url?.absoluteString ?? "No URL")")
-        }
-    }
-}
+        print("shareItem.title: \(shareItem.title)")
+        print("shareItem.description: \(shareItem.description ?? "No description")")
+        print("shareItem.contentURL: \(shareItem.contentURL?.absoluteString ?? "No URL")")
+
+        let activityItems: [Any] = [shareItem]
         let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
         return controller
     }
@@ -372,13 +399,21 @@ func fetchURLPreview(url: URL) {
       }
       print("Fetched metadata: \(data)") // Print the fetched metadata
       DispatchQueue.main.async {
-        data.title = "Your Custom Title Here" // Set the title here
-          self.linkMetadata = data
+          let modifiedMetadata = LPLinkMetadata()
+          modifiedMetadata.title = "Your Custom Title Here"
+          modifiedMetadata.originalURL = data.originalURL
+          modifiedMetadata.url = data.url
+          
+          // If you have a UIImage for the thumbnail
+          if let thumbnailImage = UIImage(named: "your_thumbnail_image") {
+              modifiedMetadata.imageProvider = NSItemProvider(object: thumbnailImage)
+          }
+          
+          self.linkMetadata = modifiedMetadata
           self.showingShareSheet = true
       }
   }
 }
-
 
 func handleButtonAction(with asset: PHAsset) {
     UIImpactFeedbackGenerator(style: .light).impactOccurred()
@@ -396,20 +431,13 @@ func handleImageAsset(_ asset: PHAsset) {
         if let image = image {
             DispatchQueue.main.async {
                 self.selectedMedia = .image(image)
-                if let url = info?["PHImageFileURLKey"] as? URL {
-                    print("URL: \(url)")
-                    self.fetchURLPreview(url: url)
-                } else {
-                    print("No URL found")
-                    print("Image: \(image)")
-                    print("Asset: \(asset)")
-                    print("Info: \(info)")
-                    let metadata = LPLinkMetadata()
-                    metadata.imageProvider = NSItemProvider(object: image)
-                    metadata.title = "Your Title Here"
-                    self.linkMetadata = metadata
-                    self.showingShareSheet = true
-                }
+                let metadata = LPLinkMetadata()
+                metadata.imageProvider = NSItemProvider(object: image)
+                metadata.title = "Your Title Here"
+                metadata.originalURL = nil // Set this if you have a URL
+                metadata.url = nil // Set this if you have a URL
+                self.linkMetadata = metadata
+                self.showingShareSheet = true
             }
         }
     }
@@ -421,8 +449,14 @@ func handleVideoAsset(_ asset: PHAsset) {
         if let urlAsset = avAsset as? AVURLAsset {
             print("URL: \(urlAsset.url)")
             DispatchQueue.main.async {
-                self.selectedMedia = .video(urlAsset.url)
                 self.fetchURLPreview(url: urlAsset.url)
+                self.selectedMedia = .video(urlAsset.url)
+                let metadata = LPLinkMetadata()
+                metadata.url = urlAsset.url
+                metadata.title = "Your Title Here"
+                metadata.originalURL = urlAsset.url
+                self.linkMetadata = metadata
+                self.showingShareSheet = true
             }
         }
     }
@@ -685,7 +719,7 @@ func handleVideoAsset(_ asset: PHAsset) {
                                                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                                 observableAsset.updateFavoriteStatus()
                                             }) {
-                                                Text(observableAsset.isFavorite == true ? "Unfavorite" : "Favorite")
+                                                Text(observableAsset.isFavorite == true ? "Deselect" : "Favorite")
                                                 Image(systemName: observableAsset.isFavorite == true ? "heart.fill" : "heart")
                                             }
                                             Button(action: {
@@ -760,10 +794,17 @@ func handleVideoAsset(_ asset: PHAsset) {
                                         }
                                         .sheet(isPresented: $showingShareSheet) {
                                             if case .image(let image) = selectedMedia {
-                                                ShareSheet(activityItems: [image, linkMetadata].compactMap { $0 })
-                                            } else if case .video(let url) = selectedMedia {
-                                                ShareSheet(activityItems: [url, linkMetadata as Any].compactMap { $0 })
-                                            }
+                                                let shareItem = ShareItem(title: "Your Custom Title",
+                          bodyText: "Your Custom Description",
+                          thumbnail: UIImage(named: "your_thumbnail_image"),
+                          contentURL: URL(string: "https://google.com"))
+
+                                                ShareSheet(shareItem: shareItem)
+                                                // ShareSheet(activityItems: [image, linkMetadata].compactMap { $0 })
+                                            } 
+//                                            else if case .video(let url) = selectedMedia {
+//                                                ShareSheet(activityItems: [url, linkMetadata as Any].compactMap { $0 })
+//                                            }
                                         }
                                         .overlay(alignment: .bottomLeading) {
                                             if asset.isFavorite {
