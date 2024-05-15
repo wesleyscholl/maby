@@ -1,5 +1,12 @@
 import SwiftUI
 
+struct Reaction {
+    let imageName: String
+    var isShown: Bool
+    var rotation: Double
+    var isSelected: Bool
+}
+
 struct ReactionBackgroundView: View {
     @Binding var showReactionsBackground: Bool
 

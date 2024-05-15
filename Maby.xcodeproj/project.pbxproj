@@ -47,6 +47,7 @@
 		EB0CCD152BD73877009ADE4B /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD142BD73877009ADE4B /* GalleryView.swift */; };
 		EB0CCD172BD928BC009ADE4B /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0CCD162BD928BC009ADE4B /* Timeline.swift */; };
 		EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */ = {isa = PBXBuildFile; fileRef = EB33083D2BC8891F000202C0 /* baby-girl-1.png */; };
+		EB4D3C4A2BF4FFEB00D2D9D9 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4D3C492BF4FFEB00D2D9D9 /* ShareSheet.swift */; };
 		EB7E400D2BEE03F5006DA8D8 /* MabyKit in Resources */ = {isa = PBXBuildFile; fileRef = EB7E400C2BEE03F5006DA8D8 /* MabyKit */; };
 		EB7E400F2BEE0413006DA8D8 /* FloatingButton in Resources */ = {isa = PBXBuildFile; fileRef = EB7E400E2BEE0413006DA8D8 /* FloatingButton */; };
 		EB7E40112BEE0444006DA8D8 /* Aespa in Resources */ = {isa = PBXBuildFile; fileRef = EB7E40102BEE0444006DA8D8 /* Aespa */; };
@@ -141,6 +142,7 @@
 		EB0CCD142BD73877009ADE4B /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
 		EB0CCD162BD928BC009ADE4B /* Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
 		EB33083D2BC8891F000202C0 /* baby-girl-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "baby-girl-1.png"; path = "../../Downloads/baby-girl-1.png"; sourceTree = "<group>"; };
+		EB4D3C492BF4FFEB00D2D9D9 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
 		EB7E400C2BEE03F5006DA8D8 /* MabyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MabyKit; sourceTree = "<group>"; };
 		EB7E400E2BEE0413006DA8D8 /* FloatingButton */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FloatingButton; path = ../FloatingButton; sourceTree = "<group>"; };
 		EB7E40102BEE0444006DA8D8 /* Aespa */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Aespa; path = ../Aespa; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 				EB0CCD142BD73877009ADE4B /* GalleryView.swift */,
 				EB8F00B42BEB2A520057B6AE /* Reactions.swift */,
 				EB7E403F2BF0B3EE006DA8D8 /* MediaView.swift */,
+				EB4D3C492BF4FFEB00D2D9D9 /* ShareSheet.swift */,
 			);
 			path = Moments;
 			sourceTree = "<group>";
@@ -494,6 +497,7 @@
 				EB0CCD172BD928BC009ADE4B /* Timeline.swift in Sources */,
 				C9ED2EA9287C745100BA3228 /* ContentView.swift in Sources */,
 				EB0CCD112BD737EF009ADE4B /* Direction.swift in Sources */,
+				EB4D3C4A2BF4FFEB00D2D9D9 /* ShareSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
