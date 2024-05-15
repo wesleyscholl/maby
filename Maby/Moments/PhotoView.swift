@@ -12,7 +12,7 @@ struct PhotoView: View {
         ZStack {
             Color.black.ignoresSafeArea()
 
-            if let uiImage = getImage(from: image) {
+            if let uiImage = getPhotoViewImage(from: image) {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFit()
@@ -28,7 +28,7 @@ struct PhotoView: View {
     }
 }
 
-func getImage(from asset: PHAsset) -> UIImage? {
+func getPhotoViewImage(from asset: PHAsset) -> UIImage? {
     let manager = PHImageManager.default()
     let options = PHImageRequestOptions()
     options.isSynchronous = true

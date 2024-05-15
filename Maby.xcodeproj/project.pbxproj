@@ -49,6 +49,8 @@
 		EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */ = {isa = PBXBuildFile; fileRef = EB33083D2BC8891F000202C0 /* baby-girl-1.png */; };
 		EB4D3C4A2BF4FFEB00D2D9D9 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4D3C492BF4FFEB00D2D9D9 /* ShareSheet.swift */; };
 		EB4D3C4C2BF501C500D2D9D9 /* PhotoVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4D3C4B2BF501C500D2D9D9 /* PhotoVideo.swift */; };
+		EB4D3C4E2BF5034500D2D9D9 /* PhotoObserverCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4D3C4D2BF5034500D2D9D9 /* PhotoObserverCoordinator.swift */; };
+		EB4D3C522BF5047500D2D9D9 /* ObservePHAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4D3C512BF5047500D2D9D9 /* ObservePHAsset.swift */; };
 		EB7E400D2BEE03F5006DA8D8 /* MabyKit in Resources */ = {isa = PBXBuildFile; fileRef = EB7E400C2BEE03F5006DA8D8 /* MabyKit */; };
 		EB7E400F2BEE0413006DA8D8 /* FloatingButton in Resources */ = {isa = PBXBuildFile; fileRef = EB7E400E2BEE0413006DA8D8 /* FloatingButton */; };
 		EB7E40112BEE0444006DA8D8 /* Aespa in Resources */ = {isa = PBXBuildFile; fileRef = EB7E40102BEE0444006DA8D8 /* Aespa */; };
@@ -145,6 +147,8 @@
 		EB33083D2BC8891F000202C0 /* baby-girl-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "baby-girl-1.png"; path = "../../Downloads/baby-girl-1.png"; sourceTree = "<group>"; };
 		EB4D3C492BF4FFEB00D2D9D9 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
 		EB4D3C4B2BF501C500D2D9D9 /* PhotoVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoVideo.swift; sourceTree = "<group>"; };
+		EB4D3C4D2BF5034500D2D9D9 /* PhotoObserverCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoObserverCoordinator.swift; sourceTree = "<group>"; };
+		EB4D3C512BF5047500D2D9D9 /* ObservePHAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservePHAsset.swift; sourceTree = "<group>"; };
 		EB7E400C2BEE03F5006DA8D8 /* MabyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MabyKit; sourceTree = "<group>"; };
 		EB7E400E2BEE0413006DA8D8 /* FloatingButton */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FloatingButton; path = ../FloatingButton; sourceTree = "<group>"; };
 		EB7E40102BEE0444006DA8D8 /* Aespa */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Aespa; path = ../Aespa; sourceTree = "<group>"; };
@@ -357,6 +361,8 @@
 				EB7E403F2BF0B3EE006DA8D8 /* MediaView.swift */,
 				EB4D3C492BF4FFEB00D2D9D9 /* ShareSheet.swift */,
 				EB4D3C4B2BF501C500D2D9D9 /* PhotoVideo.swift */,
+				EB4D3C4D2BF5034500D2D9D9 /* PhotoObserverCoordinator.swift */,
+				EB4D3C512BF5047500D2D9D9 /* ObservePHAsset.swift */,
 			);
 			path = Moments;
 			sourceTree = "<group>";
@@ -466,6 +472,7 @@
 				EB0CCD132BD73856009ADE4B /* SettingView.swift in Sources */,
 				EB0CCD072BD734BA009ADE4B /* VideoContentViewModel.swift in Sources */,
 				EB0CCD022BD7345E009ADE4B /* VideoContentView.swift in Sources */,
+				EB4D3C4E2BF5034500D2D9D9 /* PhotoObserverCoordinator.swift in Sources */,
 				C9D2C0832880D1DC00F85D8F /* EventView.swift in Sources */,
 				EB0CCD0F2BD73639009ADE4B /* WheelView.swift in Sources */,
 				C9ED2EA2287C745100BA3228 /* MabyApp.swift in Sources */,
@@ -497,6 +504,7 @@
 				EB4D3C4C2BF501C500D2D9D9 /* PhotoVideo.swift in Sources */,
 				C9B95D0D287DA6C800ADC43F /* JournalView.swift in Sources */,
 				EB0CCD152BD73877009ADE4B /* GalleryView.swift in Sources */,
+				EB4D3C522BF5047500D2D9D9 /* ObservePHAsset.swift in Sources */,
 				EB8F009C2BE66EB40057B6AE /* ReminderSectionView.swift in Sources */,
 				EB0CCD172BD928BC009ADE4B /* Timeline.swift in Sources */,
 				C9ED2EA9287C745100BA3228 /* ContentView.swift in Sources */,

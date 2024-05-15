@@ -14,23 +14,6 @@ extension LinearGradient {
     }
 }
 
-class Coordinator: NSObject, PHPhotoLibraryChangeObserver {
-    var parent: HomeView
-
-    init(_ parent: HomeView) {
-        self.parent = parent
-        super.init()
-        PHPhotoLibrary.shared().register(self)
-    }
-
-    func photoLibraryDidChange(_ changeInstance: PHChange) {
-        DispatchQueue.main.async {
-            self.parent.loadImages()
-            self.parent.fetchMostRecentMedia()
-        }
-    }
-}
-
 struct HomeView: View {
     public var screenWidth: CGFloat {
         return UIScreen.main.bounds.width
@@ -87,15 +70,16 @@ struct HomeView: View {
     let darkColor = Color(red: 78/255, green: 0/255, blue: 25/255)
     let lightGray = Color(red: 230/255, green: 224/255, blue: 225/255)
     let darkGrey = Color(red: 128/255, green: 128/255, blue: 128/255)
-    
-    func loadImages() {
+
+func loadImagesAndFetchMostRecentMedia() {
+    if !hasFetchedMedia && !isUpdatingFavoriteStatus {
         self.images = []
         let fetchOptions = PHFetchOptions()
         fetchOptions.predicate = NSPredicate(format: "title = %@", "JOYFUL")
         let collections = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
         if let joyfulAlbum = collections.firstObject {
             let assets = PHAsset.fetchAssets(in: joyfulAlbum, options: nil)
-            let reversedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted { $0.creationDate ?? Date() > $1.creationDate ?? Date() }
+            let sortedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted { $0.creationDate ?? Date() > $1.creationDate ?? Date() }
             let manager = PHImageManager.default()
             let option = PHImageRequestOptions()
             option.isSynchronous = true
@@ -104,98 +88,75 @@ struct HomeView: View {
             let operationQueue = OperationQueue()
             operationQueue.qualityOfService = .userInitiated
             operationQueue.addOperation {
-                for object in reversedAssets {
-                    DispatchQueue.main.async {
-                        if !self.images.contains(object) {
-                            self.images.append(object)
-                            self.observableAssets[object.localIdentifier] = ObservablePHAsset(asset: object)
-                        }
-                        if object.mediaType == .video {
-                            manager.requestAVAsset(forVideo: object, options: nil) { (avAsset, _, _) in
-                                if let avAsset = avAsset as? AVURLAsset {
-                                    DispatchQueue.main.async {
-                                        let newMedia = Media(asset: object, videoURL: avAsset.url)
-                                        if !self.media.contains(where: { $0.asset == newMedia.asset }) {
-                                            self.media.append(newMedia)
-                                        }
-                                        self.mostRecentVideoURL = avAsset.url
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    DispatchQueue.main.async {
-                        if let firstAsset = self.images.first {
-                            self.selectedAsset = ObservablePHAsset(asset: firstAsset)
-                        }
-                    }
+                for object in sortedAssets {
+                    self.processAsset(object, with: manager)
+                }
+                DispatchQueue.main.async {
+                    self.isLoadingImages = false
+                    self.hasFetchedMedia = true
                 }
             }
         }
-          DispatchQueue.main.async { 
-      isLoadingImages = false
-  }
     }
-    
-    func getImage(from asset: PHAsset) -> UIImage {
+}
+
+private func processAsset(_ asset: PHAsset, with manager: PHImageManager) {
+    DispatchQueue.main.async {
+        if !self.images.contains(asset) {
+            self.images.append(asset)
+            self.observableAssets[asset.localIdentifier] = ObservablePHAsset(asset: asset)
+        }
+        if asset.mediaType == .video {
+            self.processVideoAsset(asset, with: manager)
+        } else if asset.mediaType == .image {
+            self.processImageAsset(asset, with: manager)
+        }
+        if let firstAsset = self.images.first {
+            self.selectedAsset = ObservablePHAsset(asset: firstAsset)
+            self.selectedImageIdentifier = firstAsset.localIdentifier
+        }
+    }
+}
+
+private func processVideoAsset(_ asset: PHAsset, with manager: PHImageManager) {
+    manager.requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
+        if let avAsset = avAsset as? AVURLAsset {
+            DispatchQueue.main.async {
+                let newMedia = Media(asset: asset, videoURL: avAsset.url)
+                if !self.media.contains(where: { $0.asset == newMedia.asset }) {
+                    self.media.append(newMedia)
+                }
+                self.mostRecentVideoURL = avAsset.url
+                self.mostRecentMedia = .video(avAsset.url)
+            }
+        }
+    }
+}
+
+private func processImageAsset(_ asset: PHAsset, with manager: PHImageManager) {
+    manager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: nil) { image, _ in
+        DispatchQueue.main.async {
+            if let image = image {
+                self.mostRecentPhoto = image
+                self.mostRecentMedia = .photo(image)
+            }
+        }
+    }
+}
+
+func getImage(from asset: PHAsset) -> UIImage {
     let manager = PHImageManager.default()
     let options = PHImageRequestOptions()
     options.isSynchronous = true
     options.resizeMode = .exact
     var image: UIImage?
-    manager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: options) { result, info in
+    manager.requestImage(for: asset, targetSize: CGSize(width: 1000, height: 1000), contentMode: .aspectFill, options: options) { result, info in
         if let result = result {
             image = result
         }
     }
     return image!
 }
-    
-    func fetchMostRecentMedia() {
-        if !hasFetchedMedia && !isUpdatingFavoriteStatus {
-            DispatchQueue.global(qos: .userInteractive).async {
-                let fetchOptions = PHFetchOptions()
-                fetchOptions.predicate = NSPredicate(format: "title = %@", "JOYFUL")
-                let albums = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
-                if let album = albums.firstObject {
-                    let assets = PHAsset.fetchAssets(in: album, options: nil)
-                    let sortedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted { $0.creationDate ?? Date() > $1.creationDate ?? Date() }
-                    if let asset = sortedAssets.first {
-                        if asset.mediaType == .image {
-                            PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: nil) { image, _ in
-                                DispatchQueue.main.async {
-                                    if let image = image {
-                                        self.mostRecentPhoto = image
-                                        self.mostRecentMedia = .photo(image)
-                                        if !self.images.contains(asset) {
-                                            self.images.insert(asset, at: 0)
-                                        }
-                                        self.selectedImageIdentifier = asset.localIdentifier
-                                        self.hasFetchedMedia = true
-                                    }
-                                }
-                            }
-                        }
-                        if asset.mediaType == .video {
-                            PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
-                                if let avAsset = avAsset as? AVURLAsset {
-                                    DispatchQueue.main.async {
-                                        self.mostRecentVideoURL = avAsset.url
-                                        self.mostRecentMedia = .video(avAsset.url)
-                                        if !self.images.contains(asset) {
-                                            self.images.insert(asset, at: 0)
-                                        }
-                                        self.selectedImageIdentifier = asset.localIdentifier
-                                        self.hasFetchedMedia = true
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 
 func fetchURLPreview(url: URL) {
     let metadataProvider = LPMetadataProvider()
@@ -288,36 +249,6 @@ func handleButtonAction(with asset: PHAsset) {
                     )
                     self.showingShareSheet = true
                 }
-            }
-        }
-    }
-
-    class ObservablePHAsset: ObservableObject {
-        @Published var isFavorite: Bool
-        let asset: PHAsset
-        init(asset: PHAsset) {
-            self.asset = asset
-            self.isFavorite = asset.isFavorite
-        }
-
-        func updateFavoriteStatus() {
-    PHPhotoLibrary.shared().performChanges({
-        let changeRequest = PHAssetChangeRequest(for: self.asset)
-        changeRequest.isFavorite = !self.asset.isFavorite
-    }, completionHandler: { success, error in
-        if success {
-            DispatchQueue.main.async {
-                self.isFavorite = !self.isFavorite
-            }
-        } else if let error = error {
-            print("Error updating asset: \(error)")
-        }
-    })
-}
-
-        func updateFavoriteStatusAsync() {
-            DispatchQueue.global().async {
-                self.updateFavoriteStatus()
             }
         }
     }
@@ -461,7 +392,7 @@ func handleButtonAction(with asset: PHAsset) {
                                     buttonsView(for: asset)
                                         .offset(x: 0, y: -20)
                                 }
-                            }
+                        }
                     } else {
                         ZStack {
                             Rectangle()
@@ -497,7 +428,7 @@ func handleButtonAction(with asset: PHAsset) {
                         }
                     }
                 }.onAppear {
-                    fetchMostRecentMedia()
+                    loadImagesAndFetchMostRecentMedia()
                     if let videoURL = mostRecentVideoURL {
                         player = AVPlayer(url: videoURL)
                     }
@@ -605,7 +536,7 @@ func handleButtonAction(with asset: PHAsset) {
                                                                 mostRecentPhoto = nil
                                                                 mostRecentVideoURL = nil
                                                             } else {
-                                                                fetchMostRecentMedia()
+                                                                loadImagesAndFetchMostRecentMedia()
                                                             }
                                                         }
                                                     } else if let error = error {
@@ -629,7 +560,7 @@ func handleButtonAction(with asset: PHAsset) {
                                                                 mostRecentPhoto = nil
                                                                 mostRecentVideoURL = nil
                                                             } else {
-                                                                fetchMostRecentMedia()
+                                                                loadImagesAndFetchMostRecentMedia()
                                                             }
                                                         }
                                                     } else if let error = error {
@@ -695,7 +626,7 @@ func handleButtonAction(with asset: PHAsset) {
                         }
                     }
                     .flipsForRightToLeftLayoutDirection(true)
-                    .onAppear(perform: loadImages)
+                    .onAppear(perform: loadImagesAndFetchMostRecentMedia)
                     .padding(10)
                 }
                 Divider().overlay(mediumPink).opacity(0.25)
@@ -851,21 +782,5 @@ func handleButtonAction(with asset: PHAsset) {
                     .foregroundColor(colorPink)
             }
         )
-    }
-}
-
-class PhotoLibraryChangeObserver: NSObject, PHPhotoLibraryChangeObserver, ObservableObject {
-    var onChange: (() -> Void)?
-
-    init(onChange: @escaping () -> Void) {
-        self.onChange = onChange
-        super.init()
-        PHPhotoLibrary.shared().register(self)
-    }
-
-    func photoLibraryDidChange(_ changeInstance: PHChange) {
-        DispatchQueue.main.async {
-            self.onChange?()
-        }
     }
 }
