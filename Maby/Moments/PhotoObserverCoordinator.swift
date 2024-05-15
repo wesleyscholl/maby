@@ -13,7 +13,8 @@ class Coordinator: NSObject, PHPhotoLibraryChangeObserver {
 
     func photoLibraryDidChange(_ changeInstance: PHChange) {
         DispatchQueue.main.async {
-            self.parent.loadImagesAndFetchMostRecentMedia()
+            self.parent.loadImages()
+            self.parent.fetchMostRecentMedia()
         }
     }
 }
