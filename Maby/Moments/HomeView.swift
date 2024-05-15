@@ -97,73 +97,6 @@ struct VideoPlayerView: View {
     }
 }
 
-struct ReactionButtonView: View {
-    @Binding var reaction: Reaction
-    let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
-    let mediumPink = Color(red: 255/255, green: 193/255, blue: 206/255)
-
-    var body: some View {
-        Button(action: {
-            UINotificationFeedbackGenerator().notificationOccurred(.success)
-            withAnimation(.spring()) {
-                reaction.isSelected.toggle()
-            }
-        }) {
-            ZStack {
-                Circle()
-                    .fill(LinearGradient(gradient:
-                                            Gradient(colors: [mediumPink, colorPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .opacity(reaction.isSelected && reaction.isShown ? 1 : 0)
-                    .scaleEffect(reaction.isSelected && reaction.isShown ? 0.9 : 0)
-                    .animation(.spring(), value: reaction.isSelected)
-                Image(systemName: reaction.imageName)
-                    .foregroundColor(.white)
-                    .scaleEffect(reaction.isShown ? 1 : 0)
-                    .rotationEffect(.degrees(reaction.isShown ? reaction.rotation : 0))
-            }
-        }.onDisappear {
-            withAnimation(.interpolatingSpring(stiffness: 170, damping: 15)) {
-                reaction.isShown = false
-            }
-        }
-    }
-}
-
-struct ReactionBarView: View {
-    @Binding var reactions: [Reaction]
-
-    var body: some View {
-        HStack(spacing: 2) {
-            ForEach(reactions.indices, id: \.self) { index in
-                ReactionButtonView(reaction: $reactions[index])
-            }
-        }
-        .drawingGroup()
-        .onDisappear {
-            withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.05)) {
-                for index in reactions.indices {
-                    reactions[index].isShown = false
-                }
-            }
-        }
-    }
-}
-
-struct ReactionBackgroundView: View {
-    @Binding var showReactionsBackground: Bool
-
-    var body: some View {
-        RoundedRectangle(cornerRadius: 35)
-            .fill(Color(UIColor.tertiarySystemGroupedBackground))
-            .frame(width: 375, height: 60)
-            .scaleEffect(showReactionsBackground ? 1 : 0, anchor: .bottomTrailing)
-            .animation(
-                .interpolatingSpring(stiffness: 170, damping: 15).delay(0.05),
-                value: showReactionsBackground
-            )
-    }
-}
-
 class ShareItem: NSObject, UIActivityItemSource {
     let title: String
     let bodyText: String?
@@ -182,7 +115,14 @@ class ShareItem: NSObject, UIActivityItemSource {
     }
 
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-        if let image = image {
+        return title
+    }
+
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        if activityType == .mail {
+            let mailData = "\(title)\n\n\(bodyText ?? "")\n\(contentURL?.absoluteString ?? "")"
+            return mailData.data(using: .utf8)
+        } else if let image = image {
             return image
         } else if let data = data {
             return data
@@ -193,21 +133,6 @@ class ShareItem: NSObject, UIActivityItemSource {
         }
     }
 
-    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-    if activityType == UIActivity.ActivityType.mail {
-        let mailData = "\(title)\n\n\(bodyText ?? "")\n\(contentURL?.absoluteString ?? "")"
-        return mailData.data(using: .utf8)
-    } else if let image = image {
-        return image
-    } else if let data = data {
-        return data
-    } else if let contentURL = contentURL {
-        return contentURL
-    } else {
-        return title
-    }
-}
-
     func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
         return title
     }
@@ -215,8 +140,6 @@ class ShareItem: NSObject, UIActivityItemSource {
     func activityViewController(_ activityViewController: UIActivityViewController, thumbnailImageForActivityType activityType: UIActivity.ActivityType?, suggestedSize size: CGSize) -> UIImage? {
         return thumbnail
     }
-
-
 }
 
 struct ShareSheet: UIViewControllerRepresentable {
@@ -224,11 +147,9 @@ struct ShareSheet: UIViewControllerRepresentable {
     var applicationActivities: [UIActivity]? = nil
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        let activityItems: [Any] = [shareItem]
-        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
-        return controller
+        let activityViewController = UIActivityViewController(activityItems: [shareItem], applicationActivities: applicationActivities)
+        return activityViewController
     }
-
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
@@ -449,7 +370,6 @@ func fetchURLPreview(url: URL) {
             if let thumbnailImage = UIImage(named: "your_thumbnail_image") {
                 modifiedMetadata.imageProvider = NSItemProvider(object: thumbnailImage)
             }
-
             self.linkMetadata = modifiedMetadata
             self.showingShareSheet = true
         }
@@ -513,43 +433,51 @@ func handleButtonAction(with asset: PHAsset) {
             self.asset = asset
             self.isFavorite = asset.isFavorite
         }
+
         func updateFavoriteStatus() {
-            PHPhotoLibrary.shared().performChanges({
-                let changeRequest = PHAssetChangeRequest(for: self.asset)
-                changeRequest.isFavorite = !self.asset.isFavorite
-            }, completionHandler: { success, error in
-                if success {
-                    DispatchQueue.main.async {
-                        self.isFavorite = !self.isFavorite
-                    }
-                } else if let error = error {
-                    print("Error updating asset: \(error)")
-                }
-            })
+    PHPhotoLibrary.shared().performChanges({
+        let changeRequest = PHAssetChangeRequest(for: self.asset)
+        changeRequest.isFavorite = !self.asset.isFavorite
+    }, completionHandler: { success, error in
+        if success {
+            DispatchQueue.main.async {
+                self.isFavorite = !self.isFavorite
+            }
+        } else if let error = error {
+            print("Error updating asset: \(error)")
         }
-    }
-    
-    private func buttonsView(for asset: ObservablePHAsset) -> some View {
-        HStack(spacing: 60) {
-            if let identifier = selectedImageIdentifier, let asset = observableAssets[identifier] {
-                Button {
-                    asset.updateFavoriteStatus()
-                } label: {
-                    Image(systemName: asset.isFavorite == true ? "heart.fill" : "heart")
-                        .font(.system(size: 24))
-                        .foregroundColor(asset.isFavorite == true ? colorPink : .white)
-                        .scaleEffect(isPressed ? 4.0 : 1.0)
-                        .animation(.easeInOut(duration: 0.5), value: isPressed)
-                }
-                .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
-                    withAnimation {
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                        isPressed = pressing
-                    }
-                }, perform: {})
+    })
+}
+
+        func updateFavoriteStatusAsync() {
+            DispatchQueue.global().async {
+                self.updateFavoriteStatus()
             }
         }
     }
+    
+   private func buttonsView(for asset: ObservablePHAsset) -> some View {
+    HStack(spacing: 60) {
+        if let identifier = selectedImageIdentifier, let asset = observableAssets[identifier] {
+            Button {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                asset.updateFavoriteStatusAsync()
+            } label: {
+                Image(systemName: asset.isFavorite == true ? "heart.fill" : "heart")
+                    .font(.system(size: 24))
+                    .foregroundColor(asset.isFavorite == true ? colorPink : .white)
+                    .scaleEffect(isPressed ? 4.0 : 1.0)
+                    .animation(.easeInOut(duration: 0.5), value: isPressed)
+            }
+            .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
+                withAnimation {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    isPressed = pressing
+                }
+            }, perform: {})
+        }
+    }
+}
     
     var body: some View {
         let mainButton: some View = Image(systemName: "plus")
@@ -766,8 +694,27 @@ func handleButtonAction(with asset: PHAsset) {
                                             }
                                             Button(action: {
                                                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                                                    self.selectedMedia = .image(getImage(from: images[index]))
-                                                    self.showingMedia = true
+                                                    if images[index].mediaType == .image {
+                                                        let options = PHImageRequestOptions()
+                                                        options.isSynchronous = false
+                                                        PHImageManager.default().requestImage(for: images[index], targetSize: CGSize(width: images[index].pixelWidth, height: images[index].pixelHeight), contentMode: .aspectFill, options: options) { (image, info) in
+                                                            if let image = image {
+                                                                DispatchQueue.main.async {
+                                                                    self.selectedMedia = .image(image)
+                                                                    self.showingMedia = true
+                                                                }
+                                                            }
+                                                        }
+                                                    } else if images[index].mediaType == .video {
+                                                        PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
+                                                            if let urlAsset = avAsset as? AVURLAsset {
+                                                                DispatchQueue.main.async {
+                                                                    self.selectedMedia = .video(urlAsset.url)
+                                                                    self.showingMedia = true
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                             }) {
                                                 Text("View")
                                                 Image(systemName: "photo")
@@ -828,6 +775,10 @@ func handleButtonAction(with asset: PHAsset) {
                                                 Image(systemName: "trash")
                                             }
                                         }
+                                        .gesture(LongPressGesture(minimumDuration: 0.5).onEnded { _ in
+                                            self.selectedMedia = .image(getImage(from: images[index]))
+                                            self.showingMedia = true
+                                        })
                                         .sheet(isPresented: $showingMedia) {
                                             if let media = selectedMedia {
                                                 switch media {
@@ -842,9 +793,25 @@ func handleButtonAction(with asset: PHAsset) {
                                             if let media = selectedMedia {
                                                 switch media {
                                                 case .image(let image):
-                                                    ShareSheet(shareItem: ShareItem(title: "Custom Title for \(asset.creationDate?.formatted() ?? "Image")", bodyText: "Custom description for \(asset.creationDate?.formatted() ?? "Image")", thumbnail: image, contentURL: nil, image: image, data: nil))
+                                                    let shareItem = ShareItem(
+                                                        title: "Custom Title for \(asset.creationDate?.formatted() ?? "Image")",
+                                                        bodyText: "Custom description for \(asset.creationDate?.formatted() ?? "Image")",
+                                                        thumbnail: image.thumbnailImage(maxSize: CGSize(width: 100, height: 100)),
+                                                        contentURL: nil,
+                                                        image: image,
+                                                        data: nil
+                                                    )
+                                                    ShareSheet(shareItem: shareItem)
                                                 case .video(let videoURL):
-                                                    ShareSheet(shareItem: ShareItem(title: "Custom Title for \(asset.creationDate?.formatted() ?? "Video")", bodyText: "Custom description for \(asset.creationDate?.formatted() ?? "Video")", thumbnail: nil, contentURL: videoURL, image: nil, data: nil))
+                                                    let shareItem = ShareItem(
+                                                        title: "Custom Title for \(asset.creationDate?.formatted() ?? "Video")",
+                                                        bodyText: "Custom description for \(asset.creationDate?.formatted() ?? "Video")",
+                                                        thumbnail: nil,
+                                                        contentURL: videoURL,
+                                                        image: nil,
+                                                        data: nil
+                                                    )
+                                                    ShareSheet(shareItem: shareItem)
                                                 }
                                             }
                                         }
@@ -864,9 +831,6 @@ func handleButtonAction(with asset: PHAsset) {
                     .flipsForRightToLeftLayoutDirection(true)
                     .onAppear(perform: loadImages)
                     .padding(10)
-                    .onAppear {
-            
-                    }
                 }
                 Divider().overlay(mediumPink).opacity(0.25)
                     ZStack {

@@ -1,91 +1,68 @@
-//import SwiftUI
-//
-//struct MessageListView: View {
-//    
-//    @State private var showReactionsBackground = false
-//    
-//    @State private var showLike = false
-//    @State private var showThumbsUp = false
-//    @State private var thumbsUpRotation: Double = -45 // 🤔
-//    @State private var showThumbsDown = false
-//    @State private var thumbsDownRotation: Double = -45 // 🤔
-//    @State private var showLol = false
-//    @State private var showWutReaction = false
-//    
-//    var isThumbsUpRotated: Bool {
-//      thumbsUpRotation == -45
-//    }
-//
-//    var isThumbsDownRotated: Bool {
-//      thumbsDownRotation == -45
-//    }
-//    
-//    var body: some View {
-//        VStack(alignment: .leading) {
-//            ZStack {
-//                RoundedRectangle(cornerRadius: 28)
-//                    .fill(Color(UIColor.tertiarySystemGroupedBackground))
-//                    .frame(width: 216, height: 40)
-//                    .scaleEffect(showReactionsBackground ? 1 : 0, anchor: .bottomTrailing)
-//                    .animation(
-//                        .interpolatingSpring(stiffness: 170, damping: 15).delay(0.05),
-//                        value: showReactionsBackground
-//                    )
-//                
-//                HStack(spacing: 20) {
-//                    Image("like")
-//                        .scaleEffect(showLike ? 1 : 0)
-//                    
-//                    Image("thumbs_up")
-//                        .scaleEffect(showThumbsUp ? 1 : 0)
-//                        .rotationEffect(.degrees(thumbsUpRotation))
-//                    
-//                    Image("thumbs_down")
-//                        .scaleEffect(showThumbsDown ? 1 : 0)
-//                        .rotationEffect(.degrees(thumbsDownRotation))
-//                    
-//                    Image("lol")
-//                        .scaleEffect(showLol ? 1 : 0)
-//                    
-//                    Image("wut_reaction")
-//                        .scaleEffect(showWutReaction ? 1 : 0)
-//                }
-//            }
-//            
-//            MessageView(person: "lando", text: "Have you checked out the Stream iOS and SwiftUI SDK's? I hear they are incredible!")
-//                .onLongPressGesture {
-//                    showReactionsBackground.toggle()
-//                    
-//                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.1)) {
-//                        showLike.toggle()
-//                    }
-//                    
-//                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.2)) {
-//                      showThumbsUp.toggle()
-//                      thumbsUpRotation = isThumbsUpRotated ? 0 : -45
-//                    }
-//
-//                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.3)) {
-//                      showThumbsDown.toggle()
-//                      thumbsDownRotation = isThumbsDownRotated ? 0 : -45
-//                    }
-//                    
-//                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.4)) {
-//                        showLol.toggle()
-//                    }
-//                    
-//                    withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.5)) {
-//                        showWutReaction.toggle()
-//                    }
-//                }
-//        }
-//        .padding()
-//        .navigationTitle("Stream Chat Crew")
-//    }
-//}
-//
-//struct MessageListView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MessageListView()
-//    }
-//}
+import SwiftUI
+
+struct ReactionBackgroundView: View {
+    @Binding var showReactionsBackground: Bool
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: 35)
+            .fill(Color(UIColor.tertiarySystemGroupedBackground))
+            .frame(width: 375, height: 60)
+            .scaleEffect(showReactionsBackground ? 1 : 0, anchor: .bottomTrailing)
+            .animation(
+                .interpolatingSpring(stiffness: 170, damping: 15).delay(0.05),
+                value: showReactionsBackground
+            )
+    }
+}
+
+struct ReactionBarView: View {
+    @Binding var reactions: [Reaction]
+
+    var body: some View {
+        HStack(spacing: 2) {
+            ForEach(reactions.indices, id: \.self) { index in
+                ReactionButtonView(reaction: $reactions[index])
+            }
+        }
+        .drawingGroup()
+        .onDisappear {
+            withAnimation(.interpolatingSpring(stiffness: 170, damping: 15).delay(0.05)) {
+                for index in reactions.indices {
+                    reactions[index].isShown = false
+                }
+            }
+        }
+    }
+}
+
+struct ReactionButtonView: View {
+    @Binding var reaction: Reaction
+    let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
+    let mediumPink = Color(red: 255/255, green: 193/255, blue: 206/255)
+
+    var body: some View {
+        Button(action: {
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            withAnimation(.spring()) {
+                reaction.isSelected.toggle()
+            }
+        }) {
+            ZStack {
+                Circle()
+                    .fill(LinearGradient(gradient:
+                                            Gradient(colors: [mediumPink, colorPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .opacity(reaction.isSelected && reaction.isShown ? 1 : 0)
+                    .scaleEffect(reaction.isSelected && reaction.isShown ? 0.9 : 0)
+                    .animation(.spring(), value: reaction.isSelected)
+                Image(systemName: reaction.imageName)
+                    .foregroundColor(.white)
+                    .scaleEffect(reaction.isShown ? 1 : 0)
+                    .rotationEffect(.degrees(reaction.isShown ? reaction.rotation : 0))
+            }
+        }.onDisappear {
+            withAnimation(.interpolatingSpring(stiffness: 170, damping: 15)) {
+                reaction.isShown = false
+            }
+        }
+    }
+}
