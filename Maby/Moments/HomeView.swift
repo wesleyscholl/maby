@@ -14,39 +14,6 @@ extension LinearGradient {
     }
 }
 
-extension UIImage {
-    func thumbnailImage(maxSize: CGSize) -> UIImage? {
-        let maxResolution = max(maxSize.width, maxSize.height)
-        let scale = maxResolution / max(size.width, size.height)
-
-        let thumbnailSize = CGSize(
-            width: size.width * scale,
-            height: size.height * scale
-        )
-
-        UIGraphicsBeginImageContextWithOptions(thumbnailSize, true, 0.0)
-        draw(in: CGRect(origin: .zero, size: thumbnailSize))
-        let thumbnailImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-
-        return thumbnailImage
-    }
-}
-
-enum PhotoOrVideoMedia {
-    case photo(UIImage)
-    case video(URL)
-}
-
-struct Media: Equatable {
-    var asset: PHAsset
-    var videoURL: URL?
-
-    static func ==(lhs: Media, rhs: Media) -> Bool {
-        return lhs.asset == rhs.asset && lhs.videoURL == rhs.videoURL
-    }
-}
-
 class Coordinator: NSObject, PHPhotoLibraryChangeObserver {
     var parent: HomeView
 
@@ -63,44 +30,6 @@ class Coordinator: NSObject, PHPhotoLibraryChangeObserver {
         }
     }
 }
-
-struct FullScreenImageView: View {
-    var image: UIImage
-    var body: some View {
-        Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-                    .onTapGesture {
-                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                    }
-            .aspectRatio(contentMode: .fit)
-            .onDisappear {
-                UINotificationFeedbackGenerator().notificationOccurred(.success)
-            }
-    }
-}
-
-struct VideoPlayerView: View {
-    let url: URL
-    @State private var player: AVPlayer = AVPlayer()
-
-    var body: some View {
-        VideoPlayer(player: player)
-            .onAppear {
-                player.replaceCurrentItem(with: AVPlayerItem(url: url))
-                player.play()
-            }
-            .onDisappear {
-                player.pause()
-                UINotificationFeedbackGenerator().notificationOccurred(.success)
-            }
-    }
-}
-
-enum SelectedMedia {
-        case image(UIImage)
-        case video(URL)
-    }
 
 struct HomeView: View {
     public var screenWidth: CGFloat {
