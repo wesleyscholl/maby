@@ -78,102 +78,112 @@ struct HomeView: View {
         let collections = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
         if let joyfulAlbum = collections.firstObject {
             let assets = PHAsset.fetchAssets(in: joyfulAlbum, options: nil)
-            let reversedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted { $0.creationDate ?? Date() > $1.creationDate ?? Date() }
-            let manager = PHImageManager.default()
-            let option = PHImageRequestOptions()
-            option.isSynchronous = true
-            option.resizeMode = .none
-            option.deliveryMode = .highQualityFormat
-            let operationQueue = OperationQueue()
-            operationQueue.qualityOfService = .userInitiated
-            operationQueue.addOperation {
-                for object in reversedAssets {
-                    DispatchQueue.main.async {
-                        if !self.images.contains(object) {
-                            self.images.append(object)
-                            self.observableAssets[object.localIdentifier] = ObservablePHAsset(asset: object)
-                        }
-                        if object.mediaType == .video {
-                            manager.requestAVAsset(forVideo: object, options: nil) { (avAsset, _, _) in
-                                if let avAsset = avAsset as? AVURLAsset {
-                                    DispatchQueue.main.async {
-                                        let newMedia = Media(asset: object, videoURL: avAsset.url)
-                                        if !self.media.contains(where: { $0.asset == newMedia.asset }) {
-                                            self.media.append(newMedia)
-                                        }
-                                        self.mostRecentVideoURL = avAsset.url
-                                    }
-                                }
-                            }
-                        }
+            let reversedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted(by: { $0.creationDate ?? Date() > $1.creationDate ?? Date() })
+            processAssets(reversedAssets)
+        }
+        DispatchQueue.main.async {
+            isLoadingImages = false
+        }
+    }
+
+    private func processAssets(_ assets: [PHAsset]) {
+        let manager = PHImageManager.default()
+        let option = PHImageRequestOptions()
+        option.isSynchronous = true
+        option.resizeMode = .none
+        option.deliveryMode = .highQualityFormat
+        let operationQueue = OperationQueue()
+        operationQueue.qualityOfService = .userInitiated
+        operationQueue.addOperation {
+            assets.forEach { asset in
+                DispatchQueue.main.async {
+                    if !self.images.contains(asset) {
+                        self.images.append(asset)
+                        self.observableAssets[asset.localIdentifier] = ObservablePHAsset(asset: asset)
                     }
-                    DispatchQueue.main.async {
-                        if let firstAsset = self.images.first {
-                            self.selectedAsset = ObservablePHAsset(asset: firstAsset)
-                        }
+                    if asset.mediaType == .video {
+                        processVideoAsset(asset, manager)
+                    }
+                }
+                DispatchQueue.main.async {
+                    if let firstAsset = self.images.first {
+                        self.selectedAsset = ObservablePHAsset(asset: firstAsset)
                     }
                 }
             }
         }
-          DispatchQueue.main.async { 
-      isLoadingImages = false
-  }
     }
-    
-    func getImage(from asset: PHAsset) -> UIImage {
-    let manager = PHImageManager.default()
-    let options = PHImageRequestOptions()
-    options.isSynchronous = true
-    options.resizeMode = .exact
-    var image: UIImage?
-    manager.requestImage(for: asset, targetSize: CGSize(width: 1000, height: 1000), contentMode: .aspectFill, options: options) { result, info in
-        if let result = result {
-            image = result
+
+    private func processVideoAsset(_ asset: PHAsset, _ manager: PHImageManager) {
+        manager.requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
+            if let avAsset = avAsset as? AVURLAsset {
+                DispatchQueue.main.async {
+                    let newMedia = Media(asset: asset, videoURL: avAsset.url)
+                    if !self.media.contains(where: { $0.asset == newMedia.asset }) {
+                        self.media.append(newMedia)
+                    }
+                    self.mostRecentVideoURL = avAsset.url
+                }
+            }
         }
     }
-    return image!
-}
-    
+
+    func getImage(from asset: PHAsset) -> UIImage {
+        let manager = PHImageManager.default()
+        let options = PHImageRequestOptions()
+        options.isSynchronous = true
+        options.resizeMode = .exact
+        var image: UIImage?
+        manager.requestImage(for: asset, targetSize: CGSize(width: 1000, height: 1000), contentMode: .aspectFill, options: options) { result, _ in
+            image = result
+        }
+        return image ?? UIImage()
+    }
+
     func fetchMostRecentMedia() {
-        if !hasFetchedMedia && !isUpdatingFavoriteStatus {
-            DispatchQueue.global(qos: .userInteractive).async {
-                let fetchOptions = PHFetchOptions()
-                fetchOptions.predicate = NSPredicate(format: "title = %@", "JOYFUL")
-                let albums = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
-                if let album = albums.firstObject {
-                    let assets = PHAsset.fetchAssets(in: album, options: nil)
-                    let sortedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted { $0.creationDate ?? Date() > $1.creationDate ?? Date() }
-                    if let asset = sortedAssets.first {
-                        if asset.mediaType == .image {
-                            PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 1000, height: 1000), contentMode: .aspectFill, options: nil) { image, _ in
-                                DispatchQueue.main.async {
-                                    if let image = image {
-                                        self.mostRecentPhoto = image
-                                        self.mostRecentMedia = .photo(image)
-                                        if !self.images.contains(asset) {
-                                            self.images.insert(asset, at: 0)
-                                        }
-                                        self.selectedImageIdentifier = asset.localIdentifier
-                                        self.hasFetchedMedia = true
-                                    }
-                                }
-                            }
+        guard !hasFetchedMedia && !isUpdatingFavoriteStatus else {
+            return
+        }
+        DispatchQueue.global(qos: .userInteractive).async {
+            let fetchOptions = PHFetchOptions()
+            fetchOptions.predicate = NSPredicate(format: "title = %@", "JOYFUL")
+            let albums = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
+            if let album = albums.firstObject {
+                let assets = PHAsset.fetchAssets(in: album, options: nil)
+                let sortedAssets = assets.objects(at: IndexSet(integersIn: 0..<assets.count)).sorted(by: { $0.creationDate ?? Date() > $1.creationDate ?? Date() })
+                if let asset = sortedAssets.first {
+                    processMostRecentAsset(asset)
+                }
+            }
+        }
+    }
+
+    private func processMostRecentAsset(_ asset: PHAsset) {
+        if asset.mediaType == .image {
+            PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 1000, height: 1000), contentMode: .aspectFill, options: nil) { image, _ in
+                DispatchQueue.main.async {
+                    if let image = image {
+                        self.mostRecentPhoto = image
+                        self.mostRecentMedia = .photo(image)
+                        if !self.images.contains(asset) {
+                            self.images.insert(asset, at: 0)
                         }
-                        if asset.mediaType == .video {
-                            PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
-                                if let avAsset = avAsset as? AVURLAsset {
-                                    DispatchQueue.main.async {
-                                        self.mostRecentVideoURL = avAsset.url
-                                        self.mostRecentMedia = .video(avAsset.url)
-                                        if !self.images.contains(asset) {
-                                            self.images.insert(asset, at: 0)
-                                        }
-                                        self.selectedImageIdentifier = asset.localIdentifier
-                                        self.hasFetchedMedia = true
-                                    }
-                                }
-                            }
+                        self.selectedImageIdentifier = asset.localIdentifier
+                        self.hasFetchedMedia = true
+                    }
+                }
+            }
+        } else if asset.mediaType == .video {
+            PHImageManager.default().requestAVAsset(forVideo: asset, options: nil) { (avAsset, _, _) in
+                if let avAsset = avAsset as? AVURLAsset {
+                    DispatchQueue.main.async {
+                        self.mostRecentVideoURL = avAsset.url
+                        self.mostRecentMedia = .video(avAsset.url)
+                        if !self.images.contains(asset) {
+                            self.images.insert(asset, at: 0)
                         }
+                        self.selectedImageIdentifier = asset.localIdentifier
+                        self.hasFetchedMedia = true
                     }
                 }
             }

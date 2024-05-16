@@ -7,13 +7,24 @@ struct Reaction {
     var isSelected: Bool
 }
 
+public var screenWidth: CGFloat {
+    return UIScreen.main.bounds.width
+}
+public var screenHeight: CGFloat {
+    return UIScreen.main.bounds.height
+}
+
+let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
+let mediumPink = Color(red: 255/255, green: 193/255, blue: 206/255)
+
 struct ReactionBackgroundView: View {
     @Binding var showReactionsBackground: Bool
-
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         RoundedRectangle(cornerRadius: 35)
-            .fill(Color(UIColor.tertiarySystemGroupedBackground))
-            .frame(width: 375, height: 60)
+            .fill(colorScheme == .dark ? Color(UIColor.tertiarySystemGroupedBackground) : .gray)
+            .frame(width: screenWidth * 0.95, height: screenHeight * 0.06)
             .scaleEffect(showReactionsBackground ? 1 : 0, anchor: .bottomTrailing)
             .animation(
                 .interpolatingSpring(stiffness: 170, damping: 15).delay(0.05),
@@ -44,8 +55,6 @@ struct ReactionBarView: View {
 
 struct ReactionButtonView: View {
     @Binding var reaction: Reaction
-    let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
-    let mediumPink = Color(red: 255/255, green: 193/255, blue: 206/255)
 
     var body: some View {
         Button(action: {
@@ -58,13 +67,16 @@ struct ReactionButtonView: View {
                 Circle()
                     .fill(LinearGradient(gradient:
                                             Gradient(colors: [mediumPink, colorPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .frame(width: screenHeight * 0.06, height: screenHeight * 0.06)
                     .opacity(reaction.isSelected && reaction.isShown ? 1 : 0)
                     .scaleEffect(reaction.isSelected && reaction.isShown ? 0.9 : 0)
                     .animation(.spring(), value: reaction.isSelected)
                 Image(systemName: reaction.imageName)
+                    .frame(width: screenHeight * 0.05, height: screenHeight * 0.05)
                     .foregroundColor(.white)
                     .scaleEffect(reaction.isShown ? 1 : 0)
                     .rotationEffect(.degrees(reaction.isShown ? reaction.rotation : 0))
+                    .padding(.horizontal, 10)
             }
         }.onDisappear {
             withAnimation(.interpolatingSpring(stiffness: 170, damping: 15)) {
