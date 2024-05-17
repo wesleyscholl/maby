@@ -74,8 +74,6 @@
 		EB8F009C2BE66EB40057B6AE /* ReminderSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F009B2BE66EB40057B6AE /* ReminderSectionView.swift */; };
 		EB8F00B52BEB2A520057B6AE /* Reactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00B42BEB2A520057B6AE /* Reactions.swift */; };
 		EBDD9C0D2BF78F960031349F /* multipleSimulatorsStartup.sh in Resources */ = {isa = PBXBuildFile; fileRef = EBDD9C0C2BF78F960031349F /* multipleSimulatorsStartup.sh */; };
-		EBDD9C112BF790730031349F /* multipleSimulators.config in Resources */ = {isa = PBXBuildFile; fileRef = EBDD9C102BF790730031349F /* multipleSimulators.config */; };
-		EBDD9C132BF794590031349F /* mutlipleSimulators.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EBDD9C122BF794590031349F /* mutlipleSimulators.xcconfig */; };
 		EBDD9C152BF7A9890031349F /* SimulatorsList.txt in Resources */ = {isa = PBXBuildFile; fileRef = EBDD9C142BF7A9890031349F /* SimulatorsList.txt */; };
 /* End PBXBuildFile section */
 
@@ -166,8 +164,6 @@
 		EB8F00AA2BEA74AA0057B6AE /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../PermissionsSwiftUI/Package.swift; sourceTree = "<group>"; };
 		EB8F00B42BEB2A520057B6AE /* Reactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reactions.swift; sourceTree = "<group>"; };
 		EBDD9C0C2BF78F960031349F /* multipleSimulatorsStartup.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = multipleSimulatorsStartup.sh; sourceTree = "<group>"; };
-		EBDD9C102BF790730031349F /* multipleSimulators.config */ = {isa = PBXFileReference; lastKnownFileType = text; path = multipleSimulators.config; sourceTree = "<group>"; };
-		EBDD9C122BF794590031349F /* mutlipleSimulators.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = mutlipleSimulators.xcconfig; sourceTree = "<group>"; };
 		EBDD9C142BF7A9890031349F /* SimulatorsList.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimulatorsList.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -282,8 +278,6 @@
 			isa = PBXGroup;
 			children = (
 				EBDD9C142BF7A9890031349F /* SimulatorsList.txt */,
-				EBDD9C122BF794590031349F /* mutlipleSimulators.xcconfig */,
-				EBDD9C102BF790730031349F /* multipleSimulators.config */,
 				EBDD9C0C2BF78F960031349F /* multipleSimulatorsStartup.sh */,
 				EB7E40282BF08674006DA8D8 /* PermissionsSwiftUI */,
 				EB7E40102BEE0444006DA8D8 /* Aespa */,
@@ -458,8 +452,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EBDD9C132BF794590031349F /* mutlipleSimulators.xcconfig in Resources */,
-				EBDD9C112BF790730031349F /* multipleSimulators.config in Resources */,
 				EB7E400F2BEE0413006DA8D8 /* FloatingButton in Resources */,
 				EB7E40292BF08674006DA8D8 /* PermissionsSwiftUI in Resources */,
 				EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */,
