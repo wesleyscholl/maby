@@ -2,11 +2,13 @@ import SwiftUI
 import UIKit
 import Photos
 import PhotosUI
+import MabyKit
 import AVKit
 import AVFoundation
 import Combine
 import FloatingButton
 import LinkPresentation
+import PermissionsSwiftUI
 
 extension LinearGradient {
     init(_ colors: Color...) {
@@ -15,6 +17,11 @@ extension LinearGradient {
 }
 
 struct HomeView: View {
+    @State private var colorSchemeGender: GenderColorScheme = .getColorScheme(for: .other)
+    @FetchRequest(fetchRequest: allBabies) private var babies: FetchedResults<Baby>
+    private var gender: Baby.Gender {
+        babies.first?.gender ?? .other
+    }
     public var screenWidth: CGFloat {
         return UIScreen.main.bounds.width
     }
@@ -53,6 +60,7 @@ struct HomeView: View {
     @State private var linkMetadata: LPLinkMetadata?
     @State private var mediaType: AssetType = .photo
     @State private var isLoadingImages = true
+    @State private var showPermissionsModal = false 
     
     @State private var reactions = [
         Reaction(imageName: "heart.fill", isShown: false, rotation: 360, isSelected: false),
@@ -64,9 +72,6 @@ struct HomeView: View {
     ]
     
     let viewModel = VideoContentViewModel()
-    let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
-    let mediumPink = Color(red: 255/255, green: 193/255, blue: 206/255)
-    let lightPink = Color(red: 254/255, green: 242/255, blue: 242/255)
     let darkColor = Color(red: 78/255, green: 0/255, blue: 25/255)
     let lightGray = Color(red: 230/255, green: 224/255, blue: 225/255)
     let darkGrey = Color(red: 128/255, green: 128/255, blue: 128/255)
@@ -294,7 +299,7 @@ func handleButtonAction(with asset: PHAsset) {
             } label: {
                 Image(systemName: asset.isFavorite == true ? "heart.fill" : "heart")
                     .font(.system(size: 24))
-                    .foregroundColor(asset.isFavorite == true ? colorPink : .white)
+                    .foregroundColor(asset.isFavorite == true ? colorSchemeGender.dark : .white)
                     .scaleEffect(isPressed ? 4.0 : 1.0)
                     .animation(.easeInOut(duration: 0.5), value: isPressed)
             }
@@ -313,7 +318,7 @@ func handleButtonAction(with asset: PHAsset) {
             .foregroundColor(.white)
               .padding()
               .background(LinearGradient(gradient:
-                            Gradient(colors: [mediumPink, colorPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                            Gradient(colors: [colorSchemeGender.medium, colorSchemeGender.dark]), startPoint: .topLeading, endPoint: .bottomTrailing))
               .clipShape(Circle())
               .font(.system(size: 25))
               .frame(width: 60, height: 60)
@@ -329,7 +334,7 @@ func handleButtonAction(with asset: PHAsset) {
             }
             .frame(width: 50, height: 50)
             .background(LinearGradient(gradient:
-                            Gradient(colors: [colorPink, mediumPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                            Gradient(colors: [colorSchemeGender.dark, colorSchemeGender.medium]), startPoint: .topLeading, endPoint: .bottomTrailing))
             .clipShape(Circle())
             .foregroundColor(.white)),
           AnyView(Button(action: {
@@ -340,7 +345,7 @@ func handleButtonAction(with asset: PHAsset) {
             }
             .frame(width: 50, height: 50)
             .background(LinearGradient(gradient:
-                            Gradient(colors: [colorPink, mediumPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                            Gradient(colors: [colorSchemeGender.dark, colorSchemeGender.medium]), startPoint: .topLeading, endPoint: .bottomTrailing))
             .clipShape(Circle())
             .foregroundColor(.white)),
           AnyView(Button(action: {
@@ -351,7 +356,7 @@ func handleButtonAction(with asset: PHAsset) {
             }
             .frame(width: 50, height: 50)
             .background(LinearGradient(gradient:
-                            Gradient(colors: [colorPink, mediumPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                            Gradient(colors: [colorSchemeGender.dark, colorSchemeGender.medium]), startPoint: .topLeading, endPoint: .bottomTrailing))
             .clipShape(Circle())
             .foregroundColor(.white))
         ]
@@ -429,7 +434,7 @@ func handleButtonAction(with asset: PHAsset) {
                         ZStack {
                             Rectangle()
                                 .fill(LinearGradient(gradient:
-                                                        Gradient(colors: [mediumPink, lightPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                                                        Gradient(colors: [colorSchemeGender.medium, colorSchemeGender.light]), startPoint: .topLeading, endPoint: .bottomTrailing))
                                 .frame(width: screenWidth, height: screenHeight * 0.32)
                                 .cornerRadius(8)
                                 .shadow(color: lightGray, radius: 4)
@@ -661,7 +666,7 @@ func handleButtonAction(with asset: PHAsset) {
                     .onAppear(perform: loadImages)
                     .padding(10)
                 }
-                Divider().overlay(mediumPink).opacity(0.25)
+                Divider().overlay(colorSchemeGender.medium).opacity(0.25)
                     ZStack {
                         ReactionBackgroundView(showReactionsBackground: $showReactionsBackground)
                         ReactionBarView(reactions: $reactions)
@@ -675,7 +680,7 @@ func handleButtonAction(with asset: PHAsset) {
                     }) {
                         Image(systemName: "photo.stack.fill")
                             .hidden()
-                            .foregroundColor(colorPink)
+                            .foregroundColor(colorSchemeGender.dark)
                             .font(.system(size: 30))
                             .frame(width: 60, height: 60)
                             .foregroundStyle(darkGrey)
@@ -698,13 +703,13 @@ func handleButtonAction(with asset: PHAsset) {
                     }) {
                         ZStack() {
                             Circle()
-                                .fill(lightPink)
+                                .fill(colorSchemeGender.light)
                                 .frame(width: 120, height: 120)
-                                .shadow(color: Color(UIColor.lightGray), radius: 5, x: 0, y: 5)
+//                                .shadow(color: Color(UIColor.lightGray), radius: 5, x: 0, y: 5)
                                 .overlay(
                                     Circle()
-                                        .stroke(mediumPink, lineWidth: 4)
-                                        .shadow(color: Color(lightGray), radius: 3, x: 0, y: 3)
+                                        .stroke(colorSchemeGender.medium, lineWidth: 4)
+//                                        .shadow(color: Color(lightGray), radius: 3, x: 0, y: 3)
                                 )
                                 .overlay(
                                     Circle()
@@ -715,8 +720,8 @@ func handleButtonAction(with asset: PHAsset) {
                                 .font(.system(size: 50))
                                 .frame(width: 100, height: 100)
                                 .shadow(color: Color(lightGray), radius: 1, x: 0, y: 1)
-                                .background(LinearGradient(mediumPink, lightPink))
-                                .foregroundStyle(colorPink)
+                                .background(LinearGradient(colorSchemeGender.medium, colorSchemeGender.light))
+                                .foregroundStyle(.white)
                                 .clipShape(Circle())
                                 .overlay(
                                     Circle()
@@ -797,12 +802,13 @@ func handleButtonAction(with asset: PHAsset) {
                     coordinator = Coordinator(self)
                 }
         }.onAppear {
+            self.colorSchemeGender = .getColorScheme(for: self.gender)
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading:
                                 Image(systemName: "video.badge.plus")
-            .foregroundColor(colorPink)
+            .foregroundColor(colorSchemeGender.dark)
             .onTapGesture {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 self.isVideoPresented = true
@@ -811,8 +817,12 @@ func handleButtonAction(with asset: PHAsset) {
                 showPhotoPicker = true
             }) {
                 Image(systemName: "photo.badge.plus")
-                    .foregroundColor(colorPink)
+                    .foregroundColor(colorSchemeGender.dark)
             }
         )
+        .JMModal(showModal: $showPermissionsModal, for: [.photoFull, .microphone, .camera], autoDismiss: true, autoCheckAuthorization: true, onDisappear: {
+          }).changeHeaderTo("Requesting Permissions")
+           .changeHeaderDescriptionTo("Joyful requires certain permissions for all features to function properly.")
+           .changeBottomDescriptionTo("If the permissions are not granted, you can enable them later in Settings > Joyful")
     }
 }

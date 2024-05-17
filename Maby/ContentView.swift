@@ -2,7 +2,6 @@ import CoreData
 import Factory
 import MabyKit
 import SwiftUI
-import PermissionsSwiftUI
 import Photos
 import AVFoundation
 
@@ -20,12 +19,15 @@ extension UINavigationBar {
 }
 
 struct ContentView: View {
-    @Environment(\.colorScheme) var colorScheme
-    @FetchRequest(fetchRequest: allBabies)
+    @State private var colorSchemeGender: GenderColorScheme = .getColorScheme(for: .other)
+    @FetchRequest(fetchRequest: allBabies) 
     private var babies: FetchedResults<Baby>
+    private var gender: Baby.Gender {
+        babies.first?.gender ?? .other
+    }
+    @Environment(\.colorScheme) var colorScheme
     @State private var showingAddBaby = false
     @State private var selectedIndex: Int = 0
-    @State private var showPermissionsModal = false 
     
     let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
 
@@ -74,7 +76,7 @@ struct ContentView: View {
                         //                        .navigationBarHidden(true)
                     }
                 }
-                .tint(colorPink)
+                .tint(colorSchemeGender.dark)
                 .background(.black)
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationTitle("Joyful")
@@ -83,11 +85,13 @@ struct ContentView: View {
                         .interactiveDismissDisabled(true)
                 }
                 .onAppear (perform: {
-                    showPermissionsModal = true
+                    if babies.isEmpty {
+                                 showingAddBaby = true
+                               }
                     UITabBar.appearance().unselectedItemTintColor = .gray
-                    UITabBarItem.appearance().badgeColor = UIColor(colorPink)
+                    UITabBarItem.appearance().badgeColor = UIColor(colorSchemeGender.dark)
                     UITabBar.appearance().backgroundColor = .systemGray4.withAlphaComponent(0.4)
-                    UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor(colorPink)]
+                    UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor(colorSchemeGender.dark)]
                     UINavigationBar.appearance().backgroundColor = .black
 //                    showingAddBaby = babies.isEmpty
                 })
@@ -105,6 +109,7 @@ struct ContentView: View {
                 }
             }
             .onAppear {
+                self.colorSchemeGender = .getColorScheme(for: self.gender)
                 if colorScheme == .dark {
                     UINavigationBar.configureAppearance(color: .white, backgroundColor: UIColor.systemGray6)
                 } else {
@@ -112,14 +117,6 @@ struct ContentView: View {
                 }
             }
             .navigationBarBackButtonHidden(true)
-            .JMModal(showModal: $showPermissionsModal, for: [.photoFull, .microphone, .camera], autoDismiss: true, autoCheckAuthorization: true, onDisappear: {
-                if babies.isEmpty {
-                  showingAddBaby = true
-                }
-              }).changeHeaderTo("Requesting Permissions")
-               .changeHeaderDescriptionTo("Joyful requires certain permissions for all features to function properly.")
-               .changeBottomDescriptionTo("If the permissions are not granted, you can enable them later in Settings > Joyful")
-//               .setAccentColor(to: Color(.sRGB, red: 246/255, green: 138/255, blue: 162/255, opacity: 1))
     }
 }
 

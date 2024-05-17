@@ -75,6 +75,7 @@
 		EB8F00B52BEB2A520057B6AE /* Reactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00B42BEB2A520057B6AE /* Reactions.swift */; };
 		EBDD9C0D2BF78F960031349F /* multipleSimulatorsStartup.sh in Resources */ = {isa = PBXBuildFile; fileRef = EBDD9C0C2BF78F960031349F /* multipleSimulatorsStartup.sh */; };
 		EBDD9C152BF7A9890031349F /* SimulatorsList.txt in Resources */ = {isa = PBXBuildFile; fileRef = EBDD9C142BF7A9890031349F /* SimulatorsList.txt */; };
+		EBDD9C172BF7BDA80031349F /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDD9C162BF7BDA80031349F /* Color.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -165,6 +166,7 @@
 		EB8F00B42BEB2A520057B6AE /* Reactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reactions.swift; sourceTree = "<group>"; };
 		EBDD9C0C2BF78F960031349F /* multipleSimulatorsStartup.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = multipleSimulatorsStartup.sh; sourceTree = "<group>"; };
 		EBDD9C142BF7A9890031349F /* SimulatorsList.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimulatorsList.txt; sourceTree = "<group>"; };
+		EBDD9C162BF7BDA80031349F /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -321,6 +323,7 @@
 				EB7E401B2BEE08E4006DA8D8 /* Gallery.swift */,
 				EB7E401D2BEE91D6006DA8D8 /* Animation.swift */,
 				EB7E40262BF0857B006DA8D8 /* Permissions.swift */,
+				EBDD9C162BF7BDA80031349F /* Color.swift */,
 			);
 			path = Maby;
 			sourceTree = "<group>";
@@ -498,6 +501,7 @@
 				C953DD43287F206400F1E1B7 /* AddNursingEventView.swift in Sources */,
 				EB8F00B52BEB2A520057B6AE /* Reactions.swift in Sources */,
 				C9B95D12287DA9D000ADC43F /* AddBabyView.swift in Sources */,
+				EBDD9C172BF7BDA80031349F /* Color.swift in Sources */,
 				C9B95D16287DF50D00ADC43F /* BabyCard.swift in Sources */,
 				EB0CCD132BD73856009ADE4B /* SettingView.swift in Sources */,
 				EB0CCD072BD734BA009ADE4B /* VideoContentViewModel.swift in Sources */,
