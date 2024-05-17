@@ -118,8 +118,8 @@ struct ContentView: View {
                 }
               }).changeHeaderTo("Requesting Permissions")
                .changeHeaderDescriptionTo("Joyful requires certain permissions for all features to function properly.")
-               .changeBottomDescriptionTo("If the permissions are not granted, enable them in Settings > Joyful")
-               .setAccentColor(to: Color(.sRGB, red: 246/255, green: 138/255, blue: 162/255, opacity: 1))
+               .changeBottomDescriptionTo("If the permissions are not granted, you can enable them later in Settings > Joyful")
+//               .setAccentColor(to: Color(.sRGB, red: 246/255, green: 138/255, blue: 162/255, opacity: 1))
     }
 }
 

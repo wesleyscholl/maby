@@ -73,6 +73,10 @@
 		EB8F009A2BE65F310057B6AE /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00992BE65F300057B6AE /* NotificationScheduler.swift */; };
 		EB8F009C2BE66EB40057B6AE /* ReminderSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F009B2BE66EB40057B6AE /* ReminderSectionView.swift */; };
 		EB8F00B52BEB2A520057B6AE /* Reactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00B42BEB2A520057B6AE /* Reactions.swift */; };
+		EBDD9C0D2BF78F960031349F /* multipleSimulatorsStartup.sh in Resources */ = {isa = PBXBuildFile; fileRef = EBDD9C0C2BF78F960031349F /* multipleSimulatorsStartup.sh */; };
+		EBDD9C112BF790730031349F /* multipleSimulators.config in Resources */ = {isa = PBXBuildFile; fileRef = EBDD9C102BF790730031349F /* multipleSimulators.config */; };
+		EBDD9C132BF794590031349F /* mutlipleSimulators.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EBDD9C122BF794590031349F /* mutlipleSimulators.xcconfig */; };
+		EBDD9C152BF7A9890031349F /* SimulatorsList.txt in Resources */ = {isa = PBXBuildFile; fileRef = EBDD9C142BF7A9890031349F /* SimulatorsList.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -161,6 +165,10 @@
 		EB8F009B2BE66EB40057B6AE /* ReminderSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSectionView.swift; sourceTree = "<group>"; };
 		EB8F00AA2BEA74AA0057B6AE /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../PermissionsSwiftUI/Package.swift; sourceTree = "<group>"; };
 		EB8F00B42BEB2A520057B6AE /* Reactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reactions.swift; sourceTree = "<group>"; };
+		EBDD9C0C2BF78F960031349F /* multipleSimulatorsStartup.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = multipleSimulatorsStartup.sh; sourceTree = "<group>"; };
+		EBDD9C102BF790730031349F /* multipleSimulators.config */ = {isa = PBXFileReference; lastKnownFileType = text; path = multipleSimulators.config; sourceTree = "<group>"; };
+		EBDD9C122BF794590031349F /* mutlipleSimulators.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = mutlipleSimulators.xcconfig; sourceTree = "<group>"; };
+		EBDD9C142BF7A9890031349F /* SimulatorsList.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimulatorsList.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -273,6 +281,10 @@
 		C9ED2E95287C745100BA3228 = {
 			isa = PBXGroup;
 			children = (
+				EBDD9C142BF7A9890031349F /* SimulatorsList.txt */,
+				EBDD9C122BF794590031349F /* mutlipleSimulators.xcconfig */,
+				EBDD9C102BF790730031349F /* multipleSimulators.config */,
+				EBDD9C0C2BF78F960031349F /* multipleSimulatorsStartup.sh */,
 				EB7E40282BF08674006DA8D8 /* PermissionsSwiftUI */,
 				EB7E40102BEE0444006DA8D8 /* Aespa */,
 				EB7E400E2BEE0413006DA8D8 /* FloatingButton */,
@@ -378,6 +390,7 @@
 				C9ED2E9B287C745100BA3228 /* Frameworks */,
 				C9ED2E9C287C745100BA3228 /* Resources */,
 				C90156AA2885BE8600DAC7E7 /* Embed Watch Content */,
+				EBDD9C0B2BF78EA30031349F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -417,7 +430,7 @@
 				};
 			};
 			buildConfigurationList = C9ED2E99287C745100BA3228 /* Build configuration list for PBXProject "Maby" */;
-			compatibilityVersion = "Xcode 14.0";
+			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -445,18 +458,43 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EBDD9C132BF794590031349F /* mutlipleSimulators.xcconfig in Resources */,
+				EBDD9C112BF790730031349F /* multipleSimulators.config in Resources */,
 				EB7E400F2BEE0413006DA8D8 /* FloatingButton in Resources */,
 				EB7E40292BF08674006DA8D8 /* PermissionsSwiftUI in Resources */,
 				EB33083E2BC8891F000202C0 /* baby-girl-1.png in Resources */,
 				EB7E400D2BEE03F5006DA8D8 /* MabyKit in Resources */,
 				C9ED2EAF287C745300BA3228 /* Preview Assets.xcassets in Resources */,
+				EBDD9C152BF7A9890031349F /* SimulatorsList.txt in Resources */,
 				EB0CCCC92BD41B95009ADE4B /* lilyan.jpg in Resources */,
+				EBDD9C0D2BF78F960031349F /* multipleSimulatorsStartup.sh in Resources */,
 				C9ED2EAB287C745300BA3228 /* Assets.xcassets in Resources */,
 				EB7E40112BEE0444006DA8D8 /* Aespa in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		EBDD9C0B2BF78EA30031349F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "custom_sim=`xcrun simctl list | grep 'Multiple Simulators' | awk -F'[()]' '{print $2}'`\nif [ ! -z \"${custom_sim}\" ] && [ \"${TARGET_DEVICE_IDENTIFIER}\" = \"${custom_sim}\" ]; then\n/bin/sh multipleSimulatorsStartup.sh\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C9ED2E9A287C745100BA3228 /* Sources */ = {
@@ -553,7 +591,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -614,7 +652,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -646,6 +684,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Maby/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Joyful;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.medical";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Joyful picture and video usage.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Joyful microphone usage for video recording.";
@@ -686,6 +725,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Maby/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Joyful;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.medical";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Joyful picture and video usage.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Joyful microphone usage for video recording.";
