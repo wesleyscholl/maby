@@ -8,7 +8,8 @@ struct BabyDetailsFormView<Confirm: View>: View {
     @Binding private var name: String
     @Binding private var gender: Baby.Gender
     @Binding private var birthday: Date
-    
+    @State private var pickerColor: Color = .blue
+
     init(
         title: LocalizedStringKey,
         name: Binding<String>,
@@ -67,7 +68,17 @@ struct BabyDetailsFormView<Confirm: View>: View {
                     Text("Other")
                         .tag(Baby.Gender.other)
                 }
-                
+                .accentColor(pickerColor)
+                .onChange(of: gender) { newGender in
+                    switch newGender {
+                    case .boy:
+                        pickerColor = .blue
+                    case .girl:
+                        pickerColor = Color(red: 246/255, green: 138/255, blue: 162/255)
+                    case .other:
+                        pickerColor = .orange
+                    }
+                }
                 DatePicker(
                     "Birthday",
                     selection: $birthday,
@@ -82,6 +93,7 @@ struct BabyDetailsFormView<Confirm: View>: View {
                 .clearBackground()
         }
     }
+            
 }
 
 struct BabyDetailsFormView_Previews: PreviewProvider {

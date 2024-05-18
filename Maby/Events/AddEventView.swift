@@ -41,7 +41,7 @@ struct AddEventView<Content: View, E: Event>: View {
     private var buttonTint: Color {
         switch buttonState {
         case .resting:
-            fallthrough
+            return colorSchemeGender.dark
         case .loading:
             return colorSchemeGender.dark
         case .success:
@@ -109,6 +109,11 @@ struct AddEventView<Content: View, E: Event>: View {
                 .buttonStyle(.primaryAction)
             }
             .clearBackground()
+        }.onChange(of: gender) { newGender in
+            self.colorSchemeGender = .getColorScheme(for: newGender)
+        }
+        .onAppear {
+            self.colorSchemeGender = .getColorScheme(for: self.gender)
         }
     }
 }
