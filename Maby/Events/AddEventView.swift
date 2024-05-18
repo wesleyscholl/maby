@@ -7,6 +7,11 @@ private enum ButtonState {
 
 struct AddEventView<Content: View, E: Event>: View {
     @Environment(\.dismiss) private var dismiss
+    @State private var colorSchemeGender: GenderColorScheme = .getColorScheme(for: .other)
+    @FetchRequest(fetchRequest: allBabies) private var babies: FetchedResults<Baby>
+    private var gender: Baby.Gender {
+        babies.first?.gender ?? .other
+    }
     
     let title: LocalizedStringKey
     let form: Content
@@ -38,7 +43,7 @@ struct AddEventView<Content: View, E: Event>: View {
         case .resting:
             fallthrough
         case .loading:
-            return colorPink
+            return colorSchemeGender.dark
         case .success:
             return Color.white
         case .errored:

@@ -69,7 +69,7 @@ struct ReactionButtonView: View {
                                             Gradient(colors: [mediumPink, colorPink]), startPoint: .topLeading, endPoint: .bottomTrailing))
                     .frame(width: screenHeight * 0.06, height: screenHeight * 0.06)
                     .opacity(reaction.isSelected && reaction.isShown ? 1 : 0)
-                    .scaleEffect(reaction.isSelected && reaction.isShown ? 0.9 : 0)
+                    .scaleEffect(reaction.isSelected && reaction.isShown ? 0.85 : 0)
                     .animation(.spring(), value: reaction.isSelected)
                 Image(systemName: reaction.imageName)
                     .frame(width: screenHeight * 0.05, height: screenHeight * 0.05)

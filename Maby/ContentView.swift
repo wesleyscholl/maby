@@ -2,6 +2,7 @@ import CoreData
 import Factory
 import MabyKit
 import SwiftUI
+import PermissionsSwiftUI
 import Photos
 import AVFoundation
 
@@ -20,14 +21,14 @@ extension UINavigationBar {
 
 struct ContentView: View {
     @State private var colorSchemeGender: GenderColorScheme = .getColorScheme(for: .other)
-    @FetchRequest(fetchRequest: allBabies) 
-    private var babies: FetchedResults<Baby>
+    @FetchRequest(fetchRequest: allBabies) private var babies: FetchedResults<Baby>
     private var gender: Baby.Gender {
         babies.first?.gender ?? .other
     }
     @Environment(\.colorScheme) var colorScheme
     @State private var showingAddBaby = false
     @State private var selectedIndex: Int = 0
+    @State private var showPermissionsModal = false 
     
     let colorPink = Color(red: 246/255, green: 138/255, blue: 162/255)
 
@@ -85,9 +86,7 @@ struct ContentView: View {
                         .interactiveDismissDisabled(true)
                 }
                 .onAppear (perform: {
-                    if babies.isEmpty {
-                                 showingAddBaby = true
-                               }
+                    showPermissionsModal = true
                     UITabBar.appearance().unselectedItemTintColor = .gray
                     UITabBarItem.appearance().badgeColor = UIColor(colorSchemeGender.dark)
                     UITabBar.appearance().backgroundColor = .systemGray4.withAlphaComponent(0.4)
@@ -108,6 +107,9 @@ struct ContentView: View {
                     UINavigationBar.configureAppearance(color: .black, backgroundColor: UIColor.systemGray6)
                 }
             }
+            .onChange(of: gender) { newGender in
+                self.colorSchemeGender = .getColorScheme(for: newGender)
+            }
             .onAppear {
                 self.colorSchemeGender = .getColorScheme(for: self.gender)
                 if colorScheme == .dark {
@@ -117,6 +119,13 @@ struct ContentView: View {
                 }
             }
             .navigationBarBackButtonHidden(true)
+            .JMModal(showModal: $showPermissionsModal, for: [.photoFull, .microphone, .camera], autoDismiss: true, autoCheckAuthorization: true, onDisappear: {
+                if babies.isEmpty {
+                  showingAddBaby = true
+                }
+              }).changeHeaderTo("Requesting Permissions")
+               .changeHeaderDescriptionTo("Joyful requires certain permissions for all features to function properly.")
+               .changeBottomDescriptionTo("If the permissions are not granted, you can enable them later in Settings > Joyful")
     }
 }
 

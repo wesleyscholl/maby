@@ -805,6 +805,9 @@ func handleButtonAction(with asset: PHAsset) {
             self.colorSchemeGender = .getColorScheme(for: self.gender)
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
+        .onChange(of: gender) { newGender in
+                    self.colorSchemeGender = .getColorScheme(for: newGender)
+                }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading:
                                 Image(systemName: "video.badge.plus")
@@ -820,9 +823,5 @@ func handleButtonAction(with asset: PHAsset) {
                     .foregroundColor(colorSchemeGender.dark)
             }
         )
-        .JMModal(showModal: $showPermissionsModal, for: [.photoFull, .microphone, .camera], autoDismiss: true, autoCheckAuthorization: true, onDisappear: {
-          }).changeHeaderTo("Requesting Permissions")
-           .changeHeaderDescriptionTo("Joyful requires certain permissions for all features to function properly.")
-           .changeBottomDescriptionTo("If the permissions are not granted, you can enable them later in Settings > Joyful")
     }
 }
