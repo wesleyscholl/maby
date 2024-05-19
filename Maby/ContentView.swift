@@ -119,7 +119,7 @@ struct ContentView: View {
                 }
             }
             .navigationBarBackButtonHidden(true)
-            .JMModal(showModal: $showPermissionsModal, for: [.photoFull, .microphone, .camera], autoDismiss: true, autoCheckAuthorization: true, onDisappear: {
+            .JMModal(showModal: $showPermissionsModal, for: [.photoFull, .microphone, .camera, .notification], autoDismiss: true, autoCheckAuthorization: true, onDisappear: {
                 if babies.isEmpty {
                   showingAddBaby = true
                 }

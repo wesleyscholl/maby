@@ -514,7 +514,19 @@ func handleButtonAction(with asset: PHAsset) {
                                         }
                                         .contextMenu {
                                              Button(action: {
-                                               self.handleButtonAction(with: images[index])
+                                                if images[index].mediaType == .image {
+                                                    let options = PHImageRequestOptions()
+                                                    options.isSynchronous = false
+                                                    PHImageManager.default().requestImage(for: images[index], targetSize: CGSize(width: images[index].pixelWidth, height: images[index].pixelHeight), contentMode: .aspectFill, options: options) { (image, info) in
+                                                        if let image = image {
+                                                            DispatchQueue.main.async {
+                                                                let shareItems = [image]
+                                                                let activityViewController = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
+                                                                UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }) {
                                                 Text("Share")
                                                 Image(systemName: "square.and.arrow.up")
