@@ -140,7 +140,7 @@ struct HomeView: View {
         options.isSynchronous = true
         options.resizeMode = .exact
         var image: UIImage?
-        manager.requestImage(for: asset, targetSize: CGSize(width: 1000, height: 1000), contentMode: .aspectFill, options: options) { result, _ in
+        manager.requestImage(for: asset, targetSize: CGSize(width: 800, height: 00), contentMode: .aspectFill, options: options) { result, _ in
             image = result
         }
         return image ?? UIImage()
