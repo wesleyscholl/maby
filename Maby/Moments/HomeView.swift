@@ -61,6 +61,7 @@ struct HomeView: View {
     @State private var mediaType: AssetType = .photo
     @State private var isLoadingImages = true
     @State private var showPermissionsModal = false 
+    @State private var imageToShare: UIImage? = nil
     
     @State private var reactions = [
         Reaction(imageName: "heart.fill", isShown: false, rotation: 360, isSelected: false),
@@ -513,23 +514,25 @@ func handleButtonAction(with asset: PHAsset) {
                                             self.isPressed = false
                                         }
                                         .contextMenu {
-                                             Button(action: {
-                                                if images[index].mediaType == .image {
-                                                    let options = PHImageRequestOptions()
-                                                    options.isSynchronous = false
-                                                    PHImageManager.default().requestImage(for: images[index], targetSize: CGSize(width: images[index].pixelWidth, height: images[index].pixelHeight), contentMode: .aspectFill, options: options) { (image, info) in
-                                                        if let image = image {
-                                                            DispatchQueue.main.async {
-                                                                let shareItems = [image]
-                                                                let activityViewController = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
-                                                                UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
-                                                            }
-                                                        }
+                                            Button(action: {
+                                              if images[index].mediaType == .image {
+                                                let options = PHImageRequestOptions()
+                                                options.isSynchronous = false
+                                                PHImageManager.default().requestImage(for: images[index], targetSize: CGSize(width: images[index].pixelWidth, height: images[index].pixelHeight), contentMode: .aspectFill, options: options) { (image, info) in
+                                                  guard let image = image else { return }
+                                                  DispatchQueue.main.async {
+                                                    let shareItems = [image]
+                                                    let activityViewController = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
+                                                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                                                       let window = windowScene.windows.first {
+                                                      window.rootViewController?.present(activityViewController, animated: true, completion: nil)
                                                     }
+                                                  }
                                                 }
+                                              }
                                             }) {
-                                                Text("Share")
-                                                Image(systemName: "square.and.arrow.up")
+                                              Text("Share")
+                                              Image(systemName: "square.and.arrow.up")
                                             }
                                             Button(action: {
                                                 UIImpactFeedbackGenerator(style: .light).impactOccurred()

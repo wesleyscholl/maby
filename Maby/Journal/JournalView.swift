@@ -5,7 +5,6 @@ import SwiftUI
 
 struct JournalView: View {
     @Injected(Container.eventService) private var eventService
-    
     let darkGrey = Color(red: 128/255, green: 128/255, blue: 128/255)
     @Binding var selectedIndex: Int
     @SectionedFetchRequest<Date, Event>(
@@ -44,15 +43,6 @@ struct JournalView: View {
                     Section(header: JournalSectionHeader(date: section.id)) {
                         ForEach(section) { event in
                             EventView(event: event)
-                                .contextMenu {
-                                    Button(action: {
-                                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                                        // observableAsset.updateFavoriteStatus()
-                                    }) {
-                                        Text("Favorite")
-                                        Image(systemName: "heart.fill")
-                                    }
-                                }   
                         }
                         .onDelete { indexSet in
                             eventService.delete(events: indexSet.map { section[$0] })

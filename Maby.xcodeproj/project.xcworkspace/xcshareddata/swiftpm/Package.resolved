@@ -45,6 +45,15 @@
           "revision": "121c146fe591b1320238d054ae35c81ffa45f45a",
           "version": "0.12.0"
         }
+      },
+      {
+        "package": "SwiftUIReorderableForEach",
+        "repositoryURL": "https://github.com/globulus/swiftui-reorderable-foreach",
+        "state": {
+          "branch": null,
+          "revision": "47f6ca1ad906ef2ae1f872ed34a10cc615ad99ca",
+          "version": "1.0.0"
+        }
       }
     ]
   },

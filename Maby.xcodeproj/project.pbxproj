@@ -70,6 +70,7 @@
 		EB7E403C2BF089C3006DA8D8 /* PermissionsSwiftUIMicrophone in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E403B2BF089C3006DA8D8 /* PermissionsSwiftUIMicrophone */; };
 		EB7E403E2BF089C3006DA8D8 /* PermissionsSwiftUIPhoto in Frameworks */ = {isa = PBXBuildFile; productRef = EB7E403D2BF089C3006DA8D8 /* PermissionsSwiftUIPhoto */; };
 		EB7E40402BF0B3EF006DA8D8 /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7E403F2BF0B3EE006DA8D8 /* MediaView.swift */; };
+		EB8E983D2BFBBFBA00ED9E58 /* SwiftUIReorderableForEach in Frameworks */ = {isa = PBXBuildFile; productRef = EB8E983C2BFBBFBA00ED9E58 /* SwiftUIReorderableForEach */; };
 		EB8F009A2BE65F310057B6AE /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00992BE65F300057B6AE /* NotificationScheduler.swift */; };
 		EB8F009C2BE66EB40057B6AE /* ReminderSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F009B2BE66EB40057B6AE /* ReminderSectionView.swift */; };
 		EB8F00B52BEB2A520057B6AE /* Reactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8F00B42BEB2A520057B6AE /* Reactions.swift */; };
@@ -181,6 +182,7 @@
 				EB7E403E2BF089C3006DA8D8 /* PermissionsSwiftUIPhoto in Frameworks */,
 				EB7E401A2BEE04B3006DA8D8 /* Aespa in Frameworks */,
 				EB7E40382BF089C3006DA8D8 /* PermissionsSwiftUI in Frameworks */,
+				EB8E983D2BFBBFBA00ED9E58 /* SwiftUIReorderableForEach in Frameworks */,
 				EB7E40332BF089A3006DA8D8 /* PermissionsSwiftUIMicrophone in Frameworks */,
 				EB7E402F2BF089A3006DA8D8 /* PermissionsSwiftUI in Frameworks */,
 				EB7E403A2BF089C3006DA8D8 /* PermissionsSwiftUICamera in Frameworks */,
@@ -412,6 +414,7 @@
 				EB7E40392BF089C3006DA8D8 /* PermissionsSwiftUICamera */,
 				EB7E403B2BF089C3006DA8D8 /* PermissionsSwiftUIMicrophone */,
 				EB7E403D2BF089C3006DA8D8 /* PermissionsSwiftUIPhoto */,
+				EB8E983C2BFBBFBA00ED9E58 /* SwiftUIReorderableForEach */,
 			);
 			productName = Maby;
 			productReference = C9ED2E9E287C745100BA3228 /* Joyful.app */;
@@ -446,6 +449,7 @@
 				EB7E40152BEE048D006DA8D8 /* XCLocalSwiftPackageReference "../FloatingButton" */,
 				EB7E40182BEE04B3006DA8D8 /* XCLocalSwiftPackageReference "../Aespa" */,
 				EB7E40362BF089C3006DA8D8 /* XCRemoteSwiftPackageReference "PermissionsSwiftUI" */,
+				EB8E983B2BFBBFB900ED9E58 /* XCRemoteSwiftPackageReference "swiftui-reorderable-foreach" */,
 			);
 			productRefGroup = C9ED2E9F287C745100BA3228 /* Products */;
 			projectDirPath = "";
@@ -802,6 +806,14 @@
 				minimumVersion = 1.5.11;
 			};
 		};
+		EB8E983B2BFBBFB900ED9E58 /* XCRemoteSwiftPackageReference "swiftui-reorderable-foreach" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/globulus/swiftui-reorderable-foreach";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -852,6 +864,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EB7E40362BF089C3006DA8D8 /* XCRemoteSwiftPackageReference "PermissionsSwiftUI" */;
 			productName = PermissionsSwiftUIPhoto;
+		};
+		EB8E983C2BFBBFBA00ED9E58 /* SwiftUIReorderableForEach */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB8E983B2BFBBFB900ED9E58 /* XCRemoteSwiftPackageReference "swiftui-reorderable-foreach" */;
+			productName = SwiftUIReorderableForEach;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

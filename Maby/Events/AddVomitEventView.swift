@@ -22,6 +22,9 @@ struct AddVomitEventView: View {
                     Text("Burping").tag(VomitEvent.VType.burping)
                     Text("Vomit").tag(VomitEvent.VType.vomit)
                 }
+                .onChange(of: type) { newValue in
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
                 .pickerStyle(.segmented)
             }
         }

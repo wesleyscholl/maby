@@ -3,6 +3,7 @@ import SwiftUI
 struct SettingsView: View {
     @State private var showingEditBaby = false
     @State private var showingRemoveBaby = false
+    @State private var notificationsEnabled = false
     @Environment(\.colorScheme) var colorScheme
     
     private var sourceCodeUrl: URL {
@@ -57,6 +58,19 @@ struct SettingsView: View {
                     .symbolRenderingMode(.multicolor)
                 }
             }
+            }
+            Section("Notifications") {
+                Toggle(isOn: $notificationsEnabled) {
+                    Text("Daily Reminder Notifications")
+                        .foregroundColor(colorScheme == .dark ? .white : .gray)
+                }
+                .onChange(of: notificationsEnabled) { newValue in
+                    if newValue {
+                        NotificationScheduler.scheduleDailyNotifications()
+                    } else {
+                        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                    }
+                }
             }
             Section("About") {
                 Link(destination: sourceCodeUrl) {

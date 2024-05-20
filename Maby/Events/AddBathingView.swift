@@ -25,13 +25,14 @@ struct AddBathingEventView: View {
                     Text("Shower").tag(BathingEvent.BathingType.shower)
                     Text("Sink").tag(BathingEvent.BathingType.sink)
                 }
+                .onChange(of: bathingType) { _ in
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
                 .pickerStyle(.segmented)
             }
         }
     }
 }
-
-// case bath, sponge, shower, mixed
 
 struct AddBathingEvent_Previews: PreviewProvider {
     static var previews: some View {

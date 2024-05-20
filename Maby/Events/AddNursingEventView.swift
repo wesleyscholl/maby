@@ -51,6 +51,9 @@ struct AddNursingEventView: View {
                     Text("Right").tag(NursingEvent.Breast.right)
                     Text("Both").tag(NursingEvent.Breast.both)
                 }
+                .onChange(of: breast) { newValue in
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
                 .pickerStyle(.segmented)
             }
             ReminderSectionView(setReminder: $setReminder, reminderInterval: $reminderInterval)

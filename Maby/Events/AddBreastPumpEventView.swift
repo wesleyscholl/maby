@@ -54,6 +54,9 @@ struct AddBreastPumpEventView: View {
                     Text("Right").tag(BreastPumpEvent.Breast.right)
                     Text("Both").tag(BreastPumpEvent.Breast.both)
                 }
+                .onChange(of: breast) { newValue in
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
                 .pickerStyle(.segmented)
             }
             Section("Amount (mL)") {

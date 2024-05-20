@@ -25,6 +25,9 @@ struct AddDiaperEventView: View {
                     Text("Mixed").tag(DiaperEvent.DiaperType.mixed)
                     Text("Clean").tag(DiaperEvent.DiaperType.clean)
                 }
+                .onChange(of: diaperType) { newValue in
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
                 .pickerStyle(.segmented)
             }
         }

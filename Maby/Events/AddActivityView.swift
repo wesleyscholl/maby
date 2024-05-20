@@ -35,6 +35,9 @@ struct AddActivityEventView: View {
                     Text("Indoor Play").tag(ActivityEvent.ActivityType.indoor)
                     Text("Outdoor Play").tag(ActivityEvent.ActivityType.outdoor)
                 }
+                .onChange(of: activityType) { activityType in
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
                 .pickerStyle(.segmented)
             }
         }
