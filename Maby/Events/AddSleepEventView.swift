@@ -19,7 +19,7 @@ struct AddSleepEventView: View {
                 if setReminder, case .success(let event) = result {
                     NotificationScheduler.scheduleNotification(
                         for: event.end, 
-                        title: "Sleep Reminder", 
+                        title: "Wake Up Reminder", 
                         body: "It's time to wake your baby up!", 
                         interval: reminderInterval
                         )

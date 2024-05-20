@@ -56,9 +56,9 @@ let colorLightPink = Color(red: 254/255, green: 242/255, blue: 242/255)
 let colorMediumPink = Color(red: 255/255, green: 193/255, blue: 206/255)
 let colorDarkPink = Color(red: 246/255, green: 138/255, blue: 162/255)
 
-let colorLightBlue = Color(red: 204/255, green: 235/255, blue: 255/255)
-let colorMediumBlue = Color(red: 51/255, green: 173/255, blue: 255/255)
-let colorDarkBlue = Color(red: 0/255, green: 122/255, blue: 255/255)
+let colorDarkBlue = Color(red: 137/255, green: 207/255, blue: 244/255)
+let colorMediumBlue = Color(red: 96/255, green: 180/255, blue: 220/255)
+let colorLightBlue = Color(red: 173/255, green: 234/255, blue: 255/255)
 
 let colorLightOrange = Color(red: 255/255, green: 201/255, blue: 128/255)
 let colorMediumOrange = Color(red: 255/255, green: 174/255, blue: 64/255)
