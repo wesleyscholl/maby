@@ -9,7 +9,7 @@ struct ReminderSectionView: View {
             Toggle("Set Reminder", isOn: $setReminder)
             if setReminder {
                 Picker("Reminder Interval", selection: $reminderInterval) {
-                    ForEach(1..<9) { i in
+                    ForEach(1..<13) { i in
                         let hours = i / 2
                         let minutes = (i % 2) * 30
                         let intervalText: String
